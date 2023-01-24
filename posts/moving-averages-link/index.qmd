@@ -1,0 +1,54 @@
+---
+title: "Easy moving averages"
+author: "Robert W. Walker"
+date: "2021-06-24"
+categories: [R, time_series, tidy]
+image: "image.png"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message=FALSE, warning=FALSE)
+```
+
+
+# An r-bloggers post
+
+There is [a handy post](https://www.r-bloggers.com/2021/04/ggplot-with-moving-averages/) on `r-bloggers` that details moving averages built around the amazing `tidyquant` package.
+
+First, get some data.
+
+```{r, message=FALSE, warning=FALSE}
+library(tidyverse)
+GlobalLandTemperaturesByMajorCity <- read_csv(url("https://github.com/robertwwalker/DADM-FAQ/raw/main/posts/moving-averages-link/data/GlobalLandTemperaturesByMajorCity.csv"),
+col_types = cols(dt = col_date(format = "%Y-%m-%d")))
+```
+
+Let me choose Paris.
+
+```{r}
+library(kableExtra)
+Paris.Data <- GlobalLandTemperaturesByMajorCity %>% filter(City=="Paris")
+Paris.Data %>% filter(is.na(AverageTemperature)) %>% kable() %>% scroll_box(width="400px", height="600px")
+```
+
+I will keep only from 1753 to 2012.  All of this relies on `geom_ma` from tidyquant with a valid date as the x-axis.
+
+```{r, message=FALSE, warning=FALSE}
+library(tidyquant)
+Paris.DF <- Paris.Data %>% 
+  filter(year(dt) > 1752 & year(dt)< 2013) %>%
+  mutate(dt = as.Date(dt))
+cdg_temp <- Paris.DF %>% 
+  ggplot(aes(x = dt, y = AverageTemperature)) +
+  geom_line() + 
+  geom_ma(ma_fun = SMA, n = 30) +                 # Plot 30-day SMA
+  geom_ma(ma_fun = SMA, n = 365, color = "red") +  # Plot 365-day SMA
+  coord_x_date(xlim = c("1999-01-01", "2013-08-01")) + # Zoom in
+  labs(x = "Year", y = "Average Temperature (C)", title = "Temperature by Year", subtitle = "Paris: Year and Month Seasonal Moving Averages") +
+  theme_minimal()
+cdg_temp
+```
+
+It calculates quite a few very hand moving averages.
+
+![MAs](img/Screen Shot 2022-12-23 at 10.51.28 PM.png)

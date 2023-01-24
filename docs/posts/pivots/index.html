@@ -1,0 +1,5163 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.269">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Robert W. Walker">
+<meta name="dcterms.date" content="2020-09-12">
+
+<title>Data Analysis, Modelling, and Decision-Making FAQ - Pivoting Data: Long and Wide</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+<script src="../../site_libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="../../site_libs/lightable-0.0.1/lightable.css" rel="stylesheet">
+
+
+<link rel="stylesheet" href="../../styles.css">
+<meta name="twitter:title" content="Data Analysis, Modelling, and Decision-Making FAQ - Pivoting Data: Long and Wide">
+<meta name="twitter:description" content="The ability to pivot data from long to wide format or from wide to long format is one of the greatest time saving devices that I know of. Let’s first look at the data types: wide and long.">
+<meta name="twitter:image" content="https://c60a0439-5813-4d13-a854-20178a9b938d.netlify.app/posts/pivots/image.png">
+<meta name="twitter:creator" content="@PieRatio">
+<meta name="twitter:image-height" content="960">
+<meta name="twitter:image-width" content="1344">
+<meta name="twitter:card" content="summary_large_image">
+</head>
+
+<body class="nav-fixed fullcontent">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Data Analysis, Modelling, and Decision-Making FAQ</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html">
+ <span class="menu-text">About the DADM FAQ</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/robertwwalker/DADM-FAQ"><i class="bi bi-github" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/PieRatio"><i class="bi bi-twitter" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Pivoting Data: Long and Wide</h1>
+                                <div class="quarto-categories">
+                <div class="quarto-category">R</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Robert W. Walker </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">September 12, 2020</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+<section id="pivoting-data" class="level1">
+<h1>Pivoting Data</h1>
+<p>The ability to pivot data from long to wide format or from wide to long format is one of the greatest time saving devices that I know of. Let’s first look at the data types: wide and long.</p>
+<section id="wide-data" class="level2">
+<h2 class="anchored" data-anchor-id="wide-data">Wide Data</h2>
+<p>I will use climate data covering the city of Portland from the National Weather Service. [The data were obtained from:] (https://w2.weather.gov/climate/local_data.php?wfo=pqr) and you will notice that there are data for Astoria, Salem and Eugene, also. Notice this is the Local Data and Records tab.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="img/NWSWS.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">ScreenShot</figcaption><p></p>
+</figure>
+</div>
+<p>I downloaded the Portland data and examined the spreadsheet. It has a rather straightforward <code>wide</code> structure – it has data in the column names. Other common examples are accounting data with the variables listed as rows and the time periods as the columns.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="img/NWSSS.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">NWS Spreadsheet</figcaption><p></p>
+</figure>
+</div>
+<p>There are a few rows describing the data that will have to be eliminated to import the data; that’s the <code>skip</code> flag so I will use <code>skip=6</code>. If we examine row 7, we will see what will become the variable names. <code>YR</code> and <code>MO</code> are year and month, respectively, there is then a blank and the remaining names are the day; it extends to 31. For each month, there are four rows representing the high <code>TX</code>, the low <code>TN</code>, precipitation <code>PR</code>, and snow <code>SN</code>. Scrolling rightward, we see the remainder of the spreadsheet from the image above; there is also an <code>AVG or Total</code> column.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="img/NWSSS2.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">NWS Spreadsheet</figcaption><p></p>
+</figure>
+</div>
+<p>Were I to import them as is, let’s see what happens just skipping the first six rows. I will use the <code>gt</code> package to show what I have.</p>
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-1_b5c09873cc3702f1ee2679264a493bcf">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gt)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>NWS <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="fu">url</span>(<span class="st">"https://www.weather.gov/source/pqr/climate/webdata/Portland_dailyclimatedata.csv"</span>), <span class="at">skip=</span><span class="dv">6</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(NWS, <span class="dv">10</span>) <span class="sc">%&gt;%</span> <span class="fu">gt</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+
+<div id="efmlweoink" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>html {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+}
+
+:where(#efmlweoink) .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+:where(#efmlweoink) .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+:where(#efmlweoink) .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+:where(#efmlweoink) .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 0;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+:where(#efmlweoink) .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+:where(#efmlweoink) .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+:where(#efmlweoink) .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+:where(#efmlweoink) .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+:where(#efmlweoink) .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+:where(#efmlweoink) .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+:where(#efmlweoink) .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+:where(#efmlweoink) .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+:where(#efmlweoink) .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+:where(#efmlweoink) .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+:where(#efmlweoink) .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+:where(#efmlweoink) .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+:where(#efmlweoink) .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+:where(#efmlweoink) .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+:where(#efmlweoink) .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+:where(#efmlweoink) .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+:where(#efmlweoink) .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+:where(#efmlweoink) .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+:where(#efmlweoink) .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+:where(#efmlweoink) .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+:where(#efmlweoink) .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+:where(#efmlweoink) .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+:where(#efmlweoink) .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+:where(#efmlweoink) .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+:where(#efmlweoink) .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-left: 4px;
+  padding-right: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+:where(#efmlweoink) .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+:where(#efmlweoink) .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+:where(#efmlweoink) .gt_left {
+  text-align: left;
+}
+
+:where(#efmlweoink) .gt_center {
+  text-align: center;
+}
+
+:where(#efmlweoink) .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+:where(#efmlweoink) .gt_font_normal {
+  font-weight: normal;
+}
+
+:where(#efmlweoink) .gt_font_bold {
+  font-weight: bold;
+}
+
+:where(#efmlweoink) .gt_font_italic {
+  font-style: italic;
+}
+
+:where(#efmlweoink) .gt_super {
+  font-size: 65%;
+}
+
+:where(#efmlweoink) .gt_footnote_marks {
+  font-style: italic;
+  font-weight: normal;
+  font-size: 75%;
+  vertical-align: 0.4em;
+}
+
+:where(#efmlweoink) .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+:where(#efmlweoink) .gt_indent_1 {
+  text-indent: 5px;
+}
+
+:where(#efmlweoink) .gt_indent_2 {
+  text-indent: 10px;
+}
+
+:where(#efmlweoink) .gt_indent_3 {
+  text-indent: 15px;
+}
+
+:where(#efmlweoink) .gt_indent_4 {
+  text-indent: 20px;
+}
+
+:where(#efmlweoink) .gt_indent_5 {
+  text-indent: 25px;
+}
+</style>
+<table class="gt_table">
+  
+  <thead class="gt_col_headings">
+    <tr>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">YR</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">MO</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col">X</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col">X1</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col">X2</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col">X3</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col">X4</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col">X5</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col">X6</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col">X7</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col">X8</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col">X9</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col">X10</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col">X11</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col">X12</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">X13</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col">X14</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col">X15</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">X16</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">X17</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">X18</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col">X19</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">X20</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col">X21</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">X22</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">X23</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">X24</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">X25</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">X26</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col">X27</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">X28</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col">X29</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col">X30</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">X31</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col">AVG.or.Total</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td class="gt_row gt_right">1940</td>
+<td class="gt_row gt_right">10</td>
+<td class="gt_row gt_left">TX</td>
+<td class="gt_row gt_left">M</td>
+<td class="gt_row gt_left">M</td>
+<td class="gt_row gt_left">M</td>
+<td class="gt_row gt_left">M</td>
+<td class="gt_row gt_left">M</td>
+<td class="gt_row gt_left">M</td>
+<td class="gt_row gt_left">M</td>
+<td class="gt_row gt_left">M</td>
+<td class="gt_row gt_left">M</td>
+<td class="gt_row gt_left">M</td>
+<td class="gt_row gt_left">M</td>
+<td class="gt_row gt_left">M</td>
+<td class="gt_row gt_right">75</td>
+<td class="gt_row gt_left">70</td>
+<td class="gt_row gt_left">64</td>
+<td class="gt_row gt_right">72</td>
+<td class="gt_row gt_right">72</td>
+<td class="gt_row gt_right">78</td>
+<td class="gt_row gt_left">78</td>
+<td class="gt_row gt_right">64</td>
+<td class="gt_row gt_left">63</td>
+<td class="gt_row gt_right">61</td>
+<td class="gt_row gt_right">58</td>
+<td class="gt_row gt_right">57</td>
+<td class="gt_row gt_right">57</td>
+<td class="gt_row gt_right">57</td>
+<td class="gt_row gt_left">56</td>
+<td class="gt_row gt_right">53</td>
+<td class="gt_row gt_left">59</td>
+<td class="gt_row gt_left">59</td>
+<td class="gt_row gt_right">52</td>
+<td class="gt_row gt_left">M</td></tr>
+    <tr><td class="gt_row gt_right">1940</td>
+<td class="gt_row gt_right">10</td>
+<td class="gt_row gt_left">TN</td>
+<td class="gt_row gt_left">M</td>
+<td class="gt_row gt_left">M</td>
+<td class="gt_row gt_left">M</td>
+<td class="gt_row gt_left">M</td>
+<td class="gt_row gt_left">M</td>
+<td class="gt_row gt_left">M</td>
+<td class="gt_row gt_left">M</td>
+<td class="gt_row gt_left">M</td>
+<td class="gt_row gt_left">M</td>
+<td class="gt_row gt_left">M</td>
+<td class="gt_row gt_left">M</td>
+<td class="gt_row gt_left">M</td>
+<td class="gt_row gt_right">57</td>
+<td class="gt_row gt_left">53</td>
+<td class="gt_row gt_left">52</td>
+<td class="gt_row gt_right">50</td>
+<td class="gt_row gt_right">58</td>
+<td class="gt_row gt_right">58</td>
+<td class="gt_row gt_left">59</td>
+<td class="gt_row gt_right">54</td>
+<td class="gt_row gt_left">48</td>
+<td class="gt_row gt_right">41</td>
+<td class="gt_row gt_right">53</td>
+<td class="gt_row gt_right">48</td>
+<td class="gt_row gt_right">41</td>
+<td class="gt_row gt_right">38</td>
+<td class="gt_row gt_left">37</td>
+<td class="gt_row gt_right">45</td>
+<td class="gt_row gt_left">48</td>
+<td class="gt_row gt_left">50</td>
+<td class="gt_row gt_right">46</td>
+<td class="gt_row gt_left">M</td></tr>
+    <tr><td class="gt_row gt_right">1940</td>
+<td class="gt_row gt_right">10</td>
+<td class="gt_row gt_left">PR</td>
+<td class="gt_row gt_left">M</td>
+<td class="gt_row gt_left">M</td>
+<td class="gt_row gt_left">M</td>
+<td class="gt_row gt_left">M</td>
+<td class="gt_row gt_left">M</td>
+<td class="gt_row gt_left">M</td>
+<td class="gt_row gt_left">M</td>
+<td class="gt_row gt_left">M</td>
+<td class="gt_row gt_left">M</td>
+<td class="gt_row gt_left">M</td>
+<td class="gt_row gt_left">M</td>
+<td class="gt_row gt_left">M</td>
+<td class="gt_row gt_right">0.01</td>
+<td class="gt_row gt_left">T</td>
+<td class="gt_row gt_left">T</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0.13</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_left">T</td>
+<td class="gt_row gt_right">0.14</td>
+<td class="gt_row gt_left">0.05</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0.63</td>
+<td class="gt_row gt_right">1.03</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_left">T</td>
+<td class="gt_row gt_right">0.18</td>
+<td class="gt_row gt_left">0.58</td>
+<td class="gt_row gt_left">0.5</td>
+<td class="gt_row gt_right">0.25</td>
+<td class="gt_row gt_left">M</td></tr>
+    <tr><td class="gt_row gt_right">1940</td>
+<td class="gt_row gt_right">10</td>
+<td class="gt_row gt_left">SN</td>
+<td class="gt_row gt_left">M</td>
+<td class="gt_row gt_left">M</td>
+<td class="gt_row gt_left">M</td>
+<td class="gt_row gt_left">M</td>
+<td class="gt_row gt_left">M</td>
+<td class="gt_row gt_left">M</td>
+<td class="gt_row gt_left">M</td>
+<td class="gt_row gt_left">M</td>
+<td class="gt_row gt_left">M</td>
+<td class="gt_row gt_left">M</td>
+<td class="gt_row gt_left">M</td>
+<td class="gt_row gt_left">M</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_left">0</td>
+<td class="gt_row gt_left">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_left">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_left">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_left">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_left">0</td>
+<td class="gt_row gt_left">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_left">0</td></tr>
+    <tr><td class="gt_row gt_right">1940</td>
+<td class="gt_row gt_right">11</td>
+<td class="gt_row gt_left">TX</td>
+<td class="gt_row gt_left">52</td>
+<td class="gt_row gt_left">53</td>
+<td class="gt_row gt_left">47</td>
+<td class="gt_row gt_left">55</td>
+<td class="gt_row gt_left">51</td>
+<td class="gt_row gt_left">58</td>
+<td class="gt_row gt_left">56</td>
+<td class="gt_row gt_left">50</td>
+<td class="gt_row gt_left">48</td>
+<td class="gt_row gt_left">47</td>
+<td class="gt_row gt_left">46</td>
+<td class="gt_row gt_left">45</td>
+<td class="gt_row gt_right">45</td>
+<td class="gt_row gt_left">47</td>
+<td class="gt_row gt_left">53</td>
+<td class="gt_row gt_right">49</td>
+<td class="gt_row gt_right">46</td>
+<td class="gt_row gt_right">49</td>
+<td class="gt_row gt_left">46</td>
+<td class="gt_row gt_right">49</td>
+<td class="gt_row gt_left">50</td>
+<td class="gt_row gt_right">44</td>
+<td class="gt_row gt_right">42</td>
+<td class="gt_row gt_right">44</td>
+<td class="gt_row gt_right">51</td>
+<td class="gt_row gt_right">44</td>
+<td class="gt_row gt_left">45</td>
+<td class="gt_row gt_right">59</td>
+<td class="gt_row gt_left">57</td>
+<td class="gt_row gt_left">45</td>
+<td class="gt_row gt_right">-</td>
+<td class="gt_row gt_left">49.1</td></tr>
+    <tr><td class="gt_row gt_right">1940</td>
+<td class="gt_row gt_right">11</td>
+<td class="gt_row gt_left">TN</td>
+<td class="gt_row gt_left">40</td>
+<td class="gt_row gt_left">38</td>
+<td class="gt_row gt_left">36</td>
+<td class="gt_row gt_left">32</td>
+<td class="gt_row gt_left">42</td>
+<td class="gt_row gt_left">46</td>
+<td class="gt_row gt_left">46</td>
+<td class="gt_row gt_left">42</td>
+<td class="gt_row gt_left">35</td>
+<td class="gt_row gt_left">34</td>
+<td class="gt_row gt_left">35</td>
+<td class="gt_row gt_left">33</td>
+<td class="gt_row gt_right">34</td>
+<td class="gt_row gt_left">33</td>
+<td class="gt_row gt_left">28</td>
+<td class="gt_row gt_right">27</td>
+<td class="gt_row gt_right">36</td>
+<td class="gt_row gt_right">30</td>
+<td class="gt_row gt_left">29</td>
+<td class="gt_row gt_right">36</td>
+<td class="gt_row gt_left">33</td>
+<td class="gt_row gt_right">28</td>
+<td class="gt_row gt_right">37</td>
+<td class="gt_row gt_right">35</td>
+<td class="gt_row gt_right">37</td>
+<td class="gt_row gt_right">36</td>
+<td class="gt_row gt_left">38</td>
+<td class="gt_row gt_right">43</td>
+<td class="gt_row gt_left">40</td>
+<td class="gt_row gt_left">39</td>
+<td class="gt_row gt_right">-</td>
+<td class="gt_row gt_left">35.9</td></tr>
+    <tr><td class="gt_row gt_right">1940</td>
+<td class="gt_row gt_right">11</td>
+<td class="gt_row gt_left">PR</td>
+<td class="gt_row gt_left">0.17</td>
+<td class="gt_row gt_left">0.02</td>
+<td class="gt_row gt_left">T</td>
+<td class="gt_row gt_left">0</td>
+<td class="gt_row gt_left">0.07</td>
+<td class="gt_row gt_left">0.28</td>
+<td class="gt_row gt_left">0.85</td>
+<td class="gt_row gt_left">0.29</td>
+<td class="gt_row gt_left">0.02</td>
+<td class="gt_row gt_left">0.01</td>
+<td class="gt_row gt_left">0.01</td>
+<td class="gt_row gt_left">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_left">0</td>
+<td class="gt_row gt_left">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0.29</td>
+<td class="gt_row gt_right">0.01</td>
+<td class="gt_row gt_left">0</td>
+<td class="gt_row gt_right">0.37</td>
+<td class="gt_row gt_left">T</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0.12</td>
+<td class="gt_row gt_right">0.62</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_left">0.51</td>
+<td class="gt_row gt_right">0.89</td>
+<td class="gt_row gt_left">T</td>
+<td class="gt_row gt_left">T</td>
+<td class="gt_row gt_right">-</td>
+<td class="gt_row gt_left">4.53</td></tr>
+    <tr><td class="gt_row gt_right">1940</td>
+<td class="gt_row gt_right">11</td>
+<td class="gt_row gt_left">SN</td>
+<td class="gt_row gt_left">0</td>
+<td class="gt_row gt_left">0</td>
+<td class="gt_row gt_left">0</td>
+<td class="gt_row gt_left">0</td>
+<td class="gt_row gt_left">0</td>
+<td class="gt_row gt_left">0</td>
+<td class="gt_row gt_left">0</td>
+<td class="gt_row gt_left">0</td>
+<td class="gt_row gt_left">0</td>
+<td class="gt_row gt_left">0</td>
+<td class="gt_row gt_left">0</td>
+<td class="gt_row gt_left">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_left">0</td>
+<td class="gt_row gt_left">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_left">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_left">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_left">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_left">0</td>
+<td class="gt_row gt_left">0</td>
+<td class="gt_row gt_right">-</td>
+<td class="gt_row gt_left">0</td></tr>
+    <tr><td class="gt_row gt_right">1940</td>
+<td class="gt_row gt_right">12</td>
+<td class="gt_row gt_left">TX</td>
+<td class="gt_row gt_left">51</td>
+<td class="gt_row gt_left">53</td>
+<td class="gt_row gt_left">52</td>
+<td class="gt_row gt_left">51</td>
+<td class="gt_row gt_left">56</td>
+<td class="gt_row gt_left">54</td>
+<td class="gt_row gt_left">50</td>
+<td class="gt_row gt_left">51</td>
+<td class="gt_row gt_left">48</td>
+<td class="gt_row gt_left">50</td>
+<td class="gt_row gt_left">46</td>
+<td class="gt_row gt_left">45</td>
+<td class="gt_row gt_right">43</td>
+<td class="gt_row gt_left">40</td>
+<td class="gt_row gt_left">39</td>
+<td class="gt_row gt_right">39</td>
+<td class="gt_row gt_right">41</td>
+<td class="gt_row gt_right">41</td>
+<td class="gt_row gt_left">45</td>
+<td class="gt_row gt_right">46</td>
+<td class="gt_row gt_left">62</td>
+<td class="gt_row gt_right">60</td>
+<td class="gt_row gt_right">56</td>
+<td class="gt_row gt_right">53</td>
+<td class="gt_row gt_right">54</td>
+<td class="gt_row gt_right">45</td>
+<td class="gt_row gt_left">50</td>
+<td class="gt_row gt_right">51</td>
+<td class="gt_row gt_left">43</td>
+<td class="gt_row gt_left">44</td>
+<td class="gt_row gt_right">45</td>
+<td class="gt_row gt_left">48.5</td></tr>
+    <tr><td class="gt_row gt_right">1940</td>
+<td class="gt_row gt_right">12</td>
+<td class="gt_row gt_left">TN</td>
+<td class="gt_row gt_left">42</td>
+<td class="gt_row gt_left">40</td>
+<td class="gt_row gt_left">42</td>
+<td class="gt_row gt_left">42</td>
+<td class="gt_row gt_left">44</td>
+<td class="gt_row gt_left">37</td>
+<td class="gt_row gt_left">34</td>
+<td class="gt_row gt_left">35</td>
+<td class="gt_row gt_left">32</td>
+<td class="gt_row gt_left">26</td>
+<td class="gt_row gt_left">34</td>
+<td class="gt_row gt_left">28</td>
+<td class="gt_row gt_right">27</td>
+<td class="gt_row gt_left">25</td>
+<td class="gt_row gt_left">29</td>
+<td class="gt_row gt_right">33</td>
+<td class="gt_row gt_right">35</td>
+<td class="gt_row gt_right">34</td>
+<td class="gt_row gt_left">35</td>
+<td class="gt_row gt_right">41</td>
+<td class="gt_row gt_left">39</td>
+<td class="gt_row gt_right">39</td>
+<td class="gt_row gt_right">42</td>
+<td class="gt_row gt_right">42</td>
+<td class="gt_row gt_right">42</td>
+<td class="gt_row gt_right">40</td>
+<td class="gt_row gt_left">38</td>
+<td class="gt_row gt_right">36</td>
+<td class="gt_row gt_left">35</td>
+<td class="gt_row gt_left">37</td>
+<td class="gt_row gt_right">32</td>
+<td class="gt_row gt_left">36</td></tr>
+  </tbody>
+  
+  
+</table>
+</div>
+</div>
+</div>
+<p>That is a pretty good start. There are a few types of missing data (the <code>M</code> values) and some conversions to consider before I can start. There are some <code>-</code> for days that do not exist. T stands for Trace amount, the lowest recorded numeric values are 0.01 inches. There are also values labelled as T/A which I assume to be Trace/Accumulation because there is no obvious dictionary describing their exact meanings.</p>
+<p>Let’s start by reflecting a skip of the first six rows and two sets of missing values, <code>M and -</code>. I also want to rename the column that has no name in the original spreadsheet to be <code>Variable</code> because this is that column reflecting which of the four actual variables that we have for the month-year combination.</p>
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-2_7c3f5caa675362ffc029d66058e43801">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>NWS <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="fu">url</span>(<span class="st">"https://www.weather.gov/source/pqr/climate/webdata/Portland_dailyclimatedata.csv"</span>), </span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>                <span class="at">skip=</span><span class="dv">6</span>, </span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>                <span class="at">na.strings =</span> <span class="fu">c</span>(<span class="st">"M"</span>,<span class="st">"-"</span>, <span class="st">""</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">Variable =</span> X)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(NWS, <span class="dv">10</span>) <span class="sc">%&gt;%</span> <span class="fu">gt</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+
+<div id="tbqqhpatml" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>html {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+}
+
+:where(#tbqqhpatml) .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+:where(#tbqqhpatml) .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+:where(#tbqqhpatml) .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+:where(#tbqqhpatml) .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 0;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+:where(#tbqqhpatml) .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+:where(#tbqqhpatml) .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+:where(#tbqqhpatml) .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+:where(#tbqqhpatml) .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+:where(#tbqqhpatml) .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+:where(#tbqqhpatml) .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+:where(#tbqqhpatml) .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+:where(#tbqqhpatml) .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+:where(#tbqqhpatml) .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+:where(#tbqqhpatml) .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+:where(#tbqqhpatml) .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+:where(#tbqqhpatml) .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+:where(#tbqqhpatml) .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+:where(#tbqqhpatml) .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+:where(#tbqqhpatml) .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+:where(#tbqqhpatml) .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+:where(#tbqqhpatml) .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+:where(#tbqqhpatml) .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+:where(#tbqqhpatml) .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+:where(#tbqqhpatml) .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+:where(#tbqqhpatml) .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+:where(#tbqqhpatml) .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+:where(#tbqqhpatml) .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+:where(#tbqqhpatml) .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+:where(#tbqqhpatml) .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-left: 4px;
+  padding-right: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+:where(#tbqqhpatml) .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+:where(#tbqqhpatml) .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+:where(#tbqqhpatml) .gt_left {
+  text-align: left;
+}
+
+:where(#tbqqhpatml) .gt_center {
+  text-align: center;
+}
+
+:where(#tbqqhpatml) .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+:where(#tbqqhpatml) .gt_font_normal {
+  font-weight: normal;
+}
+
+:where(#tbqqhpatml) .gt_font_bold {
+  font-weight: bold;
+}
+
+:where(#tbqqhpatml) .gt_font_italic {
+  font-style: italic;
+}
+
+:where(#tbqqhpatml) .gt_super {
+  font-size: 65%;
+}
+
+:where(#tbqqhpatml) .gt_footnote_marks {
+  font-style: italic;
+  font-weight: normal;
+  font-size: 75%;
+  vertical-align: 0.4em;
+}
+
+:where(#tbqqhpatml) .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+:where(#tbqqhpatml) .gt_indent_1 {
+  text-indent: 5px;
+}
+
+:where(#tbqqhpatml) .gt_indent_2 {
+  text-indent: 10px;
+}
+
+:where(#tbqqhpatml) .gt_indent_3 {
+  text-indent: 15px;
+}
+
+:where(#tbqqhpatml) .gt_indent_4 {
+  text-indent: 20px;
+}
+
+:where(#tbqqhpatml) .gt_indent_5 {
+  text-indent: 25px;
+}
+</style>
+<table class="gt_table">
+  
+  <thead class="gt_col_headings">
+    <tr>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">YR</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">MO</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col">Variable</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">X1</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">X2</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col">X3</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">X4</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">X5</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">X6</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">X7</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">X8</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">X9</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">X10</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">X11</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">X12</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">X13</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col">X14</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col">X15</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">X16</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">X17</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">X18</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col">X19</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">X20</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col">X21</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">X22</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">X23</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">X24</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">X25</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">X26</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col">X27</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">X28</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col">X29</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col">X30</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">X31</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">AVG.or.Total</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td class="gt_row gt_right">1940</td>
+<td class="gt_row gt_right">10</td>
+<td class="gt_row gt_left">TX</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_left">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_right">75</td>
+<td class="gt_row gt_left">70</td>
+<td class="gt_row gt_left">64</td>
+<td class="gt_row gt_right">72</td>
+<td class="gt_row gt_right">72</td>
+<td class="gt_row gt_right">78</td>
+<td class="gt_row gt_left">78</td>
+<td class="gt_row gt_right">64</td>
+<td class="gt_row gt_left">63</td>
+<td class="gt_row gt_right">61</td>
+<td class="gt_row gt_right">58</td>
+<td class="gt_row gt_right">57</td>
+<td class="gt_row gt_right">57</td>
+<td class="gt_row gt_right">57</td>
+<td class="gt_row gt_left">56</td>
+<td class="gt_row gt_right">53</td>
+<td class="gt_row gt_left">59</td>
+<td class="gt_row gt_left">59</td>
+<td class="gt_row gt_right">52</td>
+<td class="gt_row gt_right">NA</td></tr>
+    <tr><td class="gt_row gt_right">1940</td>
+<td class="gt_row gt_right">10</td>
+<td class="gt_row gt_left">TN</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_left">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_right">57</td>
+<td class="gt_row gt_left">53</td>
+<td class="gt_row gt_left">52</td>
+<td class="gt_row gt_right">50</td>
+<td class="gt_row gt_right">58</td>
+<td class="gt_row gt_right">58</td>
+<td class="gt_row gt_left">59</td>
+<td class="gt_row gt_right">54</td>
+<td class="gt_row gt_left">48</td>
+<td class="gt_row gt_right">41</td>
+<td class="gt_row gt_right">53</td>
+<td class="gt_row gt_right">48</td>
+<td class="gt_row gt_right">41</td>
+<td class="gt_row gt_right">38</td>
+<td class="gt_row gt_left">37</td>
+<td class="gt_row gt_right">45</td>
+<td class="gt_row gt_left">48</td>
+<td class="gt_row gt_left">50</td>
+<td class="gt_row gt_right">46</td>
+<td class="gt_row gt_right">NA</td></tr>
+    <tr><td class="gt_row gt_right">1940</td>
+<td class="gt_row gt_right">10</td>
+<td class="gt_row gt_left">PR</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_left">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_right">0.01</td>
+<td class="gt_row gt_left">T</td>
+<td class="gt_row gt_left">T</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0.13</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_left">T</td>
+<td class="gt_row gt_right">0.14</td>
+<td class="gt_row gt_left">0.05</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0.63</td>
+<td class="gt_row gt_right">1.03</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_left">T</td>
+<td class="gt_row gt_right">0.18</td>
+<td class="gt_row gt_left">0.58</td>
+<td class="gt_row gt_left">0.5</td>
+<td class="gt_row gt_right">0.25</td>
+<td class="gt_row gt_right">NA</td></tr>
+    <tr><td class="gt_row gt_right">1940</td>
+<td class="gt_row gt_right">10</td>
+<td class="gt_row gt_left">SN</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_left">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_left">0</td>
+<td class="gt_row gt_left">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_left">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_left">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_left">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_left">0</td>
+<td class="gt_row gt_left">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td></tr>
+    <tr><td class="gt_row gt_right">1940</td>
+<td class="gt_row gt_right">11</td>
+<td class="gt_row gt_left">TX</td>
+<td class="gt_row gt_right">52</td>
+<td class="gt_row gt_right">53</td>
+<td class="gt_row gt_left">47</td>
+<td class="gt_row gt_right">55</td>
+<td class="gt_row gt_right">51</td>
+<td class="gt_row gt_right">58</td>
+<td class="gt_row gt_right">56</td>
+<td class="gt_row gt_right">50</td>
+<td class="gt_row gt_right">48</td>
+<td class="gt_row gt_right">47</td>
+<td class="gt_row gt_right">46</td>
+<td class="gt_row gt_right">45</td>
+<td class="gt_row gt_right">45</td>
+<td class="gt_row gt_left">47</td>
+<td class="gt_row gt_left">53</td>
+<td class="gt_row gt_right">49</td>
+<td class="gt_row gt_right">46</td>
+<td class="gt_row gt_right">49</td>
+<td class="gt_row gt_left">46</td>
+<td class="gt_row gt_right">49</td>
+<td class="gt_row gt_left">50</td>
+<td class="gt_row gt_right">44</td>
+<td class="gt_row gt_right">42</td>
+<td class="gt_row gt_right">44</td>
+<td class="gt_row gt_right">51</td>
+<td class="gt_row gt_right">44</td>
+<td class="gt_row gt_left">45</td>
+<td class="gt_row gt_right">59</td>
+<td class="gt_row gt_left">57</td>
+<td class="gt_row gt_left">45</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_right">49.1</td></tr>
+    <tr><td class="gt_row gt_right">1940</td>
+<td class="gt_row gt_right">11</td>
+<td class="gt_row gt_left">TN</td>
+<td class="gt_row gt_right">40</td>
+<td class="gt_row gt_right">38</td>
+<td class="gt_row gt_left">36</td>
+<td class="gt_row gt_right">32</td>
+<td class="gt_row gt_right">42</td>
+<td class="gt_row gt_right">46</td>
+<td class="gt_row gt_right">46</td>
+<td class="gt_row gt_right">42</td>
+<td class="gt_row gt_right">35</td>
+<td class="gt_row gt_right">34</td>
+<td class="gt_row gt_right">35</td>
+<td class="gt_row gt_right">33</td>
+<td class="gt_row gt_right">34</td>
+<td class="gt_row gt_left">33</td>
+<td class="gt_row gt_left">28</td>
+<td class="gt_row gt_right">27</td>
+<td class="gt_row gt_right">36</td>
+<td class="gt_row gt_right">30</td>
+<td class="gt_row gt_left">29</td>
+<td class="gt_row gt_right">36</td>
+<td class="gt_row gt_left">33</td>
+<td class="gt_row gt_right">28</td>
+<td class="gt_row gt_right">37</td>
+<td class="gt_row gt_right">35</td>
+<td class="gt_row gt_right">37</td>
+<td class="gt_row gt_right">36</td>
+<td class="gt_row gt_left">38</td>
+<td class="gt_row gt_right">43</td>
+<td class="gt_row gt_left">40</td>
+<td class="gt_row gt_left">39</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_right">35.9</td></tr>
+    <tr><td class="gt_row gt_right">1940</td>
+<td class="gt_row gt_right">11</td>
+<td class="gt_row gt_left">PR</td>
+<td class="gt_row gt_right">0.17</td>
+<td class="gt_row gt_right">0.02</td>
+<td class="gt_row gt_left">T</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0.07</td>
+<td class="gt_row gt_right">0.28</td>
+<td class="gt_row gt_right">0.85</td>
+<td class="gt_row gt_right">0.29</td>
+<td class="gt_row gt_right">0.02</td>
+<td class="gt_row gt_right">0.01</td>
+<td class="gt_row gt_right">0.01</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_left">0</td>
+<td class="gt_row gt_left">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0.29</td>
+<td class="gt_row gt_right">0.01</td>
+<td class="gt_row gt_left">0</td>
+<td class="gt_row gt_right">0.37</td>
+<td class="gt_row gt_left">T</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0.12</td>
+<td class="gt_row gt_right">0.62</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_left">0.51</td>
+<td class="gt_row gt_right">0.89</td>
+<td class="gt_row gt_left">T</td>
+<td class="gt_row gt_left">T</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_right">4.53</td></tr>
+    <tr><td class="gt_row gt_right">1940</td>
+<td class="gt_row gt_right">11</td>
+<td class="gt_row gt_left">SN</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_left">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_left">0</td>
+<td class="gt_row gt_left">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_left">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_left">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_left">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_left">0</td>
+<td class="gt_row gt_left">0</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_right">0</td></tr>
+    <tr><td class="gt_row gt_right">1940</td>
+<td class="gt_row gt_right">12</td>
+<td class="gt_row gt_left">TX</td>
+<td class="gt_row gt_right">51</td>
+<td class="gt_row gt_right">53</td>
+<td class="gt_row gt_left">52</td>
+<td class="gt_row gt_right">51</td>
+<td class="gt_row gt_right">56</td>
+<td class="gt_row gt_right">54</td>
+<td class="gt_row gt_right">50</td>
+<td class="gt_row gt_right">51</td>
+<td class="gt_row gt_right">48</td>
+<td class="gt_row gt_right">50</td>
+<td class="gt_row gt_right">46</td>
+<td class="gt_row gt_right">45</td>
+<td class="gt_row gt_right">43</td>
+<td class="gt_row gt_left">40</td>
+<td class="gt_row gt_left">39</td>
+<td class="gt_row gt_right">39</td>
+<td class="gt_row gt_right">41</td>
+<td class="gt_row gt_right">41</td>
+<td class="gt_row gt_left">45</td>
+<td class="gt_row gt_right">46</td>
+<td class="gt_row gt_left">62</td>
+<td class="gt_row gt_right">60</td>
+<td class="gt_row gt_right">56</td>
+<td class="gt_row gt_right">53</td>
+<td class="gt_row gt_right">54</td>
+<td class="gt_row gt_right">45</td>
+<td class="gt_row gt_left">50</td>
+<td class="gt_row gt_right">51</td>
+<td class="gt_row gt_left">43</td>
+<td class="gt_row gt_left">44</td>
+<td class="gt_row gt_right">45</td>
+<td class="gt_row gt_right">48.5</td></tr>
+    <tr><td class="gt_row gt_right">1940</td>
+<td class="gt_row gt_right">12</td>
+<td class="gt_row gt_left">TN</td>
+<td class="gt_row gt_right">42</td>
+<td class="gt_row gt_right">40</td>
+<td class="gt_row gt_left">42</td>
+<td class="gt_row gt_right">42</td>
+<td class="gt_row gt_right">44</td>
+<td class="gt_row gt_right">37</td>
+<td class="gt_row gt_right">34</td>
+<td class="gt_row gt_right">35</td>
+<td class="gt_row gt_right">32</td>
+<td class="gt_row gt_right">26</td>
+<td class="gt_row gt_right">34</td>
+<td class="gt_row gt_right">28</td>
+<td class="gt_row gt_right">27</td>
+<td class="gt_row gt_left">25</td>
+<td class="gt_row gt_left">29</td>
+<td class="gt_row gt_right">33</td>
+<td class="gt_row gt_right">35</td>
+<td class="gt_row gt_right">34</td>
+<td class="gt_row gt_left">35</td>
+<td class="gt_row gt_right">41</td>
+<td class="gt_row gt_left">39</td>
+<td class="gt_row gt_right">39</td>
+<td class="gt_row gt_right">42</td>
+<td class="gt_row gt_right">42</td>
+<td class="gt_row gt_right">42</td>
+<td class="gt_row gt_right">40</td>
+<td class="gt_row gt_left">38</td>
+<td class="gt_row gt_right">36</td>
+<td class="gt_row gt_left">35</td>
+<td class="gt_row gt_left">37</td>
+<td class="gt_row gt_right">32</td>
+<td class="gt_row gt_right">36</td></tr>
+  </tbody>
+  
+  
+</table>
+</div>
+</div>
+</div>
+<p>I can handle the <code>T/A</code> values by just removing the <code>/A</code> that appears in a few places.</p>
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-3_5b4a96d360587e8c0dc811ee167f8d21">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>NWS <span class="ot">&lt;-</span> NWS <span class="sc">%&gt;%</span> </span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">where</span>(is.character), </span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>                <span class="sc">~</span><span class="fu">str_remove</span>(.x, <span class="st">"/A"</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The <code>T</code> values still exist and but this will be enough to avail us of easy access to some monthly data for a first pivot example after eliminating one additional problem. The data end in December 2019.</p>
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-4_1f491d1dd574fb128230f3ac211ee49d">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>NWS <span class="sc">%&gt;%</span> <span class="fu">tail</span>(<span class="at">n =</span> <span class="dv">10</span>) <span class="sc">%&gt;%</span> <span class="fu">gt</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+
+<div id="bhamimzovu" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>html {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+}
+
+:where(#bhamimzovu) .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+:where(#bhamimzovu) .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+:where(#bhamimzovu) .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+:where(#bhamimzovu) .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 0;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+:where(#bhamimzovu) .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+:where(#bhamimzovu) .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+:where(#bhamimzovu) .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+:where(#bhamimzovu) .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+:where(#bhamimzovu) .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+:where(#bhamimzovu) .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+:where(#bhamimzovu) .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+:where(#bhamimzovu) .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+:where(#bhamimzovu) .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+:where(#bhamimzovu) .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+:where(#bhamimzovu) .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+:where(#bhamimzovu) .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+:where(#bhamimzovu) .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+:where(#bhamimzovu) .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+:where(#bhamimzovu) .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+:where(#bhamimzovu) .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+:where(#bhamimzovu) .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+:where(#bhamimzovu) .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+:where(#bhamimzovu) .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+:where(#bhamimzovu) .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+:where(#bhamimzovu) .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+:where(#bhamimzovu) .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+:where(#bhamimzovu) .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+:where(#bhamimzovu) .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+:where(#bhamimzovu) .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-left: 4px;
+  padding-right: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+:where(#bhamimzovu) .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+:where(#bhamimzovu) .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+:where(#bhamimzovu) .gt_left {
+  text-align: left;
+}
+
+:where(#bhamimzovu) .gt_center {
+  text-align: center;
+}
+
+:where(#bhamimzovu) .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+:where(#bhamimzovu) .gt_font_normal {
+  font-weight: normal;
+}
+
+:where(#bhamimzovu) .gt_font_bold {
+  font-weight: bold;
+}
+
+:where(#bhamimzovu) .gt_font_italic {
+  font-style: italic;
+}
+
+:where(#bhamimzovu) .gt_super {
+  font-size: 65%;
+}
+
+:where(#bhamimzovu) .gt_footnote_marks {
+  font-style: italic;
+  font-weight: normal;
+  font-size: 75%;
+  vertical-align: 0.4em;
+}
+
+:where(#bhamimzovu) .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+:where(#bhamimzovu) .gt_indent_1 {
+  text-indent: 5px;
+}
+
+:where(#bhamimzovu) .gt_indent_2 {
+  text-indent: 10px;
+}
+
+:where(#bhamimzovu) .gt_indent_3 {
+  text-indent: 15px;
+}
+
+:where(#bhamimzovu) .gt_indent_4 {
+  text-indent: 20px;
+}
+
+:where(#bhamimzovu) .gt_indent_5 {
+  text-indent: 25px;
+}
+</style>
+<table class="gt_table">
+  
+  <thead class="gt_col_headings">
+    <tr>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">YR</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">MO</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col">Variable</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">X1</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">X2</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">X3</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col">X4</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col">X5</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">X6</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">X7</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col">X8</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">X9</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">X10</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">X11</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">X12</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">X13</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">X14</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">X15</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col">X16</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">X17</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">X18</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">X19</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">X20</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">X21</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">X22</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">X23</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col">X24</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">X25</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col">X26</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">X27</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">X28</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col">X29</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col">X30</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">X31</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col">AVG.or.Total</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td class="gt_row gt_right">2019</td>
+<td class="gt_row gt_right">11</td>
+<td class="gt_row gt_left">PR</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_left">0</td>
+<td class="gt_row gt_left">T</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_left">0</td>
+<td class="gt_row gt_right">0.19</td>
+<td class="gt_row gt_right">0.05</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0.17</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0.13</td>
+<td class="gt_row gt_left">T</td>
+<td class="gt_row gt_right">0.08</td>
+<td class="gt_row gt_right">0.11</td>
+<td class="gt_row gt_right">0.49</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_left">0.16</td>
+<td class="gt_row gt_right">0.05</td>
+<td class="gt_row gt_left">0.09</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_left">0</td>
+<td class="gt_row gt_left">T</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_left">1.52</td></tr>
+    <tr><td class="gt_row gt_right">2019</td>
+<td class="gt_row gt_right">11</td>
+<td class="gt_row gt_left">SN</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_left">0</td>
+<td class="gt_row gt_left">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_left">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_left">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_left">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_left">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_left">0</td>
+<td class="gt_row gt_left">T</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_left">T</td></tr>
+    <tr><td class="gt_row gt_right">2019</td>
+<td class="gt_row gt_right">12</td>
+<td class="gt_row gt_left">TX</td>
+<td class="gt_row gt_right">43</td>
+<td class="gt_row gt_right">47</td>
+<td class="gt_row gt_right">49</td>
+<td class="gt_row gt_left">50</td>
+<td class="gt_row gt_left">53</td>
+<td class="gt_row gt_right">50</td>
+<td class="gt_row gt_right">46</td>
+<td class="gt_row gt_left">53</td>
+<td class="gt_row gt_right">49</td>
+<td class="gt_row gt_right">45</td>
+<td class="gt_row gt_right">47</td>
+<td class="gt_row gt_right">54</td>
+<td class="gt_row gt_right">49</td>
+<td class="gt_row gt_right">47</td>
+<td class="gt_row gt_right">44</td>
+<td class="gt_row gt_left">48</td>
+<td class="gt_row gt_right">42</td>
+<td class="gt_row gt_right">43</td>
+<td class="gt_row gt_right">57</td>
+<td class="gt_row gt_right">59</td>
+<td class="gt_row gt_right">51</td>
+<td class="gt_row gt_right">46</td>
+<td class="gt_row gt_right">48</td>
+<td class="gt_row gt_left">40</td>
+<td class="gt_row gt_right">44</td>
+<td class="gt_row gt_left">46</td>
+<td class="gt_row gt_right">45</td>
+<td class="gt_row gt_right">48</td>
+<td class="gt_row gt_left">48</td>
+<td class="gt_row gt_left">48</td>
+<td class="gt_row gt_right">51</td>
+<td class="gt_row gt_left">48.1</td></tr>
+    <tr><td class="gt_row gt_right">2019</td>
+<td class="gt_row gt_right">12</td>
+<td class="gt_row gt_left">TN</td>
+<td class="gt_row gt_right">35</td>
+<td class="gt_row gt_right">30</td>
+<td class="gt_row gt_right">32</td>
+<td class="gt_row gt_left">38</td>
+<td class="gt_row gt_left">39</td>
+<td class="gt_row gt_right">38</td>
+<td class="gt_row gt_right">43</td>
+<td class="gt_row gt_left">45</td>
+<td class="gt_row gt_right">38</td>
+<td class="gt_row gt_right">38</td>
+<td class="gt_row gt_right">42</td>
+<td class="gt_row gt_right">45</td>
+<td class="gt_row gt_right">40</td>
+<td class="gt_row gt_right">40</td>
+<td class="gt_row gt_right">37</td>
+<td class="gt_row gt_left">36</td>
+<td class="gt_row gt_right">35</td>
+<td class="gt_row gt_right">32</td>
+<td class="gt_row gt_right">38</td>
+<td class="gt_row gt_right">50</td>
+<td class="gt_row gt_right">43</td>
+<td class="gt_row gt_right">42</td>
+<td class="gt_row gt_right">35</td>
+<td class="gt_row gt_left">32</td>
+<td class="gt_row gt_right">31</td>
+<td class="gt_row gt_left">27</td>
+<td class="gt_row gt_right">37</td>
+<td class="gt_row gt_right">40</td>
+<td class="gt_row gt_left">40</td>
+<td class="gt_row gt_left">40</td>
+<td class="gt_row gt_right">40</td>
+<td class="gt_row gt_left">38</td></tr>
+    <tr><td class="gt_row gt_right">2019</td>
+<td class="gt_row gt_right">12</td>
+<td class="gt_row gt_left">PR</td>
+<td class="gt_row gt_right">0.12</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_left">T</td>
+<td class="gt_row gt_left">0</td>
+<td class="gt_row gt_right">0.25</td>
+<td class="gt_row gt_right">0.46</td>
+<td class="gt_row gt_left">T</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0.32</td>
+<td class="gt_row gt_right">0.29</td>
+<td class="gt_row gt_right">0.31</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0.03</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_left">T</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0.18</td>
+<td class="gt_row gt_right">0.64</td>
+<td class="gt_row gt_right">0.4</td>
+<td class="gt_row gt_right">0.88</td>
+<td class="gt_row gt_right">0.17</td>
+<td class="gt_row gt_right">0.09</td>
+<td class="gt_row gt_left">T</td>
+<td class="gt_row gt_right">0.02</td>
+<td class="gt_row gt_left">T</td>
+<td class="gt_row gt_right">0.01</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_left">T</td>
+<td class="gt_row gt_left">0</td>
+<td class="gt_row gt_right">0.22</td>
+<td class="gt_row gt_left">4.39</td></tr>
+    <tr><td class="gt_row gt_right">2019</td>
+<td class="gt_row gt_right">12</td>
+<td class="gt_row gt_left">SN</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_left">0</td>
+<td class="gt_row gt_left">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_left">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_left">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_left">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_left">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_left">0</td>
+<td class="gt_row gt_left">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_left">0</td></tr>
+    <tr><td class="gt_row gt_right">2020</td>
+<td class="gt_row gt_right">1</td>
+<td class="gt_row gt_left">TX</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_left">NA</td>
+<td class="gt_row gt_left">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_left">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_left">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_left">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_left">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_left">NA</td>
+<td class="gt_row gt_left">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_left">NA</td></tr>
+    <tr><td class="gt_row gt_right">2020</td>
+<td class="gt_row gt_right">1</td>
+<td class="gt_row gt_left">TN</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_left">NA</td>
+<td class="gt_row gt_left">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_left">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_left">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_left">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_left">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_left">NA</td>
+<td class="gt_row gt_left">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_left">NA</td></tr>
+    <tr><td class="gt_row gt_right">2020</td>
+<td class="gt_row gt_right">1</td>
+<td class="gt_row gt_left">PR</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_left">NA</td>
+<td class="gt_row gt_left">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_left">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_left">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_left">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_left">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_left">NA</td>
+<td class="gt_row gt_left">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_left">NA</td></tr>
+    <tr><td class="gt_row gt_right">2020</td>
+<td class="gt_row gt_right">1</td>
+<td class="gt_row gt_left">SN</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_left">NA</td>
+<td class="gt_row gt_left">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_left">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_left">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_left">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_left">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_left">NA</td>
+<td class="gt_row gt_left">NA</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_left">NA</td></tr>
+  </tbody>
+  
+  
+</table>
+</div>
+</div>
+</div>
+<p>I want to filter those rows out.</p>
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-5_8a04738f67201e465a07752544959c65">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>NWS <span class="ot">&lt;-</span> NWS <span class="sc">%&gt;%</span> <span class="fu">filter</span>(<span class="sc">!</span>(MO<span class="sc">==</span><span class="dv">1</span> <span class="sc">&amp;</span> YR<span class="sc">==</span><span class="dv">2020</span>)) </span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>NWS <span class="sc">%&gt;%</span> <span class="fu">tail</span>(<span class="at">n=</span><span class="dv">10</span>) <span class="sc">%&gt;%</span> <span class="fu">gt</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+
+<div id="fitjlwmfsa" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>html {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+}
+
+:where(#fitjlwmfsa) .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+:where(#fitjlwmfsa) .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+:where(#fitjlwmfsa) .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+:where(#fitjlwmfsa) .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 0;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+:where(#fitjlwmfsa) .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+:where(#fitjlwmfsa) .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+:where(#fitjlwmfsa) .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+:where(#fitjlwmfsa) .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+:where(#fitjlwmfsa) .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+:where(#fitjlwmfsa) .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+:where(#fitjlwmfsa) .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+:where(#fitjlwmfsa) .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+:where(#fitjlwmfsa) .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+:where(#fitjlwmfsa) .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+:where(#fitjlwmfsa) .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+:where(#fitjlwmfsa) .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+:where(#fitjlwmfsa) .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+:where(#fitjlwmfsa) .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+:where(#fitjlwmfsa) .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+:where(#fitjlwmfsa) .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+:where(#fitjlwmfsa) .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+:where(#fitjlwmfsa) .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+:where(#fitjlwmfsa) .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+:where(#fitjlwmfsa) .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+:where(#fitjlwmfsa) .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+:where(#fitjlwmfsa) .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+:where(#fitjlwmfsa) .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+:where(#fitjlwmfsa) .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+:where(#fitjlwmfsa) .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-left: 4px;
+  padding-right: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+:where(#fitjlwmfsa) .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+:where(#fitjlwmfsa) .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+:where(#fitjlwmfsa) .gt_left {
+  text-align: left;
+}
+
+:where(#fitjlwmfsa) .gt_center {
+  text-align: center;
+}
+
+:where(#fitjlwmfsa) .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+:where(#fitjlwmfsa) .gt_font_normal {
+  font-weight: normal;
+}
+
+:where(#fitjlwmfsa) .gt_font_bold {
+  font-weight: bold;
+}
+
+:where(#fitjlwmfsa) .gt_font_italic {
+  font-style: italic;
+}
+
+:where(#fitjlwmfsa) .gt_super {
+  font-size: 65%;
+}
+
+:where(#fitjlwmfsa) .gt_footnote_marks {
+  font-style: italic;
+  font-weight: normal;
+  font-size: 75%;
+  vertical-align: 0.4em;
+}
+
+:where(#fitjlwmfsa) .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+:where(#fitjlwmfsa) .gt_indent_1 {
+  text-indent: 5px;
+}
+
+:where(#fitjlwmfsa) .gt_indent_2 {
+  text-indent: 10px;
+}
+
+:where(#fitjlwmfsa) .gt_indent_3 {
+  text-indent: 15px;
+}
+
+:where(#fitjlwmfsa) .gt_indent_4 {
+  text-indent: 20px;
+}
+
+:where(#fitjlwmfsa) .gt_indent_5 {
+  text-indent: 25px;
+}
+</style>
+<table class="gt_table">
+  
+  <thead class="gt_col_headings">
+    <tr>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">YR</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">MO</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col">Variable</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">X1</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col">X2</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">X3</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col">X4</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col">X5</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">X6</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">X7</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col">X8</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">X9</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">X10</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col">X11</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">X12</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">X13</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">X14</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col">X15</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col">X16</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">X17</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">X18</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">X19</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">X20</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">X21</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">X22</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">X23</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col">X24</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">X25</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col">X26</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">X27</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">X28</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col">X29</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col">X30</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">X31</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" scope="col">AVG.or.Total</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td class="gt_row gt_right">2019</td>
+<td class="gt_row gt_right">10</td>
+<td class="gt_row gt_left">PR</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_left">T</td>
+<td class="gt_row gt_right">0.02</td>
+<td class="gt_row gt_left">0.06</td>
+<td class="gt_row gt_left">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0.08</td>
+<td class="gt_row gt_left">0.02</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_left">T</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_left">T</td>
+<td class="gt_row gt_left">0.37</td>
+<td class="gt_row gt_right">0.28</td>
+<td class="gt_row gt_right">0.02</td>
+<td class="gt_row gt_right">0.43</td>
+<td class="gt_row gt_right">0.03</td>
+<td class="gt_row gt_right">0.01</td>
+<td class="gt_row gt_right">0.15</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_left">0</td>
+<td class="gt_row gt_right">0.04</td>
+<td class="gt_row gt_left">T</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_left">T</td>
+<td class="gt_row gt_left">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_left">1.51</td></tr>
+    <tr><td class="gt_row gt_right">2019</td>
+<td class="gt_row gt_right">10</td>
+<td class="gt_row gt_left">SN</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_left">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_left">0</td>
+<td class="gt_row gt_left">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_left">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_left">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_left">0</td>
+<td class="gt_row gt_left">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_left">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_left">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_left">0</td>
+<td class="gt_row gt_left">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_left">0</td></tr>
+    <tr><td class="gt_row gt_right">2019</td>
+<td class="gt_row gt_right">11</td>
+<td class="gt_row gt_left">TX</td>
+<td class="gt_row gt_right">62</td>
+<td class="gt_row gt_left">63</td>
+<td class="gt_row gt_right">59</td>
+<td class="gt_row gt_left">54</td>
+<td class="gt_row gt_left">49</td>
+<td class="gt_row gt_right">66</td>
+<td class="gt_row gt_right">62</td>
+<td class="gt_row gt_left">62</td>
+<td class="gt_row gt_right">51</td>
+<td class="gt_row gt_right">55</td>
+<td class="gt_row gt_left">62</td>
+<td class="gt_row gt_right">52</td>
+<td class="gt_row gt_right">53</td>
+<td class="gt_row gt_right">57</td>
+<td class="gt_row gt_left">58</td>
+<td class="gt_row gt_left">56</td>
+<td class="gt_row gt_right">56</td>
+<td class="gt_row gt_right">58</td>
+<td class="gt_row gt_right">55</td>
+<td class="gt_row gt_right">58</td>
+<td class="gt_row gt_right">57</td>
+<td class="gt_row gt_right">50</td>
+<td class="gt_row gt_right">50</td>
+<td class="gt_row gt_left">51</td>
+<td class="gt_row gt_right">51</td>
+<td class="gt_row gt_left">44</td>
+<td class="gt_row gt_right">47</td>
+<td class="gt_row gt_right">44</td>
+<td class="gt_row gt_left">45</td>
+<td class="gt_row gt_left">45</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_left">54.4</td></tr>
+    <tr><td class="gt_row gt_right">2019</td>
+<td class="gt_row gt_right">11</td>
+<td class="gt_row gt_left">TN</td>
+<td class="gt_row gt_right">31</td>
+<td class="gt_row gt_left">33</td>
+<td class="gt_row gt_right">37</td>
+<td class="gt_row gt_left">37</td>
+<td class="gt_row gt_left">35</td>
+<td class="gt_row gt_right">43</td>
+<td class="gt_row gt_right">37</td>
+<td class="gt_row gt_left">37</td>
+<td class="gt_row gt_right">40</td>
+<td class="gt_row gt_right">48</td>
+<td class="gt_row gt_left">44</td>
+<td class="gt_row gt_right">45</td>
+<td class="gt_row gt_right">44</td>
+<td class="gt_row gt_right">43</td>
+<td class="gt_row gt_left">44</td>
+<td class="gt_row gt_left">46</td>
+<td class="gt_row gt_right">49</td>
+<td class="gt_row gt_right">52</td>
+<td class="gt_row gt_right">47</td>
+<td class="gt_row gt_right">40</td>
+<td class="gt_row gt_right">34</td>
+<td class="gt_row gt_right">32</td>
+<td class="gt_row gt_right">31</td>
+<td class="gt_row gt_left">40</td>
+<td class="gt_row gt_right">41</td>
+<td class="gt_row gt_left">41</td>
+<td class="gt_row gt_right">37</td>
+<td class="gt_row gt_right">37</td>
+<td class="gt_row gt_left">26</td>
+<td class="gt_row gt_left">26</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_left">39.2</td></tr>
+    <tr><td class="gt_row gt_right">2019</td>
+<td class="gt_row gt_right">11</td>
+<td class="gt_row gt_left">PR</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_left">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_left">0</td>
+<td class="gt_row gt_left">T</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_left">0</td>
+<td class="gt_row gt_right">0.19</td>
+<td class="gt_row gt_right">0.05</td>
+<td class="gt_row gt_left">0</td>
+<td class="gt_row gt_right">0.17</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_left">0.13</td>
+<td class="gt_row gt_left">T</td>
+<td class="gt_row gt_right">0.08</td>
+<td class="gt_row gt_right">0.11</td>
+<td class="gt_row gt_right">0.49</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_left">0.16</td>
+<td class="gt_row gt_right">0.05</td>
+<td class="gt_row gt_left">0.09</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_left">0</td>
+<td class="gt_row gt_left">T</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_left">1.52</td></tr>
+    <tr><td class="gt_row gt_right">2019</td>
+<td class="gt_row gt_right">11</td>
+<td class="gt_row gt_left">SN</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_left">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_left">0</td>
+<td class="gt_row gt_left">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_left">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_left">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_left">0</td>
+<td class="gt_row gt_left">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_left">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_left">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_left">0</td>
+<td class="gt_row gt_left">T</td>
+<td class="gt_row gt_right">NA</td>
+<td class="gt_row gt_left">T</td></tr>
+    <tr><td class="gt_row gt_right">2019</td>
+<td class="gt_row gt_right">12</td>
+<td class="gt_row gt_left">TX</td>
+<td class="gt_row gt_right">43</td>
+<td class="gt_row gt_left">47</td>
+<td class="gt_row gt_right">49</td>
+<td class="gt_row gt_left">50</td>
+<td class="gt_row gt_left">53</td>
+<td class="gt_row gt_right">50</td>
+<td class="gt_row gt_right">46</td>
+<td class="gt_row gt_left">53</td>
+<td class="gt_row gt_right">49</td>
+<td class="gt_row gt_right">45</td>
+<td class="gt_row gt_left">47</td>
+<td class="gt_row gt_right">54</td>
+<td class="gt_row gt_right">49</td>
+<td class="gt_row gt_right">47</td>
+<td class="gt_row gt_left">44</td>
+<td class="gt_row gt_left">48</td>
+<td class="gt_row gt_right">42</td>
+<td class="gt_row gt_right">43</td>
+<td class="gt_row gt_right">57</td>
+<td class="gt_row gt_right">59</td>
+<td class="gt_row gt_right">51</td>
+<td class="gt_row gt_right">46</td>
+<td class="gt_row gt_right">48</td>
+<td class="gt_row gt_left">40</td>
+<td class="gt_row gt_right">44</td>
+<td class="gt_row gt_left">46</td>
+<td class="gt_row gt_right">45</td>
+<td class="gt_row gt_right">48</td>
+<td class="gt_row gt_left">48</td>
+<td class="gt_row gt_left">48</td>
+<td class="gt_row gt_right">51</td>
+<td class="gt_row gt_left">48.1</td></tr>
+    <tr><td class="gt_row gt_right">2019</td>
+<td class="gt_row gt_right">12</td>
+<td class="gt_row gt_left">TN</td>
+<td class="gt_row gt_right">35</td>
+<td class="gt_row gt_left">30</td>
+<td class="gt_row gt_right">32</td>
+<td class="gt_row gt_left">38</td>
+<td class="gt_row gt_left">39</td>
+<td class="gt_row gt_right">38</td>
+<td class="gt_row gt_right">43</td>
+<td class="gt_row gt_left">45</td>
+<td class="gt_row gt_right">38</td>
+<td class="gt_row gt_right">38</td>
+<td class="gt_row gt_left">42</td>
+<td class="gt_row gt_right">45</td>
+<td class="gt_row gt_right">40</td>
+<td class="gt_row gt_right">40</td>
+<td class="gt_row gt_left">37</td>
+<td class="gt_row gt_left">36</td>
+<td class="gt_row gt_right">35</td>
+<td class="gt_row gt_right">32</td>
+<td class="gt_row gt_right">38</td>
+<td class="gt_row gt_right">50</td>
+<td class="gt_row gt_right">43</td>
+<td class="gt_row gt_right">42</td>
+<td class="gt_row gt_right">35</td>
+<td class="gt_row gt_left">32</td>
+<td class="gt_row gt_right">31</td>
+<td class="gt_row gt_left">27</td>
+<td class="gt_row gt_right">37</td>
+<td class="gt_row gt_right">40</td>
+<td class="gt_row gt_left">40</td>
+<td class="gt_row gt_left">40</td>
+<td class="gt_row gt_right">40</td>
+<td class="gt_row gt_left">38</td></tr>
+    <tr><td class="gt_row gt_right">2019</td>
+<td class="gt_row gt_right">12</td>
+<td class="gt_row gt_left">PR</td>
+<td class="gt_row gt_right">0.12</td>
+<td class="gt_row gt_left">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_left">T</td>
+<td class="gt_row gt_left">0</td>
+<td class="gt_row gt_right">0.25</td>
+<td class="gt_row gt_right">0.46</td>
+<td class="gt_row gt_left">T</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0.32</td>
+<td class="gt_row gt_left">0.29</td>
+<td class="gt_row gt_right">0.31</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0.03</td>
+<td class="gt_row gt_left">0</td>
+<td class="gt_row gt_left">T</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0.18</td>
+<td class="gt_row gt_right">0.64</td>
+<td class="gt_row gt_right">0.4</td>
+<td class="gt_row gt_right">0.88</td>
+<td class="gt_row gt_right">0.17</td>
+<td class="gt_row gt_right">0.09</td>
+<td class="gt_row gt_left">T</td>
+<td class="gt_row gt_right">0.02</td>
+<td class="gt_row gt_left">T</td>
+<td class="gt_row gt_right">0.01</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_left">T</td>
+<td class="gt_row gt_left">0</td>
+<td class="gt_row gt_right">0.22</td>
+<td class="gt_row gt_left">4.39</td></tr>
+    <tr><td class="gt_row gt_right">2019</td>
+<td class="gt_row gt_right">12</td>
+<td class="gt_row gt_left">SN</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_left">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_left">0</td>
+<td class="gt_row gt_left">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_left">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_left">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_left">0</td>
+<td class="gt_row gt_left">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_left">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_left">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_left">0</td>
+<td class="gt_row gt_left">0</td>
+<td class="gt_row gt_right">0</td>
+<td class="gt_row gt_left">0</td></tr>
+  </tbody>
+  
+  
+</table>
+</div>
+</div>
+</div>
+<p>From here I should be able to build some monthly data.</p>
+</section>
+<section id="monthly-data." class="level2">
+<h2 class="anchored" data-anchor-id="monthly-data.">Monthly Data.</h2>
+<p>I want to pick out four columns from which to build dates for the data; let’s work on a monthly time series. Because the sum or average is already a column, I do not need to create it. I only need select it.</p>
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-6_cf81bae058097e611782335cc8b1fc0b">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Now to create a Monthly time series.</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>NWS.Monthly.Base <span class="ot">&lt;-</span> NWS <span class="sc">%&gt;%</span> </span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(YR, MO, Variable, AVG.or.Total)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>I will use a pipe from the <code>magrittr</code> package to reduce typing. <code>%&lt;&gt;%</code> substitutes for a combination of <code>&lt;-</code> and <code>%&gt;%</code> to update the object that I am operating on. I have some character values in that column and the original picture of the wide end of the data shows a missing average/total for October 1940; the <code>T</code> values are replaced by 0.005.</p>
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-7_8fc5f727ade36403ecb513480f75fe81">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(magrittr)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>NWS.Monthly.Base <span class="sc">%&lt;&gt;%</span> <span class="fu">filter</span>(<span class="sc">!</span>(MO<span class="sc">==</span><span class="dv">10</span> <span class="sc">&amp;</span> YR<span class="sc">==</span><span class="dv">1940</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">AVG.or.Total =</span> <span class="fu">recode</span>(AVG.or.Total, <span class="at">T =</span> <span class="st">"0.005"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>From there, I will use <code>pivot_wider</code> to move <code>Variable</code> to columns and their names and taking the values of each from the average/total column. How does it look?</p>
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-8_c37f1a606e7239b5636ddd7452e6a3d2">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>NWS.Monthly.Tidy <span class="ot">&lt;-</span> NWS.Monthly.Base <span class="sc">%&gt;%</span>  </span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> <span class="st">"Variable"</span>, </span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>              <span class="at">values_from =</span> <span class="st">"AVG.or.Total"</span>)</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>NWS.Monthly.Tidy <span class="sc">%&gt;%</span> <span class="fu">head</span>() <span class="sc">%&gt;%</span> <span class="fu">gt</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+
+<div id="uigocfqkbz" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>html {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+}
+
+:where(#uigocfqkbz) .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+:where(#uigocfqkbz) .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+:where(#uigocfqkbz) .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+:where(#uigocfqkbz) .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 0;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+:where(#uigocfqkbz) .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+:where(#uigocfqkbz) .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+:where(#uigocfqkbz) .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+:where(#uigocfqkbz) .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+:where(#uigocfqkbz) .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+:where(#uigocfqkbz) .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+:where(#uigocfqkbz) .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+:where(#uigocfqkbz) .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+:where(#uigocfqkbz) .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+:where(#uigocfqkbz) .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+:where(#uigocfqkbz) .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+:where(#uigocfqkbz) .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+:where(#uigocfqkbz) .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+:where(#uigocfqkbz) .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+:where(#uigocfqkbz) .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+:where(#uigocfqkbz) .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+:where(#uigocfqkbz) .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+:where(#uigocfqkbz) .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+:where(#uigocfqkbz) .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+:where(#uigocfqkbz) .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+:where(#uigocfqkbz) .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+:where(#uigocfqkbz) .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+:where(#uigocfqkbz) .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+:where(#uigocfqkbz) .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+:where(#uigocfqkbz) .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-left: 4px;
+  padding-right: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+:where(#uigocfqkbz) .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+:where(#uigocfqkbz) .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+:where(#uigocfqkbz) .gt_left {
+  text-align: left;
+}
+
+:where(#uigocfqkbz) .gt_center {
+  text-align: center;
+}
+
+:where(#uigocfqkbz) .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+:where(#uigocfqkbz) .gt_font_normal {
+  font-weight: normal;
+}
+
+:where(#uigocfqkbz) .gt_font_bold {
+  font-weight: bold;
+}
+
+:where(#uigocfqkbz) .gt_font_italic {
+  font-style: italic;
+}
+
+:where(#uigocfqkbz) .gt_super {
+  font-size: 65%;
+}
+
+:where(#uigocfqkbz) .gt_footnote_marks {
+  font-style: italic;
+  font-weight: normal;
+  font-size: 75%;
+  vertical-align: 0.4em;
+}
+
+:where(#uigocfqkbz) .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+:where(#uigocfqkbz) .gt_indent_1 {
+  text-indent: 5px;
+}
+
+:where(#uigocfqkbz) .gt_indent_2 {
+  text-indent: 10px;
+}
+
+:where(#uigocfqkbz) .gt_indent_3 {
+  text-indent: 15px;
+}
+
+:where(#uigocfqkbz) .gt_indent_4 {
+  text-indent: 20px;
+}
+
+:where(#uigocfqkbz) .gt_indent_5 {
+  text-indent: 25px;
+}
+</style>
+<table class="gt_table">
+  
+  <thead class="gt_col_headings">
+    <tr>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">YR</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">MO</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">TX</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">TN</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">PR</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">SN</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td class="gt_row gt_right">1940</td>
+<td class="gt_row gt_right">11</td>
+<td class="gt_row gt_right">49.1</td>
+<td class="gt_row gt_right">35.9</td>
+<td class="gt_row gt_right">4.53</td>
+<td class="gt_row gt_right">0</td></tr>
+    <tr><td class="gt_row gt_right">1940</td>
+<td class="gt_row gt_right">12</td>
+<td class="gt_row gt_right">48.5</td>
+<td class="gt_row gt_right">36</td>
+<td class="gt_row gt_right">4.85</td>
+<td class="gt_row gt_right">0</td></tr>
+    <tr><td class="gt_row gt_right">1941</td>
+<td class="gt_row gt_right">1</td>
+<td class="gt_row gt_right">47.4</td>
+<td class="gt_row gt_right">35.2</td>
+<td class="gt_row gt_right">5.27</td>
+<td class="gt_row gt_right">0</td></tr>
+    <tr><td class="gt_row gt_right">1941</td>
+<td class="gt_row gt_right">2</td>
+<td class="gt_row gt_right">55.1</td>
+<td class="gt_row gt_right">37.1</td>
+<td class="gt_row gt_right">1.59</td>
+<td class="gt_row gt_right">0</td></tr>
+    <tr><td class="gt_row gt_right">1941</td>
+<td class="gt_row gt_right">3</td>
+<td class="gt_row gt_right">63.5</td>
+<td class="gt_row gt_right">40.6</td>
+<td class="gt_row gt_right">1.74</td>
+<td class="gt_row gt_right">0</td></tr>
+    <tr><td class="gt_row gt_right">1941</td>
+<td class="gt_row gt_right">4</td>
+<td class="gt_row gt_right">65.8</td>
+<td class="gt_row gt_right">43.1</td>
+<td class="gt_row gt_right">1.66</td>
+<td class="gt_row gt_right">0</td></tr>
+  </tbody>
+  
+  
+</table>
+</div>
+</div>
+</div>
+<p>Let me put together a date using paste and lubridate’s year-month format.</p>
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-9_9ce94c157c67e566b092157b216440af">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lubridate)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>NWS.Monthly.Tidy <span class="sc">%&lt;&gt;%</span>  <span class="fu">mutate</span>(<span class="at">Month.Yr =</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>                                <span class="fu">ym</span>(<span class="fu">paste</span>(YR,MO, <span class="at">sep=</span><span class="st">"-"</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>What about turning them numeric?</p>
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-10_c6b06c7f4f7799cf6000e995fc8c2213">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>NWS.Monthly.Tidy <span class="sc">%&lt;&gt;%</span>  <span class="fu">mutate</span>(<span class="at">High =</span> <span class="fu">as.numeric</span>(TX), </span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>         <span class="at">Low =</span> <span class="fu">as.numeric</span>(TN), </span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>         <span class="at">Precipitation =</span> <span class="fu">as.numeric</span>(PR), </span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">Snow =</span> <span class="fu">as.numeric</span>(SN)</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>         ) <span class="sc">%&gt;%</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Month.Yr, High, Low, Precipitation, Snow)</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>NWS.Monthly.Tidy <span class="sc">%&gt;%</span> <span class="fu">head</span>(<span class="at">n=</span><span class="dv">10</span>) <span class="sc">%&gt;%</span> <span class="fu">gt</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+
+<div id="rlpndtwiqv" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>html {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+}
+
+:where(#rlpndtwiqv) .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+:where(#rlpndtwiqv) .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+:where(#rlpndtwiqv) .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+:where(#rlpndtwiqv) .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 0;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+:where(#rlpndtwiqv) .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+:where(#rlpndtwiqv) .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+:where(#rlpndtwiqv) .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+:where(#rlpndtwiqv) .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+:where(#rlpndtwiqv) .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+:where(#rlpndtwiqv) .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+:where(#rlpndtwiqv) .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+:where(#rlpndtwiqv) .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+:where(#rlpndtwiqv) .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+:where(#rlpndtwiqv) .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+:where(#rlpndtwiqv) .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+:where(#rlpndtwiqv) .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+:where(#rlpndtwiqv) .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+:where(#rlpndtwiqv) .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+:where(#rlpndtwiqv) .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+:where(#rlpndtwiqv) .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+:where(#rlpndtwiqv) .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+:where(#rlpndtwiqv) .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+:where(#rlpndtwiqv) .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+:where(#rlpndtwiqv) .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+:where(#rlpndtwiqv) .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+:where(#rlpndtwiqv) .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+:where(#rlpndtwiqv) .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+:where(#rlpndtwiqv) .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+:where(#rlpndtwiqv) .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-left: 4px;
+  padding-right: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+:where(#rlpndtwiqv) .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+:where(#rlpndtwiqv) .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+:where(#rlpndtwiqv) .gt_left {
+  text-align: left;
+}
+
+:where(#rlpndtwiqv) .gt_center {
+  text-align: center;
+}
+
+:where(#rlpndtwiqv) .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+:where(#rlpndtwiqv) .gt_font_normal {
+  font-weight: normal;
+}
+
+:where(#rlpndtwiqv) .gt_font_bold {
+  font-weight: bold;
+}
+
+:where(#rlpndtwiqv) .gt_font_italic {
+  font-style: italic;
+}
+
+:where(#rlpndtwiqv) .gt_super {
+  font-size: 65%;
+}
+
+:where(#rlpndtwiqv) .gt_footnote_marks {
+  font-style: italic;
+  font-weight: normal;
+  font-size: 75%;
+  vertical-align: 0.4em;
+}
+
+:where(#rlpndtwiqv) .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+:where(#rlpndtwiqv) .gt_indent_1 {
+  text-indent: 5px;
+}
+
+:where(#rlpndtwiqv) .gt_indent_2 {
+  text-indent: 10px;
+}
+
+:where(#rlpndtwiqv) .gt_indent_3 {
+  text-indent: 15px;
+}
+
+:where(#rlpndtwiqv) .gt_indent_4 {
+  text-indent: 20px;
+}
+
+:where(#rlpndtwiqv) .gt_indent_5 {
+  text-indent: 25px;
+}
+</style>
+<table class="gt_table">
+  
+  <thead class="gt_col_headings">
+    <tr>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">Month.Yr</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">High</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">Low</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">Precipitation</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1" scope="col">Snow</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td class="gt_row gt_right">1940-11-01</td>
+<td class="gt_row gt_right">49.1</td>
+<td class="gt_row gt_right">35.9</td>
+<td class="gt_row gt_right">4.53</td>
+<td class="gt_row gt_right">0</td></tr>
+    <tr><td class="gt_row gt_right">1940-12-01</td>
+<td class="gt_row gt_right">48.5</td>
+<td class="gt_row gt_right">36.0</td>
+<td class="gt_row gt_right">4.85</td>
+<td class="gt_row gt_right">0</td></tr>
+    <tr><td class="gt_row gt_right">1941-01-01</td>
+<td class="gt_row gt_right">47.4</td>
+<td class="gt_row gt_right">35.2</td>
+<td class="gt_row gt_right">5.27</td>
+<td class="gt_row gt_right">0</td></tr>
+    <tr><td class="gt_row gt_right">1941-02-01</td>
+<td class="gt_row gt_right">55.1</td>
+<td class="gt_row gt_right">37.1</td>
+<td class="gt_row gt_right">1.59</td>
+<td class="gt_row gt_right">0</td></tr>
+    <tr><td class="gt_row gt_right">1941-03-01</td>
+<td class="gt_row gt_right">63.5</td>
+<td class="gt_row gt_right">40.6</td>
+<td class="gt_row gt_right">1.74</td>
+<td class="gt_row gt_right">0</td></tr>
+    <tr><td class="gt_row gt_right">1941-04-01</td>
+<td class="gt_row gt_right">65.8</td>
+<td class="gt_row gt_right">43.1</td>
+<td class="gt_row gt_right">1.66</td>
+<td class="gt_row gt_right">0</td></tr>
+    <tr><td class="gt_row gt_right">1941-05-01</td>
+<td class="gt_row gt_right">67.1</td>
+<td class="gt_row gt_right">48.1</td>
+<td class="gt_row gt_right">4.27</td>
+<td class="gt_row gt_right">0</td></tr>
+    <tr><td class="gt_row gt_right">1941-06-01</td>
+<td class="gt_row gt_right">71.6</td>
+<td class="gt_row gt_right">52.6</td>
+<td class="gt_row gt_right">0.81</td>
+<td class="gt_row gt_right">0</td></tr>
+    <tr><td class="gt_row gt_right">1941-07-01</td>
+<td class="gt_row gt_right">84.5</td>
+<td class="gt_row gt_right">58.3</td>
+<td class="gt_row gt_right">0.03</td>
+<td class="gt_row gt_right">0</td></tr>
+    <tr><td class="gt_row gt_right">1941-08-01</td>
+<td class="gt_row gt_right">77.6</td>
+<td class="gt_row gt_right">58.0</td>
+<td class="gt_row gt_right">1.45</td>
+<td class="gt_row gt_right">0</td></tr>
+  </tbody>
+  
+  
+</table>
+</div>
+</div>
+</div>
+<p>That’s exactly what I need. To treat it as a functional time series, let me deploy the <code>fpp3</code> package, <code>tsibble</code> requires the specification of a time <code>index</code> and these are monthly data but they are tidy, rows represent the units [periods of time] and the columns are variables. This is a time series because one of them is time.</p>
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-11_c4bc8494b1527fc4993a8f5a910f298f">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(fpp3)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>NWS.Monthly.TS <span class="ot">&lt;-</span> NWS.Monthly.Tidy <span class="sc">%&gt;%</span> </span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">YM =</span> <span class="fu">yearmonth</span>(Month.Yr)) <span class="sc">%&gt;%</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tsibble</span>(<span class="at">index=</span>YM)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>To see the fluctuation in high and low temperatures from 2000 to 2019, we can show it.</p>
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-12_81d254393042932cea7ae931911e725c">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(hrbrthemes)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>NWS.Monthly.TS <span class="sc">%&gt;%</span> </span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Month.Yr <span class="sc">&gt;</span> <span class="fu">as.Date</span>(<span class="st">"2000-01-01"</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>() <span class="sc">+</span> </span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">aes</span>(<span class="at">x=</span>YM) <span class="sc">+</span> </span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_ribbon</span>(<span class="fu">aes</span>(<span class="at">ymin=</span>Low, <span class="at">ymax=</span>High), <span class="at">alpha=</span><span class="fl">0.5</span>) <span class="sc">+</span> </span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_ipsum</span>() <span class="sc">+</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title=</span><span class="st">"Monthly Temperature Range in Portland"</span>,</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>       <span class="at">x=</span><span class="st">"Month"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Because it is enabled, what does the STL decomposition suggest for temperature change; let’s look at the high temperatures.</p>
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-13_620e22a7d79ed018410e3e2afd7c853d">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>NWS.Monthly.TS <span class="sc">%&gt;%</span> </span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">model</span>(<span class="fu">STL</span>(High <span class="sc">~</span> <span class="fu">season</span>(<span class="at">period=</span><span class="st">"1 year"</span>) <span class="sc">+</span> <span class="fu">trend</span>(<span class="at">window=</span><span class="dv">30</span>, <span class="at">degree=</span><span class="dv">0</span>))) <span class="sc">%&gt;%</span> </span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">components</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">autoplot</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<section id="a-summary-of-the-monthly-data" class="level3">
+<h3 class="anchored" data-anchor-id="a-summary-of-the-monthly-data">A Summary of the Monthly Data</h3>
+<p>The key feature is spreading out the row for each initial variable in the pivot command and then clearing out the messy values. To turn it into a monthly time series, <code>fpp3</code> has the <code>yearmonth</code> data structure.</p>
+</section>
+</section>
+<section id="daily-data" class="level2">
+<h2 class="anchored" data-anchor-id="daily-data">Daily Data</h2>
+<p>Let me start with the original data and a single column omission, I want to get rid of the monthly total/average column and start some daily data.</p>
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-14_9e3f2b86863f62cce9ef8f515cdb1e8f">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>NWS.Daily <span class="ot">&lt;-</span> NWS <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span>AVG.or.Total)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(NWS.Daily) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"YR"</span>,<span class="st">"MO"</span>,<span class="st">"Variable"</span>,<span class="fu">paste0</span>(<span class="st">"Day."</span>,<span class="dv">1</span><span class="sc">:</span><span class="dv">31</span>))</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(NWS.Daily)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>    YR MO Variable Day.1 Day.2 Day.3 Day.4 Day.5 Day.6 Day.7 Day.8 Day.9 Day.10
+1 1940 10       TX  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;   &lt;NA&gt;
+2 1940 10       TN  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;   &lt;NA&gt;
+3 1940 10       PR  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;   &lt;NA&gt;
+4 1940 10       SN  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;   &lt;NA&gt;
+5 1940 11       TX    52    53    47    55    51    58    56    50    48     47
+6 1940 11       TN    40    38    36    32    42    46    46    42    35     34
+  Day.11 Day.12 Day.13 Day.14 Day.15 Day.16 Day.17 Day.18 Day.19 Day.20 Day.21
+1   &lt;NA&gt;   &lt;NA&gt;     75     70     64     72     72     78     78     64     63
+2   &lt;NA&gt;   &lt;NA&gt;     57     53     52     50     58     58     59     54     48
+3   &lt;NA&gt;   &lt;NA&gt;   0.01      T      T      0   0.13      0      T   0.14   0.05
+4   &lt;NA&gt;   &lt;NA&gt;      0      0      0      0      0      0      0      0      0
+5     46     45     45     47     53     49     46     49     46     49     50
+6     35     33     34     33     28     27     36     30     29     36     33
+  Day.22 Day.23 Day.24 Day.25 Day.26 Day.27 Day.28 Day.29 Day.30 Day.31
+1     61     58     57     57     57     56     53     59     59     52
+2     41     53     48     41     38     37     45     48     50     46
+3      0   0.63   1.03      0      0      T   0.18   0.58    0.5   0.25
+4      0      0      0      0      0      0      0      0      0      0
+5     44     42     44     51     44     45     59     57     45   &lt;NA&gt;
+6     28     37     35     37     36     38     43     40     39   &lt;NA&gt;</code></pre>
+</div>
+</div>
+<p>We can pivot this with the new name variable to be called Day and the value of the four rows to <code>value</code>. I also want to extract the number at the end of the <code>Day.</code></p>
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-15_7aa1409e462702a65f2bca4dfabef2ce">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>NWS.Daily <span class="ot">&lt;-</span> NWS.Daily <span class="sc">%&gt;%</span> </span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(., <span class="at">cols=</span><span class="fu">starts_with</span>(<span class="st">"Day."</span>), <span class="at">names_to =</span> <span class="st">"Day"</span>, <span class="at">values_to =</span> <span class="st">"value"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Day =</span> <span class="fu">str_remove</span>(Day, <span class="st">"Day."</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Now I want to partially pivot the data back to wider formats. In this case, the names of the new columns need to represent the four variables with the values coming from <code>value</code>. Let’s try it out.</p>
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-16_7a18e4db747c0ae33cda3231601f5798">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>NWS.Daily <span class="sc">%&lt;&gt;%</span> <span class="fu">pivot_wider</span>(., <span class="at">names_from =</span> <span class="st">"Variable"</span>, <span class="at">values_from =</span> <span class="st">"value"</span>)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(NWS.Daily)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 7
+     YR    MO Day   TX    TN    PR    SN   
+  &lt;int&gt; &lt;int&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;
+1  1940    10 1     &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt; 
+2  1940    10 2     &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt; 
+3  1940    10 3     &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt; 
+4  1940    10 4     &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt; 
+5  1940    10 5     &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt; 
+6  1940    10 6     &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt; </code></pre>
+</div>
+</div>
+<p>I want to create a date to identifier that is proper for this daily data.</p>
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-17_a64632de589b54c02c690b40903be10f">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>NWS.Daily <span class="sc">%&lt;&gt;%</span>  <span class="fu">mutate</span>(<span class="at">date =</span> <span class="fu">as.Date</span>(<span class="fu">paste</span>(MO,Day,YR,<span class="at">sep=</span><span class="st">"-"</span>), <span class="at">format=</span><span class="st">"%m-%d-%Y"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>There is one space value of snow, December 7, 1978. I need to fix that before we can turn them into numeric values.</p>
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-18_d58e34bf9619a24e5ea6cbd73e8955b5">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>NWS.Daily <span class="sc">%&gt;%</span> <span class="fu">filter</span>(date<span class="sc">==</span><span class="fu">as.Date</span>(<span class="st">"1978-12-07"</span>)) <span class="sc">%&gt;%</span> head</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 8
+     YR    MO Day   TX    TN    PR    SN    date      
+  &lt;int&gt; &lt;int&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;date&gt;    
+1  1978    12 7     35    23    0     " "   1978-12-07</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>NWS.Daily<span class="sc">$</span>SN[NWS.Daily<span class="sc">$</span>date<span class="sc">==</span><span class="fu">as.Date</span>(<span class="st">"1978-12-07"</span>)] <span class="ot">&lt;-</span> <span class="dv">0</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>That will allow me to turn this into proper numeric data after I account for the T values.</p>
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-19_354a539f81176080a5645edd3e6f7b62">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>NWS.Daily <span class="sc">%&lt;&gt;%</span> </span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">PR =</span> <span class="fu">recode</span>(PR, <span class="at">T =</span> <span class="st">"0.005"</span>), </span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>         <span class="at">SN =</span> <span class="fu">recode</span>(SN, <span class="at">T =</span> <span class="st">"0.005"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Now let me actually create numeric variables and select the necessary data for further analysis that has nice names.</p>
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-20_b8096d3ee717caa87aabbe2a71f731ff">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>NWS.Daily <span class="sc">%&lt;&gt;%</span> <span class="fu">mutate</span>(<span class="at">High =</span> <span class="fu">as.numeric</span>(TX), </span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>         <span class="at">Low =</span> <span class="fu">as.numeric</span>(TN), </span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>         <span class="at">Precipitation =</span> <span class="fu">as.numeric</span>(PR), </span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">Snow =</span> <span class="fu">as.numeric</span>(SN)</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>         )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>There is a remaining problem. There are dates that can be constructed that do not actually exist, February 29, etc. because the spreadsheet had to have 31 columns for days that <strong>could</strong> exist. This is easy enough to clean up by dropping the missing dates.</p>
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-21_3171c5745c051f166248f70f1d317281">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>NWS.Daily.Clean <span class="ot">&lt;-</span> NWS.Daily <span class="sc">%&gt;%</span> </span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(date, High, Low, Precipitation, Snow) <span class="sc">%&gt;%</span> </span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span>(<span class="fu">is.na</span>(date)))</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(NWS.Daily.Clean)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      date                 High             Low        Precipitation   
+ Min.   :1940-10-01   Min.   : 14.00   Min.   :-3.00   Min.   :0.0000  
+ 1st Qu.:1960-07-24   1st Qu.: 52.00   1st Qu.:38.00   1st Qu.:0.0000  
+ Median :1980-05-16   Median : 61.00   Median :45.00   Median :0.0050  
+ Mean   :1980-05-16   Mean   : 62.62   Mean   :44.99   Mean   :0.1017  
+ 3rd Qu.:2000-03-08   3rd Qu.: 73.00   3rd Qu.:53.00   3rd Qu.:0.1000  
+ Max.   :2019-12-31   Max.   :107.00   Max.   :74.00   Max.   :2.6900  
+                      NA's   :12       NA's   :12      NA's   :12      
+      Snow         
+ Min.   : 0.00000  
+ 1st Qu.: 0.00000  
+ Median : 0.00000  
+ Mean   : 0.01655  
+ 3rd Qu.: 0.00000  
+ Max.   :14.40000  
+ NA's   :12        </code></pre>
+</div>
+</div>
+<p>There are still 12 missing days. Those are right at the beginning. Let’s drop those.</p>
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-22_a0171489afb981296805eb85b182b17b">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>NWS.Daily.TS <span class="ot">&lt;-</span> NWS.Daily.Clean <span class="sc">%&gt;%</span> <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(Snow))</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(NWS.Daily.TS)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      date                 High             Low        Precipitation   
+ Min.   :1940-10-13   Min.   : 14.00   Min.   :-3.00   Min.   :0.0000  
+ 1st Qu.:1960-08-02   1st Qu.: 52.00   1st Qu.:38.00   1st Qu.:0.0000  
+ Median :1980-05-22   Median : 61.00   Median :45.00   Median :0.0050  
+ Mean   :1980-05-22   Mean   : 62.62   Mean   :44.99   Mean   :0.1017  
+ 3rd Qu.:2000-03-11   3rd Qu.: 73.00   3rd Qu.:53.00   3rd Qu.:0.1000  
+ Max.   :2019-12-31   Max.   :107.00   Max.   :74.00   Max.   :2.6900  
+      Snow         
+ Min.   : 0.00000  
+ 1st Qu.: 0.00000  
+ Median : 0.00000  
+ Mean   : 0.01655  
+ 3rd Qu.: 0.00000  
+ Max.   :14.40000  </code></pre>
+</div>
+</div>
+<p>This can be turned into a <code>tsibble</code> to make sure the dates are proper.</p>
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-23_9ec096b528905e10f15ad4e1909136d2">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(kableExtra)</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>NWS.Daily.TS <span class="ot">&lt;-</span> NWS.Daily.TS <span class="sc">%&gt;%</span> <span class="fu">as_tsibble</span>(<span class="at">index=</span>date) </span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>NWS.Daily.TS <span class="sc">%&gt;%</span></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>(<span class="at">n=</span><span class="dv">50</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scroll_box</span>(<span class="at">width=</span><span class="st">"800px"</span>, <span class="at">height=</span><span class="st">"400px"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+
+<div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:400px; overflow-x: scroll; width:800px; "><table>
+ <thead>
+  <tr>
+   <th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;"> date </th>
+   <th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;"> High </th>
+   <th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;"> Low </th>
+   <th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;"> Precipitation </th>
+   <th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;"> Snow </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> 1940-10-13 </td>
+   <td style="text-align:right;"> 75 </td>
+   <td style="text-align:right;"> 57 </td>
+   <td style="text-align:right;"> 0.010 </td>
+   <td style="text-align:right;"> 0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 1940-10-14 </td>
+   <td style="text-align:right;"> 70 </td>
+   <td style="text-align:right;"> 53 </td>
+   <td style="text-align:right;"> 0.005 </td>
+   <td style="text-align:right;"> 0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 1940-10-15 </td>
+   <td style="text-align:right;"> 64 </td>
+   <td style="text-align:right;"> 52 </td>
+   <td style="text-align:right;"> 0.005 </td>
+   <td style="text-align:right;"> 0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 1940-10-16 </td>
+   <td style="text-align:right;"> 72 </td>
+   <td style="text-align:right;"> 50 </td>
+   <td style="text-align:right;"> 0.000 </td>
+   <td style="text-align:right;"> 0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 1940-10-17 </td>
+   <td style="text-align:right;"> 72 </td>
+   <td style="text-align:right;"> 58 </td>
+   <td style="text-align:right;"> 0.130 </td>
+   <td style="text-align:right;"> 0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 1940-10-18 </td>
+   <td style="text-align:right;"> 78 </td>
+   <td style="text-align:right;"> 58 </td>
+   <td style="text-align:right;"> 0.000 </td>
+   <td style="text-align:right;"> 0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 1940-10-19 </td>
+   <td style="text-align:right;"> 78 </td>
+   <td style="text-align:right;"> 59 </td>
+   <td style="text-align:right;"> 0.005 </td>
+   <td style="text-align:right;"> 0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 1940-10-20 </td>
+   <td style="text-align:right;"> 64 </td>
+   <td style="text-align:right;"> 54 </td>
+   <td style="text-align:right;"> 0.140 </td>
+   <td style="text-align:right;"> 0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 1940-10-21 </td>
+   <td style="text-align:right;"> 63 </td>
+   <td style="text-align:right;"> 48 </td>
+   <td style="text-align:right;"> 0.050 </td>
+   <td style="text-align:right;"> 0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 1940-10-22 </td>
+   <td style="text-align:right;"> 61 </td>
+   <td style="text-align:right;"> 41 </td>
+   <td style="text-align:right;"> 0.000 </td>
+   <td style="text-align:right;"> 0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 1940-10-23 </td>
+   <td style="text-align:right;"> 58 </td>
+   <td style="text-align:right;"> 53 </td>
+   <td style="text-align:right;"> 0.630 </td>
+   <td style="text-align:right;"> 0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 1940-10-24 </td>
+   <td style="text-align:right;"> 57 </td>
+   <td style="text-align:right;"> 48 </td>
+   <td style="text-align:right;"> 1.030 </td>
+   <td style="text-align:right;"> 0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 1940-10-25 </td>
+   <td style="text-align:right;"> 57 </td>
+   <td style="text-align:right;"> 41 </td>
+   <td style="text-align:right;"> 0.000 </td>
+   <td style="text-align:right;"> 0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 1940-10-26 </td>
+   <td style="text-align:right;"> 57 </td>
+   <td style="text-align:right;"> 38 </td>
+   <td style="text-align:right;"> 0.000 </td>
+   <td style="text-align:right;"> 0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 1940-10-27 </td>
+   <td style="text-align:right;"> 56 </td>
+   <td style="text-align:right;"> 37 </td>
+   <td style="text-align:right;"> 0.005 </td>
+   <td style="text-align:right;"> 0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 1940-10-28 </td>
+   <td style="text-align:right;"> 53 </td>
+   <td style="text-align:right;"> 45 </td>
+   <td style="text-align:right;"> 0.180 </td>
+   <td style="text-align:right;"> 0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 1940-10-29 </td>
+   <td style="text-align:right;"> 59 </td>
+   <td style="text-align:right;"> 48 </td>
+   <td style="text-align:right;"> 0.580 </td>
+   <td style="text-align:right;"> 0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 1940-10-30 </td>
+   <td style="text-align:right;"> 59 </td>
+   <td style="text-align:right;"> 50 </td>
+   <td style="text-align:right;"> 0.500 </td>
+   <td style="text-align:right;"> 0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 1940-10-31 </td>
+   <td style="text-align:right;"> 52 </td>
+   <td style="text-align:right;"> 46 </td>
+   <td style="text-align:right;"> 0.250 </td>
+   <td style="text-align:right;"> 0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 1940-11-01 </td>
+   <td style="text-align:right;"> 52 </td>
+   <td style="text-align:right;"> 40 </td>
+   <td style="text-align:right;"> 0.170 </td>
+   <td style="text-align:right;"> 0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 1940-11-02 </td>
+   <td style="text-align:right;"> 53 </td>
+   <td style="text-align:right;"> 38 </td>
+   <td style="text-align:right;"> 0.020 </td>
+   <td style="text-align:right;"> 0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 1940-11-03 </td>
+   <td style="text-align:right;"> 47 </td>
+   <td style="text-align:right;"> 36 </td>
+   <td style="text-align:right;"> 0.005 </td>
+   <td style="text-align:right;"> 0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 1940-11-04 </td>
+   <td style="text-align:right;"> 55 </td>
+   <td style="text-align:right;"> 32 </td>
+   <td style="text-align:right;"> 0.000 </td>
+   <td style="text-align:right;"> 0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 1940-11-05 </td>
+   <td style="text-align:right;"> 51 </td>
+   <td style="text-align:right;"> 42 </td>
+   <td style="text-align:right;"> 0.070 </td>
+   <td style="text-align:right;"> 0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 1940-11-06 </td>
+   <td style="text-align:right;"> 58 </td>
+   <td style="text-align:right;"> 46 </td>
+   <td style="text-align:right;"> 0.280 </td>
+   <td style="text-align:right;"> 0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 1940-11-07 </td>
+   <td style="text-align:right;"> 56 </td>
+   <td style="text-align:right;"> 46 </td>
+   <td style="text-align:right;"> 0.850 </td>
+   <td style="text-align:right;"> 0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 1940-11-08 </td>
+   <td style="text-align:right;"> 50 </td>
+   <td style="text-align:right;"> 42 </td>
+   <td style="text-align:right;"> 0.290 </td>
+   <td style="text-align:right;"> 0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 1940-11-09 </td>
+   <td style="text-align:right;"> 48 </td>
+   <td style="text-align:right;"> 35 </td>
+   <td style="text-align:right;"> 0.020 </td>
+   <td style="text-align:right;"> 0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 1940-11-10 </td>
+   <td style="text-align:right;"> 47 </td>
+   <td style="text-align:right;"> 34 </td>
+   <td style="text-align:right;"> 0.010 </td>
+   <td style="text-align:right;"> 0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 1940-11-11 </td>
+   <td style="text-align:right;"> 46 </td>
+   <td style="text-align:right;"> 35 </td>
+   <td style="text-align:right;"> 0.010 </td>
+   <td style="text-align:right;"> 0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 1940-11-12 </td>
+   <td style="text-align:right;"> 45 </td>
+   <td style="text-align:right;"> 33 </td>
+   <td style="text-align:right;"> 0.000 </td>
+   <td style="text-align:right;"> 0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 1940-11-13 </td>
+   <td style="text-align:right;"> 45 </td>
+   <td style="text-align:right;"> 34 </td>
+   <td style="text-align:right;"> 0.000 </td>
+   <td style="text-align:right;"> 0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 1940-11-14 </td>
+   <td style="text-align:right;"> 47 </td>
+   <td style="text-align:right;"> 33 </td>
+   <td style="text-align:right;"> 0.000 </td>
+   <td style="text-align:right;"> 0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 1940-11-15 </td>
+   <td style="text-align:right;"> 53 </td>
+   <td style="text-align:right;"> 28 </td>
+   <td style="text-align:right;"> 0.000 </td>
+   <td style="text-align:right;"> 0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 1940-11-16 </td>
+   <td style="text-align:right;"> 49 </td>
+   <td style="text-align:right;"> 27 </td>
+   <td style="text-align:right;"> 0.000 </td>
+   <td style="text-align:right;"> 0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 1940-11-17 </td>
+   <td style="text-align:right;"> 46 </td>
+   <td style="text-align:right;"> 36 </td>
+   <td style="text-align:right;"> 0.290 </td>
+   <td style="text-align:right;"> 0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 1940-11-18 </td>
+   <td style="text-align:right;"> 49 </td>
+   <td style="text-align:right;"> 30 </td>
+   <td style="text-align:right;"> 0.010 </td>
+   <td style="text-align:right;"> 0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 1940-11-19 </td>
+   <td style="text-align:right;"> 46 </td>
+   <td style="text-align:right;"> 29 </td>
+   <td style="text-align:right;"> 0.000 </td>
+   <td style="text-align:right;"> 0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 1940-11-20 </td>
+   <td style="text-align:right;"> 49 </td>
+   <td style="text-align:right;"> 36 </td>
+   <td style="text-align:right;"> 0.370 </td>
+   <td style="text-align:right;"> 0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 1940-11-21 </td>
+   <td style="text-align:right;"> 50 </td>
+   <td style="text-align:right;"> 33 </td>
+   <td style="text-align:right;"> 0.005 </td>
+   <td style="text-align:right;"> 0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 1940-11-22 </td>
+   <td style="text-align:right;"> 44 </td>
+   <td style="text-align:right;"> 28 </td>
+   <td style="text-align:right;"> 0.000 </td>
+   <td style="text-align:right;"> 0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 1940-11-23 </td>
+   <td style="text-align:right;"> 42 </td>
+   <td style="text-align:right;"> 37 </td>
+   <td style="text-align:right;"> 0.120 </td>
+   <td style="text-align:right;"> 0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 1940-11-24 </td>
+   <td style="text-align:right;"> 44 </td>
+   <td style="text-align:right;"> 35 </td>
+   <td style="text-align:right;"> 0.620 </td>
+   <td style="text-align:right;"> 0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 1940-11-25 </td>
+   <td style="text-align:right;"> 51 </td>
+   <td style="text-align:right;"> 37 </td>
+   <td style="text-align:right;"> 0.000 </td>
+   <td style="text-align:right;"> 0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 1940-11-26 </td>
+   <td style="text-align:right;"> 44 </td>
+   <td style="text-align:right;"> 36 </td>
+   <td style="text-align:right;"> 0.000 </td>
+   <td style="text-align:right;"> 0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 1940-11-27 </td>
+   <td style="text-align:right;"> 45 </td>
+   <td style="text-align:right;"> 38 </td>
+   <td style="text-align:right;"> 0.510 </td>
+   <td style="text-align:right;"> 0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 1940-11-28 </td>
+   <td style="text-align:right;"> 59 </td>
+   <td style="text-align:right;"> 43 </td>
+   <td style="text-align:right;"> 0.890 </td>
+   <td style="text-align:right;"> 0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 1940-11-29 </td>
+   <td style="text-align:right;"> 57 </td>
+   <td style="text-align:right;"> 40 </td>
+   <td style="text-align:right;"> 0.005 </td>
+   <td style="text-align:right;"> 0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 1940-11-30 </td>
+   <td style="text-align:right;"> 45 </td>
+   <td style="text-align:right;"> 39 </td>
+   <td style="text-align:right;"> 0.005 </td>
+   <td style="text-align:right;"> 0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> 1940-12-01 </td>
+   <td style="text-align:right;"> 51 </td>
+   <td style="text-align:right;"> 42 </td>
+   <td style="text-align:right;"> 0.060 </td>
+   <td style="text-align:right;"> 0 </td>
+  </tr>
+</tbody>
+</table></div>
+
+</div>
+</div>
+<p>One decomposition to make sure it works.</p>
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-24_ba46ce8493a8f8795446bc76a0233da0">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>NWS.Daily.TS <span class="sc">%&gt;%</span> <span class="fu">model</span>(<span class="fu">STL</span>(High)) <span class="sc">%&gt;%</span> <span class="fu">components</span>() <span class="sc">%&gt;%</span> <span class="fu">autoplot</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-24-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

@@ -1,0 +1,245 @@
+---
+title: "Pivoting Data: Long and Wide"
+author: "Robert W. Walker"
+date: "2020-09-12"
+categories: [R]
+image: "image.png"
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message=FALSE, warning=FALSE, cache=TRUE)
+options(scipen=7)
+```
+
+# Pivoting Data
+
+The ability to pivot data from long to wide format or from wide to long format is one of the greatest time saving devices that I know of.  Let's first look at the data types: wide and long.
+
+## Wide Data
+
+I will use climate data covering the city of Portland from the National Weather Service.  [The data were obtained from:] (https://w2.weather.gov/climate/local_data.php?wfo=pqr) and you will notice that there are data for Astoria, Salem and Eugene, also.  Notice this is the Local Data and Records tab. 
+
+![ScreenShot](img/NWSWS)
+
+I downloaded the Portland data and examined the spreadsheet.  It has a rather straightforward `wide` structure -- it has data in the column names.  Other common examples are accounting data with the variables listed as rows and the time periods as the columns.
+
+![NWS Spreadsheet](img/NWSSS.png)
+
+There are a few rows describing the data that will have to be eliminated to import the data; that's the `skip` flag so I will use `skip=6`.  If we examine row 7, we will see what will become the variable names.  `YR` and `MO` are year and month, respectively, there is then a blank and the remaining names are the day; it extends to 31.  For each month, there are four rows representing the high `TX`, the low `TN`, precipitation `PR`, and snow `SN`.  Scrolling rightward, we see the remainder of the spreadsheet from the image above; there is also an `AVG or Total` column.
+
+![NWS Spreadsheet](img/NWSSS2.png)
+
+Were I to import them as is, let's see what happens just skipping the first six rows.  I will use the `gt` package to show what I have.
+
+```{r, message=FALSE, warning=FALSE}
+library(tidyverse)
+library(gt)
+NWS <- read.csv(url("https://www.weather.gov/source/pqr/climate/webdata/Portland_dailyclimatedata.csv"), skip=6)
+head(NWS, 10) %>% gt()
+```
+
+That is a pretty good start.  There are a few types of missing data (the `M` values) and some conversions to consider before I can start.  There are some `-` for days that do not exist.  T stands for Trace amount, the lowest recorded numeric values are 0.01 inches.  There are also values labelled as T/A which I assume to be Trace/Accumulation because there is no obvious dictionary describing their exact meanings.  
+
+Let's start by reflecting a skip of the first six rows and two sets of missing values, `M and -`.  I also want to rename the column that has no name in the original spreadsheet to be `Variable` because this is that column reflecting which of the four actual variables that we have for the month-year combination.
+
+```{r}
+NWS <- read.csv(url("https://www.weather.gov/source/pqr/climate/webdata/Portland_dailyclimatedata.csv"), 
+                skip=6, 
+                na.strings = c("M","-", "")) %>% 
+  rename(Variable = X)
+head(NWS, 10) %>% gt()
+```
+I can handle the `T/A` values by just removing the `/A` that appears in a few places.
+
+```{r}
+NWS <- NWS %>% 
+  mutate(across(where(is.character), 
+                ~str_remove(.x, "/A")))
+```
+
+The `T` values still exist and but this will be enough to avail us of easy access to some monthly data for a first pivot example after eliminating one additional problem.  The data end in December 2019.
+
+```{r}
+NWS %>% tail(n = 10) %>% gt()
+```
+
+I want to filter those rows out.
+
+```{r}
+NWS <- NWS %>% filter(!(MO==1 & YR==2020)) 
+NWS %>% tail(n=10) %>% gt()
+```
+
+From here I should be able to build some monthly data.
+
+## Monthly Data.
+
+I want to pick out four columns from which to build dates for the data; let's work on a monthly time series. Because the sum or average is already a column, I do not need to create it. I only need select it.
+
+```{r}
+# Now to create a Monthly time series.
+NWS.Monthly.Base <- NWS %>% 
+  select(YR, MO, Variable, AVG.or.Total)
+```
+
+I will use a pipe from the `magrittr` package to reduce typing.  `%<>%` substitutes for a combination of `<-` and `%>%` to update the object that I am operating on. I have some character values in that column and the original picture of the wide end of the data shows a missing average/total for October 1940; the `T` values are replaced by 0.005.
+
+```{r, warning=FALSE, message=FALSE}
+library(magrittr)
+NWS.Monthly.Base %<>% filter(!(MO==10 & YR==1940)) %>%
+  mutate(AVG.or.Total = recode(AVG.or.Total, T = "0.005"))
+```
+
+From there, I will use `pivot_wider` to move `Variable` to columns and their names and taking the values of each from the average/total column. How does it look?
+
+```{r}
+NWS.Monthly.Tidy <- NWS.Monthly.Base %>%  
+  pivot_wider(names_from = "Variable", 
+              values_from = "AVG.or.Total")
+NWS.Monthly.Tidy %>% head() %>% gt()
+```
+
+Let me put together a date using paste and lubridate's year-month format.
+
+```{r, warning=FALSE, message=FALSE}
+library(lubridate)
+NWS.Monthly.Tidy %<>%  mutate(Month.Yr =
+                                ym(paste(YR,MO, sep="-")))
+```
+
+What about turning them numeric?
+
+```{r}
+NWS.Monthly.Tidy %<>%  mutate(High = as.numeric(TX), 
+         Low = as.numeric(TN), 
+         Precipitation = as.numeric(PR), 
+         Snow = as.numeric(SN)
+         ) %>%
+  select(Month.Yr, High, Low, Precipitation, Snow)
+NWS.Monthly.Tidy %>% head(n=10) %>% gt()
+```
+
+That's exactly what I need.  To treat it as a functional time series, let me deploy the `fpp3` package, `tsibble` requires the specification of a time `index` and these are monthly data but they are tidy, rows represent the units [periods of time] and the columns are variables.  This is a time series because one of them is time.
+
+```{r, message=FALSE, warning=FALSE}
+library(fpp3)
+NWS.Monthly.TS <- NWS.Monthly.Tidy %>% 
+  mutate(YM = yearmonth(Month.Yr)) %>%
+  as_tsibble(index=YM)
+```
+
+To see the fluctuation in high and low temperatures from 2000 to 2019, we can show it.
+
+```{r, warning=FALSE, message=FALSE}
+library(hrbrthemes)
+NWS.Monthly.TS %>% 
+  filter(Month.Yr > as.Date("2000-01-01")) %>% 
+  ggplot() + 
+  aes(x=YM) + 
+  geom_ribbon(aes(ymin=Low, ymax=High), alpha=0.5) + 
+  theme_ipsum() +
+  labs(title="Monthly Temperature Range in Portland",
+       x="Month")
+```
+
+Because it is enabled, what does the STL decomposition suggest for temperature change; let's look at the high temperatures.
+
+```{r}
+NWS.Monthly.TS %>% 
+  model(STL(High ~ season(period="1 year") + trend(window=30, degree=0))) %>% 
+  components() %>% 
+  autoplot()
+```
+
+### A Summary of the Monthly Data
+
+The key feature is spreading out the row for each initial variable in the pivot command and then clearing out the messy values.  To turn it into a monthly time series, `fpp3` has the `yearmonth` data structure.
+
+## Daily Data
+
+Let me start with the original data and a single column omission, I want to get rid of the monthly total/average column and start some daily data.
+
+```{r}
+NWS.Daily <- NWS %>% select(-AVG.or.Total)
+names(NWS.Daily) <- c("YR","MO","Variable",paste0("Day.",1:31))
+head(NWS.Daily)
+```
+
+We can pivot this with the new name variable to be called Day and the value of the four rows to `value`.  I also want to extract the number at the end of the `Day.`
+
+```{r}
+NWS.Daily <- NWS.Daily %>% 
+  pivot_longer(., cols=starts_with("Day."), names_to = "Day", values_to = "value") %>% 
+  mutate(Day = str_remove(Day, "Day."))
+```
+
+Now I want to partially pivot the data back to wider formats.  In this case, the names of the new columns need to represent the four variables with the values coming from `value`.  Let's try it out.
+
+```{r}  
+NWS.Daily %<>% pivot_wider(., names_from = "Variable", values_from = "value")
+head(NWS.Daily)
+```
+
+I want to create a date to identifier that is proper for this daily data.
+
+```{r}
+NWS.Daily %<>%  mutate(date = as.Date(paste(MO,Day,YR,sep="-"), format="%m-%d-%Y"))
+```
+
+There is one space value of snow, December 7, 1978.  I need to fix that before we can turn them into numeric values.
+
+```{r}
+NWS.Daily %>% filter(date==as.Date("1978-12-07")) %>% head
+NWS.Daily$SN[NWS.Daily$date==as.Date("1978-12-07")] <- 0
+```
+
+That will allow me to turn this into proper numeric data after I account for the T values.
+
+```{r}
+NWS.Daily %<>% 
+  mutate(PR = recode(PR, T = "0.005"), 
+         SN = recode(SN, T = "0.005"))
+```
+
+Now let me actually create numeric variables and select the necessary data for further analysis that has nice names.
+
+```{r}
+NWS.Daily %<>% mutate(High = as.numeric(TX), 
+         Low = as.numeric(TN), 
+         Precipitation = as.numeric(PR), 
+         Snow = as.numeric(SN)
+         )
+```
+
+There is a remaining problem.  There are dates that can be constructed that do not actually exist, February 29, etc. because the spreadsheet had to have 31 columns for days that **could** exist.  This is easy enough to clean up by dropping the missing dates.
+
+```{r}
+NWS.Daily.Clean <- NWS.Daily %>% 
+  select(date, High, Low, Precipitation, Snow) %>% 
+  filter(!(is.na(date)))
+summary(NWS.Daily.Clean)
+```
+There are still 12 missing days.  Those are right at the beginning.  Let's drop those.
+
+```{r}
+NWS.Daily.TS <- NWS.Daily.Clean %>% filter(!is.na(Snow))
+summary(NWS.Daily.TS)
+```
+This can be turned into a `tsibble` to make sure the dates are proper.
+
+```{r, warning=FALSE, message=FALSE}
+library(kableExtra)
+NWS.Daily.TS <- NWS.Daily.TS %>% as_tsibble(index=date) 
+NWS.Daily.TS %>%
+  head(n=50) %>%
+  kable() %>% 
+  scroll_box(width="800px", height="400px")
+```
+
+One decomposition to make sure it works.
+
+```{r}
+NWS.Daily.TS %>% model(STL(High)) %>% components() %>% autoplot()
+```
+

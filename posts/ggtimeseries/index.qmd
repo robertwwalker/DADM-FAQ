@@ -1,0 +1,21 @@
+---
+title: "ggtimeseries"
+author: "Robert W. Walker"
+date: "2021-06-30"
+categories: [R, time_series, tidy]
+image: "image.png"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message=FALSE, warning=FALSE)
+```
+
+# ggtimeseries
+
+ggTimeSeries is a collection of specialized plots for Time Series data above and beyond those normally deployed.  It includes waterfall charts, steamgraphs, and some calendar visualizations that are all quite neat.  
+
+[Here is a link](https://github.com/AtherEnergy/ggTimeSeries)
+
+I found `stat_waterfall()` to have particular uses.
+
+![Waterfall](img/Screen Shot 2022-12-23 at 11.26.49 PM.png)

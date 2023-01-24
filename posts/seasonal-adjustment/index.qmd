@@ -1,0 +1,20 @@
+---
+title: "A nice post on seasonal adjustment"
+author: "Robert W. Walker"
+date: "2021-06-24"
+categories: [R, time_series]
+image: "image.png"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message=FALSE, warning=FALSE)
+```
+
+# Seasonal adjustment
+
+[A nice blog post on seasonal adjustment](https://usefulr.wordpress.com/2021/03/09/seasonal-adjustment-of-multiple-series/)
+
+The package contains a nice vignette for handling multiple series for seasonal adjustments using `seasonal`.  [You can find it here....](https://cran.r-project.org/web/packages/seasonal/vignettes/multiple.html)
+
+![screenshot](image.png)
+

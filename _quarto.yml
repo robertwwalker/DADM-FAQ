@@ -1,0 +1,19 @@
+project:
+  type: website
+  output-dir: docs
+
+website:
+  title: "Data Analysis, Modelling, and Decision-Making FAQ"
+  twitter-card: 
+    creator: "@PieRatio"
+  navbar:
+    right:
+      - about.qmd
+      - icon: github
+        href: https://github.com/robertwwalker/DADM-FAQ
+      - icon: twitter
+        href: https://twitter.com/PieRatio
+format:
+  html:
+    theme: minty
+    css: styles.css

@@ -1,0 +1,19 @@
+---
+title: "Tutorials on Wrangling"
+author: "Robert W. Walker"
+date: "2023-01-04"
+categories: [R]
+image: "image.png"
+---
+
+[An excellent collection of data wrangling tutorials](https://suzan.rbind.io/categories/tutorial/)
+
+If you have not already, at the R Console, install `learnr`
+
+```
+install.packages("learnr")
+```
+
+This should make a **Tutorial** pane available in the RStudio.  You can start the tutorials from within RStudio.
+
+There's a nice web collection of tutorials on the rstudio `learnr` site on github: [Examples](https://rstudio.github.io/learnr/articles/examples.html)

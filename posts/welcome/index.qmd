@@ -1,0 +1,16 @@
+---
+title: "Welcome to the FAQ for DADM"
+author: "Robert W. Walker"
+date: "2019-01-01"
+categories: [news]
+---
+
+# Setting Up
+
+![](thumbnail.jpg)
+
+To hit the ground running, you will probably need two key bits of software: `R` and `RStudio`.  To wit,
+
+- If you prefer something like VSCode or another IDE, that is your choice.  I will heavily utilize `RMarkdown` and `quarto` and both are extensively supported in RStudio.  The most recent version of [RStudio can be obtained here](https://www.rstudio.com/products/rstudio/download/#download)
+
+- $R$ can be obtained from the [Comprehensive R Archive Network -- CRAN](https://cran.r-project.org/) for just about all non-mobile OS's.  If you work on a Mac, do make sure that you acquire the one for the specific Mac that you have, e.g. Intel Mac or Apple Silicon [ARM64]

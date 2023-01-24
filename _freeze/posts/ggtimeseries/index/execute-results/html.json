@@ -1,0 +1,14 @@
+{
+  "hash": "83ee245b9253845855c06fa3193f4e91",
+  "result": {
+    "markdown": "---\ntitle: \"ggtimeseries\"\nauthor: \"Robert W. Walker\"\ndate: \"2021-06-30\"\ncategories: [R, time_series, tidy]\nimage: \"image.png\"\n---\n\n\n\n\n# ggtimeseries\n\nggTimeSeries is a collection of specialized plots for Time Series data above and beyond those normally deployed.  It includes waterfall charts, steamgraphs, and some calendar visualizations that are all quite neat.  \n\n[Here is a link](https://github.com/AtherEnergy/ggTimeSeries)\n\nI found `stat_waterfall()` to have particular uses.\n\n![Waterfall](img/Screen Shot 2022-12-23 at 11.26.49 PM.png)",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

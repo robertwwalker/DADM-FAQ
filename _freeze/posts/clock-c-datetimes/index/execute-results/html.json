@@ -1,0 +1,14 @@
+{
+  "hash": "734fc569c89c8ac218021cdf59c92916",
+  "result": {
+    "markdown": "---\ntitle: \"Allison Horst teaches ACFs\"\nauthor: \"Robert W. Walker\"\ndate: \"2021-05-29\"\ncategories: [R, time_series]\nimage: \"image.png\"\n---\n\n\n\n\n# Allison Horst and the Auto Correlation Function (ACF)\n\nThe inimitable Allison Horst put this together.  It's lovely.... \n\n[A link](https://twitter.com/allison_horst/status/1361545021980217345?s=19)\n\n<blockquote class=\"twitter-tweet\"><p lang=\"en\" dir=\"ltr\">A new series to introduce the autocorrelation function (ACF) w/ time series data, with special thanks to <a href=\"https://twitter.com/robjhyndman?ref_src=twsrc%5Etfw\">@robjhyndman</a> for feedback &amp; suggestions! 👾<br><br>🧵1/9: Meet the monster family. The youngest generation is on the right (that&#39;s our host). <a href=\"https://t.co/9iBtV88KfU\">pic.twitter.com/9iBtV88KfU</a></p>&mdash; Allison Horst @allison_horst@mastodon.social (@allison_horst) <a href=\"https://twitter.com/allison_horst/status/1361545021980217345?ref_src=twsrc%5Etfw\">February 16, 2021</a></blockquote> <script async src=\"https://platform.twitter.com/widgets.js\" charset=\"utf-8\"></script>",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

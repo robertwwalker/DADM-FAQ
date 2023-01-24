@@ -1,0 +1,13 @@
+---
+title: "Getting Started: R and RStudio"
+author: "Robert W. Walker"
+date: "2023-01-05"
+categories: [R]
+image: "image.png"
+---
+
+The [following tutorial contains instructions and a video walk through](https://learnr-examples.shinyapps.io/ex-setup-r/) for installing R, RStudio, and the `tidyverse` -- an R *verse* consisting of a few packages that ease data importation, management (including dates and categorical variables), wrangling, and visualization.  
+
+You can find R from here by navigating in accordance with your operating system. If you work on a Mac, be careful about the different versions that depend on the underlying hardward [Apple Silicon (ARM64) versus Intel Macs] [Link](https://cran.r-project.org/)
+
+If you skip the above step, the download page for RStudio will remind you that you RStudio requires R. [The download page can be found here.](https://posit.co/download/rstudio-desktop/)

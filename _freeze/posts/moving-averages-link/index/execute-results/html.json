@@ -1,0 +1,14 @@
+{
+  "hash": "fbbe083e92a7f9d3d1eedabdf865778c",
+  "result": {
+    "markdown": "---\ntitle: \"Easy moving averages\"\nauthor: \"Robert W. Walker\"\ndate: \"2021-05-24\"\ncategories: [R, time_series, tidy]\nimage: \"image.png\"\n---\n\n\n# An r-bloggers post\n\nThere is [a handy post](https://www.r-bloggers.com/2021/04/ggplot-with-moving-averages/) on `r-bloggers` that details moving averages built around the amazing `tidyquant` package.\n\nFirst, get some data.\n\n\n::: {.cell}\n\n```{.r .cell-code}\nlibrary(tidyverse)\nGlobalLandTemperaturesByMajorCity <- read_csv(\"data/GlobalLandTemperaturesByMajorCity.csv\",\ncol_types = cols(dt = col_date(format = \"%Y-%m-%d\")))\n```\n:::\n\n\nLet me choose London.\n\n\n::: {.cell}\n\n```{.r .cell-code}\nLondon.Data <- GlobalLandTemperaturesByMajorCity %>% filter(City==\"London\")\nhead(London.Data)\n```\n\n::: {.cell-output .cell-output-stdout}\n```\n# A tibble: 6 × 7\n  dt         AverageTemperature AverageTemperatu…¹ City  Country Latit…² Longi…³\n  <date>                  <dbl>              <dbl> <chr> <chr>   <chr>   <chr>  \n1 1743-11-01               7.54               1.75 Lond… United… 52.24N  0.00W  \n2 1743-12-01              NA                 NA    Lond… United… 52.24N  0.00W  \n3 1744-01-01              NA                 NA    Lond… United… 52.24N  0.00W  \n4 1744-02-01              NA                 NA    Lond… United… 52.24N  0.00W  \n5 1744-03-01              NA                 NA    Lond… United… 52.24N  0.00W  \n6 1744-04-01               8.30               2.50 Lond… United… 52.24N  0.00W  \n# … with abbreviated variable names ¹​AverageTemperatureUncertainty, ²​Latitude,\n#   ³​Longitude\n```\n:::\n:::\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

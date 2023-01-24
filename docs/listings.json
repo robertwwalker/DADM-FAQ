@@ -1,0 +1,29 @@
+[
+  {
+    "listing": "/index.html",
+    "items": [
+      "/posts/R-RStudio/index.html",
+      "/posts/wrangling-tutorials/index.html",
+      "/posts/smart-Prediction/index.html",
+      "/posts/normal-residuals-in-radiant/index.html",
+      "/posts/ggtimeseries/index.html",
+      "/posts/clock-c-datetimes/index.html",
+      "/posts/seasonal-adjustment/index.html",
+      "/posts/moving-averages-link/index.html",
+      "/posts/quick-look-at-vix/index.html",
+      "/posts/acfs-horst/index.html",
+      "/posts/timetk-is-awesome/index.html",
+      "/posts/quick-fredr/index.html",
+      "/posts/binomial-vaccine-efficacy/index.html",
+      "/posts/2020-09-14-visualizing-mixed-data/index.html",
+      "/posts/2020-09-13-visualizing-two-qualities/index.html",
+      "/posts/2020-09-13-importing-excel-data/index.html",
+      "/posts/2020-09-13-visualizing-one-quantitative-variable/index.html",
+      "/posts/pivots/index.html",
+      "/posts/2020-09-12-visualizing-one-qualitative-variable/index.html",
+      "/posts/2019-10-25-a-quick-and-dirty-introduction-to-r/index.html",
+      "/posts/2019-10-09-tables-pivots-bars-and-mosaics/index.html",
+      "/posts/welcome/index.html"
+    ]
+  }
+]

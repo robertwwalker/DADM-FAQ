@@ -1,0 +1,13 @@
+---
+title: "Data Analysis, Modelling, and Decision-Making"
+listing:
+  type: table
+  contents: posts
+  fields: [image, date, title, author, reading-time]
+  sort: "date desc"
+  categories: true
+  sort-ui: false
+  filter-ui: false
+page-layout: full
+title-block-banner: true
+---

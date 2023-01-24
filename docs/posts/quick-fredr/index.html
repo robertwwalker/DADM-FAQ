@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.269">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Robert W. Walker">
+<meta name="dcterms.date" content="2020-11-28">
+
+<title>Data Analysis, Modelling, and Decision-Making FAQ - fredr: quick and dirty</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+<script src="../../site_libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
+<script src="../../site_libs/plotly-binding-4.10.1/plotly.js"></script>
+<script src="../../site_libs/typedarray-0.1/typedarray.min.js"></script>
+<script src="../../site_libs/jquery-3.5.1/jquery.min.js"></script>
+<link href="../../site_libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet">
+<script src="../../site_libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
+<link href="../../site_libs/plotly-htmlwidgets-css-2.11.1/plotly-htmlwidgets.css" rel="stylesheet">
+<script src="../../site_libs/plotly-main-2.11.1/plotly-latest.min.js"></script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+<meta name="twitter:title" content="Data Analysis, Modelling, and Decision-Making FAQ - fredr: quick and dirty">
+<meta name="twitter:description" content="Downloading the FRED data on national debt as a percentage of GDP. I first want to examine the US data and will then turn to some comparisons. fredr makes it markable asy to do!">
+<meta name="twitter:image" content="https://c60a0439-5813-4d13-a854-20178a9b938d.netlify.app/posts/quick-fredr/image.png">
+<meta name="twitter:creator" content="@PieRatio">
+<meta name="twitter:image-height" content="432">
+<meta name="twitter:image-width" content="700">
+<meta name="twitter:card" content="summary_large_image">
+</head>
+
+<body class="nav-fixed fullcontent">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Data Analysis, Modelling, and Decision-Making FAQ</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html">
+ <span class="menu-text">About the DADM FAQ</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/robertwwalker/DADM-FAQ"><i class="bi bi-github" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/PieRatio"><i class="bi bi-twitter" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">fredr: quick and dirty</h1>
+                                <div class="quarto-categories">
+                <div class="quarto-category">R</div>
+                <div class="quarto-category">panel data</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Robert W. Walker </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">November 28, 2020</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+<section id="some-data-from-fredr" class="level2">
+<h2 class="anchored" data-anchor-id="some-data-from-fredr">Some Data from FREDr</h2>
+<p>Downloading the FRED data on national debt as a percentage of GDP. I first want to examine the US data and will then turn to some comparisons. <code>fredr</code> makes it markable asy to do! I will use two core tools from <code>fredr</code>. First, <code>fredr_series_search</code> allows one to enter search text and retrieve the responsive series given that search text. They can be sorted in particular ways, two such options are shown below. In the first chunk, I will download the “national debt” data and show the top 6 responsive series.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(fredr);<span class="fu">library</span>(ggthemes)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>Debt.Search <span class="ot">&lt;-</span> <span class="fu">fredr_series_search_text</span>(</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">search_text =</span> <span class="st">"national debt"</span>,</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">order_by =</span> <span class="st">"popularity"</span>,</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">sort_order =</span> <span class="st">"desc"</span>)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>Debt.Search <span class="ot">&lt;-</span> Debt.Search <span class="sc">%&gt;%</span> <span class="fu">top_n</span>(<span class="dv">6</span>)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>Debt.Search <span class="sc">%&gt;%</span> <span class="fu">select</span>(id, title)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 14 × 2
+   id               title                                                       
+   &lt;chr&gt;            &lt;chr&gt;                                                       
+ 1 DDDM04USA156NWDB Outstanding Domestic Public Debt Securities to GDP for Unit…
+ 2 DDDM04INA156NWDB Outstanding Domestic Public Debt Securities to GDP for India
+ 3 DDDM04CAA156NWDB Outstanding Domestic Public Debt Securities to GDP for Cana…
+ 4 WLSFAL           Liabilities: Deposits with F.R. Banks, Other Than Reserve B…
+ 5 DDDM04CNA156NWDB Outstanding Domestic Public Debt Securities to GDP for China
+ 6 DDDM04LBA156NWDB Outstanding Domestic Public Debt Securities to GDP for Leba…
+ 7 DDDM04JPA156NWDB Outstanding Domestic Public Debt Securities to GDP for Japan
+ 8 WDSFAL           Factors Absorbing Reserve Funds: Deposits with Federal Rese…
+ 9 DDDM04BRA156NWDB Outstanding Domestic Public Debt Securities to GDP for Braz…
+10 DDDM04GRA156NWDB Outstanding Domestic Public Debt Securities to GDP for Gree…
+11 DDDM04IDA156NWDB Outstanding Domestic Public Debt Securities to GDP for Indo…
+12 DDDM04SGA156NWDB Outstanding Domestic Public Debt Securities to GDP for Sing…
+13 DDDM04MXA156NWDB Outstanding Domestic Public Debt Securities to GDP for Mexi…
+14 DDDM04VEA156NWDB Outstanding Domestic Public Debt Securities to GDP for Boli…</code></pre>
+</div>
+</div>
+<p>Next, I need to acquire the data that I want. I probably should have reversed the order of some of the operations here. For example, I don’t really want the non-domestic public debt but I am not going to filter them before downloading. That’s not great but it isn’t all that much data either. The command <code>fredr</code> aliases the <code>fredr_series_observations</code> command that obtains data directly from <strong>FRED</strong>. I will use a variant of <em>map</em> to grab the relevant series <code>id</code> above and then join them back to the Search results.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>Debt.Data <span class="ot">&lt;-</span> <span class="fu">map_dfr</span>(Debt.Search<span class="sc">$</span>id, fredr) <span class="sc">%&gt;%</span> <span class="fu">left_join</span>(Debt.Search, <span class="at">by=</span><span class="fu">c</span>(<span class="st">"series_id"</span> <span class="ot">=</span> <span class="st">"id"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Now let me splice off the United States and plot it.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>US.Debt <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">filter</span>(Debt.Data, <span class="fu">grepl</span>(<span class="st">'to GDP for United States'</span>, title))</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(US.Debt, <span class="fu">aes</span>(<span class="at">x=</span>date, <span class="at">y=</span>value)) <span class="sc">+</span> <span class="fu">geom_line</span>(<span class="at">size=</span><span class="dv">3</span>) <span class="sc">+</span> <span class="fu">theme_economist</span>() <span class="sc">+</span> <span class="fu">theme</span>(<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">color=</span><span class="st">"red"</span>, <span class="at">size=</span><span class="dv">11</span>, <span class="at">face=</span><span class="st">"bold.italic"</span>)) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title=</span>US.Debt<span class="sc">$</span>title[<span class="dv">1</span>], <span class="at">y=</span><span class="st">"Debt to GDP"</span>, <span class="at">x=</span><span class="st">"Date"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>And because I ended up with a bunch of them; multiple time series plots. To automate this, I will first remove everything that represents liabilities above in the FRB system. Then I need to use the series title to select everything that I want and separate off the country names for labels. The only hard-coding hacks for the final plot are the title. Here’s what we get, with color encoding the country names.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stringr)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>Ctry.DD <span class="ot">&lt;-</span> Debt.Data <span class="sc">%&gt;%</span> <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">grepl</span>(<span class="st">'Liabilities: Deposits'</span>, title))</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>Ctry.DD <span class="ot">&lt;-</span> Ctry.DD <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">Country =</span> <span class="fu">str_remove</span>(title, <span class="fu">str_remove</span>(US.Debt<span class="sc">$</span>title[<span class="dv">1</span>], <span class="st">"United States"</span>)))</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>plot1 <span class="ot">&lt;-</span> Ctry.DD <span class="sc">%&gt;%</span> <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">str_starts</span>(Country, <span class="st">"Factors"</span>)) <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(., <span class="fu">aes</span>(<span class="at">x=</span>date, <span class="at">y=</span>value, <span class="at">color=</span>Country)) <span class="sc">+</span> <span class="fu">geom_line</span>(<span class="at">size=</span><span class="dv">1</span>) <span class="sc">+</span> <span class="fu">scale_color_viridis_d</span>() <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title=</span><span class="st">"Public Debt to GDP"</span>, <span class="at">y=</span><span class="st">"Public Debt to GDP"</span>) <span class="sc">+</span> <span class="fu">guides</span>(<span class="at">color=</span><span class="st">"none"</span>)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(widgetframe)</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>plotly<span class="sc">::</span><span class="fu">ggplotly</span>(plot1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="htmlwidget-81d72810085533b225d5" style="width:100%;height:464px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-81d72810085533b225d5">{"x":{"data":[{"x":[9862,10227,10592,10957,11323,11688,12053,12418,12784,13149,13514,13879,14245,14610,14975,15340,15706,16071,16436,16801,17167,17532,17897],"y":[null,null,25.964,24.7793,23.51,22.4997,19.7374,16.7351,14.2286,12.7717,11.7684,9.60001,11.3985,9.45405,8.92114,9.27408,8.99286,11.1268,12.4511,14.3542,15.3345,15.893,17.9666],"text":["date: 1997-01-01<br />value:         NA<br />Country: Indonesia","date: 1998-01-01<br />value:         NA<br />Country: Indonesia","date: 1999-01-01<br />value:  25.964000<br />Country: Indonesia","date: 2000-01-01<br />value:  24.779300<br />Country: Indonesia","date: 2001-01-01<br />value:  23.510000<br />Country: Indonesia","date: 2002-01-01<br />value:  22.499700<br />Country: Indonesia","date: 2003-01-01<br />value:  19.737400<br />Country: Indonesia","date: 2004-01-01<br />value:  16.735100<br />Country: Indonesia","date: 2005-01-01<br />value:  14.228600<br />Country: Indonesia","date: 2006-01-01<br />value:  12.771700<br />Country: Indonesia","date: 2007-01-01<br />value:  11.768400<br />Country: Indonesia","date: 2008-01-01<br />value:   9.600010<br />Country: Indonesia","date: 2009-01-01<br />value:  11.398500<br />Country: Indonesia","date: 2010-01-01<br />value:   9.454050<br />Country: Indonesia","date: 2011-01-01<br />value:   8.921140<br />Country: Indonesia","date: 2012-01-01<br />value:   9.274080<br />Country: Indonesia","date: 2013-01-01<br />value:   8.992860<br />Country: Indonesia","date: 2014-01-01<br />value:  11.126800<br />Country: Indonesia","date: 2015-01-01<br />value:  12.451100<br />Country: Indonesia","date: 2016-01-01<br />value:  14.354200<br />Country: Indonesia","date: 2017-01-01<br />value:  15.334500<br />Country: Indonesia","date: 2018-01-01<br />value:  15.893000<br />Country: Indonesia","date: 2019-01-01<br />value:  17.966600<br />Country: Indonesia"],"type":"scatter","mode":"lines","line":{"width":3.77952755905512,"color":"rgba(30,155,138,1)","dash":"solid"},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[7305,7670,8035,8401,8766,9131,9496,9862,10227,10592,10957,11323,11688,12053,12418,12784,13149,13514,13879,14245,14610,14975,15340,15706,16071,16436,16801,17167,17532,17897],"y":[null,null,null,null,null,null,null,null,0.861039,0.971622,0.880027,1.11219,1.41396,1.29209,2.39231,3.19534,2.34893,2.64338,2.48854,2.15808,1.68499,27.6322,32.994,33.528,33.1014,31.0427,33.2163,32.4592,31.5959,32.1009],"text":["date: 1990-01-01<br />value:         NA<br />Country: India","date: 1991-01-01<br />value:         NA<br />Country: India","date: 1992-01-01<br />value:         NA<br />Country: India","date: 1993-01-01<br />value:         NA<br />Country: India","date: 1994-01-01<br />value:         NA<br />Country: India","date: 1995-01-01<br />value:         NA<br />Country: India","date: 1996-01-01<br />value:         NA<br />Country: India","date: 1997-01-01<br />value:         NA<br />Country: India","date: 1998-01-01<br />value:   0.861039<br />Country: India","date: 1999-01-01<br />value:   0.971622<br />Country: India","date: 2000-01-01<br />value:   0.880027<br />Country: India","date: 2001-01-01<br />value:   1.112190<br />Country: India","date: 2002-01-01<br />value:   1.413960<br />Country: India","date: 2003-01-01<br />value:   1.292090<br />Country: India","date: 2004-01-01<br />value:   2.392310<br />Country: India","date: 2005-01-01<br />value:   3.195340<br />Country: India","date: 2006-01-01<br />value:   2.348930<br />Country: India","date: 2007-01-01<br />value:   2.643380<br />Country: India","date: 2008-01-01<br />value:   2.488540<br />Country: India","date: 2009-01-01<br />value:   2.158080<br />Country: India","date: 2010-01-01<br />value:   1.684990<br />Country: India","date: 2011-01-01<br />value:  27.632200<br />Country: India","date: 2012-01-01<br />value:  32.994000<br />Country: India","date: 2013-01-01<br />value:  33.528000<br />Country: India","date: 2014-01-01<br />value:  33.101400<br />Country: India","date: 2015-01-01<br />value:  31.042700<br />Country: India","date: 2016-01-01<br />value:  33.216300<br />Country: India","date: 2017-01-01<br />value:  32.459200<br />Country: India","date: 2018-01-01<br />value:  31.595900<br />Country: India","date: 2019-01-01<br />value:  32.100900<br />Country: India"],"type":"scatter","mode":"lines","line":{"width":3.77952755905512,"color":"rgba(37,133,142,1)","dash":"solid"},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[7305,7670,8035,8401,8766,9131,9496,9862,10227,10592,10957,11323,11688,12053,12418,12784,13149,13514,13879,14245,14610,14975,15340,15706,16071,16436,16801,17167,17532,17897],"y":[null,null,null,null,null,null,null,64.2753,87.735,97.1301,87.244,92.1893,113.035,124.95,131.566,122.534,128.689,139.814,161.23,158.898,178.437,184.487,166.938,170.645,161.658,180.745,169.8,181.938,185.579,186.727],"text":["date: 1990-01-01<br />value:         NA<br />Country: Japan","date: 1991-01-01<br />value:         NA<br />Country: Japan","date: 1992-01-01<br />value:         NA<br />Country: Japan","date: 1993-01-01<br />value:         NA<br />Country: Japan","date: 1994-01-01<br />value:         NA<br />Country: Japan","date: 1995-01-01<br />value:         NA<br />Country: Japan","date: 1996-01-01<br />value:         NA<br />Country: Japan","date: 1997-01-01<br />value:  64.275300<br />Country: Japan","date: 1998-01-01<br />value:  87.735000<br />Country: Japan","date: 1999-01-01<br />value:  97.130100<br />Country: Japan","date: 2000-01-01<br />value:  87.244000<br />Country: Japan","date: 2001-01-01<br />value:  92.189300<br />Country: Japan","date: 2002-01-01<br />value: 113.035000<br />Country: Japan","date: 2003-01-01<br />value: 124.950000<br />Country: Japan","date: 2004-01-01<br />value: 131.566000<br />Country: Japan","date: 2005-01-01<br />value: 122.534000<br />Country: Japan","date: 2006-01-01<br />value: 128.689000<br />Country: Japan","date: 2007-01-01<br />value: 139.814000<br />Country: Japan","date: 2008-01-01<br />value: 161.230000<br />Country: Japan","date: 2009-01-01<br />value: 158.898000<br />Country: Japan","date: 2010-01-01<br />value: 178.437000<br />Country: Japan","date: 2011-01-01<br />value: 184.487000<br />Country: Japan","date: 2012-01-01<br />value: 166.938000<br />Country: Japan","date: 2013-01-01<br />value: 170.645000<br />Country: Japan","date: 2014-01-01<br />value: 161.658000<br />Country: Japan","date: 2015-01-01<br />value: 180.745000<br />Country: Japan","date: 2016-01-01<br />value: 169.800000<br />Country: Japan","date: 2017-01-01<br />value: 181.938000<br />Country: Japan","date: 2018-01-01<br />value: 185.579000<br />Country: Japan","date: 2019-01-01<br />value: 186.727000<br />Country: Japan"],"type":"scatter","mode":"lines","line":{"width":3.77952755905512,"color":"rgba(43,176,127,1)","dash":"solid"},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[7305,7670,8035,8401,8766,9131,9496,9862,10227,10592,10957,11323,11688,12053,12418,12784,13149,13514,13879,14245,14610,14975],"y":[null,null,null,null,null,null,65.1214,67.1843,68.9775,68.9775,68.9775,68.9775,68.9775,68.9775,64.0119,58.2254,49.4607,48.032,50.6729,54.6011,55.605,53.2606],"text":["date: 1990-01-01<br />value:         NA<br />Country: Greece","date: 1991-01-01<br />value:         NA<br />Country: Greece","date: 1992-01-01<br />value:         NA<br />Country: Greece","date: 1993-01-01<br />value:         NA<br />Country: Greece","date: 1994-01-01<br />value:         NA<br />Country: Greece","date: 1995-01-01<br />value:         NA<br />Country: Greece","date: 1996-01-01<br />value:  65.121400<br />Country: Greece","date: 1997-01-01<br />value:  67.184300<br />Country: Greece","date: 1998-01-01<br />value:  68.977500<br />Country: Greece","date: 1999-01-01<br />value:  68.977500<br />Country: Greece","date: 2000-01-01<br />value:  68.977500<br />Country: Greece","date: 2001-01-01<br />value:  68.977500<br />Country: Greece","date: 2002-01-01<br />value:  68.977500<br />Country: Greece","date: 2003-01-01<br />value:  68.977500<br />Country: Greece","date: 2004-01-01<br />value:  64.011900<br />Country: Greece","date: 2005-01-01<br />value:  58.225400<br />Country: Greece","date: 2006-01-01<br />value:  49.460700<br />Country: Greece","date: 2007-01-01<br />value:  48.032000<br />Country: Greece","date: 2008-01-01<br />value:  50.672900<br />Country: Greece","date: 2009-01-01<br />value:  54.601100<br />Country: Greece","date: 2010-01-01<br />value:  55.605000<br />Country: Greece","date: 2011-01-01<br />value:  53.260600<br />Country: Greece"],"type":"scatter","mode":"lines","line":{"width":3.77952755905512,"color":"rgba(45,112,142,1)","dash":"solid"},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[7305,7670,8035,8401,8766,9131,9496,9862,10227,10592,10957,11323,11688,12053,12418,12784,13149,13514,13879,14245,14610,14975,15340,15706,16071,16436,16801,17167,17532,17897],"y":[null,null,null,null,null,null,null,null,null,null,9.13215,9.89812,13.4138,15.3065,14.9383,14.676,13.523,17.9324,15.5528,16.4836,16.5786,15.9255,15.523,16.4777,16.4985,21.5394,28.9368,35.1442,34.5383,37.7849],"text":["date: 1990-01-01<br />value:         NA<br />Country: China","date: 1991-01-01<br />value:         NA<br />Country: China","date: 1992-01-01<br />value:         NA<br />Country: China","date: 1993-01-01<br />value:         NA<br />Country: China","date: 1994-01-01<br />value:         NA<br />Country: China","date: 1995-01-01<br />value:         NA<br />Country: China","date: 1996-01-01<br />value:         NA<br />Country: China","date: 1997-01-01<br />value:         NA<br />Country: China","date: 1998-01-01<br />value:         NA<br />Country: China","date: 1999-01-01<br />value:         NA<br />Country: China","date: 2000-01-01<br />value:   9.132150<br />Country: China","date: 2001-01-01<br />value:   9.898120<br />Country: China","date: 2002-01-01<br />value:  13.413800<br />Country: China","date: 2003-01-01<br />value:  15.306500<br />Country: China","date: 2004-01-01<br />value:  14.938300<br />Country: China","date: 2005-01-01<br />value:  14.676000<br />Country: China","date: 2006-01-01<br />value:  13.523000<br />Country: China","date: 2007-01-01<br />value:  17.932400<br />Country: China","date: 2008-01-01<br />value:  15.552800<br />Country: China","date: 2009-01-01<br />value:  16.483600<br />Country: China","date: 2010-01-01<br />value:  16.578600<br />Country: China","date: 2011-01-01<br />value:  15.925500<br />Country: China","date: 2012-01-01<br />value:  15.523000<br />Country: China","date: 2013-01-01<br />value:  16.477700<br />Country: China","date: 2014-01-01<br />value:  16.498500<br />Country: China","date: 2015-01-01<br />value:  21.539400<br />Country: China","date: 2016-01-01<br />value:  28.936800<br />Country: China","date: 2017-01-01<br />value:  35.144200<br />Country: China","date: 2018-01-01<br />value:  34.538300<br />Country: China","date: 2019-01-01<br />value:  37.784900<br />Country: China"],"type":"scatter","mode":"lines","line":{"width":3.77952755905512,"color":"rgba(56,89,140,1)","dash":"solid"},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[6940,7305,7670,8035,8401,8766,9131,9496,9862,10227,10592,10957,11323,11688,12053,12418,12784,13149,13514,13879,14245,14610,14975,15340,15706,16071,16436,16801,17167,17532,17897],"y":[61.8353,64.4512,69.3982,70.4844,74.3979,73.3728,76.1008,73.0137,67.1526,62.9037,65.0579,57.0858,55.3824,55.6741,59.3914,56.0927,51.7372,47.0303,50.3996,43.2698,65.3399,63.1915,59.5033,63.6552,62.4945,59.2121,57.7555,63.1642,64.9258,59.0011,62.8357],"text":["date: 1989-01-01<br />value:  61.835300<br />Country: Canada","date: 1990-01-01<br />value:  64.451200<br />Country: Canada","date: 1991-01-01<br />value:  69.398200<br />Country: Canada","date: 1992-01-01<br />value:  70.484400<br />Country: Canada","date: 1993-01-01<br />value:  74.397900<br />Country: Canada","date: 1994-01-01<br />value:  73.372800<br />Country: Canada","date: 1995-01-01<br />value:  76.100800<br />Country: Canada","date: 1996-01-01<br />value:  73.013700<br />Country: Canada","date: 1997-01-01<br />value:  67.152600<br />Country: Canada","date: 1998-01-01<br />value:  62.903700<br />Country: Canada","date: 1999-01-01<br />value:  65.057900<br />Country: Canada","date: 2000-01-01<br />value:  57.085800<br />Country: Canada","date: 2001-01-01<br />value:  55.382400<br />Country: Canada","date: 2002-01-01<br />value:  55.674100<br />Country: Canada","date: 2003-01-01<br />value:  59.391400<br />Country: Canada","date: 2004-01-01<br />value:  56.092700<br />Country: Canada","date: 2005-01-01<br />value:  51.737200<br />Country: Canada","date: 2006-01-01<br />value:  47.030300<br />Country: Canada","date: 2007-01-01<br />value:  50.399600<br />Country: Canada","date: 2008-01-01<br />value:  43.269800<br />Country: Canada","date: 2009-01-01<br />value:  65.339900<br />Country: Canada","date: 2010-01-01<br />value:  63.191500<br />Country: Canada","date: 2011-01-01<br />value:  59.503300<br />Country: Canada","date: 2012-01-01<br />value:  63.655200<br />Country: Canada","date: 2013-01-01<br />value:  62.494500<br />Country: Canada","date: 2014-01-01<br />value:  59.212100<br />Country: Canada","date: 2015-01-01<br />value:  57.755500<br />Country: Canada","date: 2016-01-01<br />value:  63.164200<br />Country: Canada","date: 2017-01-01<br />value:  64.925800<br />Country: Canada","date: 2018-01-01<br />value:  59.001100<br />Country: Canada","date: 2019-01-01<br />value:  62.835700<br />Country: Canada"],"type":"scatter","mode":"lines","line":{"width":3.77952755905512,"color":"rgba(67,62,133,1)","dash":"solid"},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[9496,9862,10227,10592,10957,11323,11688,12053,12418,12784,13149,13514,13879,14245,14610],"y":[9.717072,8.995152,14.34079,16.20677,7.904841,6.647838,10.61627,25.36092,24.63962,32.86277,73.98302,79.4739,28.75602,31.13812,20.26552],"text":["date: 1996-01-01<br />value:   9.717072<br />Country: Bolivarian Republic of Venezuela (DISCONTINUED)","date: 1997-01-01<br />value:   8.995152<br />Country: Bolivarian Republic of Venezuela (DISCONTINUED)","date: 1998-01-01<br />value:  14.340790<br />Country: Bolivarian Republic of Venezuela (DISCONTINUED)","date: 1999-01-01<br />value:  16.206770<br />Country: Bolivarian Republic of Venezuela (DISCONTINUED)","date: 2000-01-01<br />value:   7.904841<br />Country: Bolivarian Republic of Venezuela (DISCONTINUED)","date: 2001-01-01<br />value:   6.647838<br />Country: Bolivarian Republic of Venezuela (DISCONTINUED)","date: 2002-01-01<br />value:  10.616270<br />Country: Bolivarian Republic of Venezuela (DISCONTINUED)","date: 2003-01-01<br />value:  25.360920<br />Country: Bolivarian Republic of Venezuela (DISCONTINUED)","date: 2004-01-01<br />value:  24.639620<br />Country: Bolivarian Republic of Venezuela (DISCONTINUED)","date: 2005-01-01<br />value:  32.862770<br />Country: Bolivarian Republic of Venezuela (DISCONTINUED)","date: 2006-01-01<br />value:  73.983020<br />Country: Bolivarian Republic of Venezuela (DISCONTINUED)","date: 2007-01-01<br />value:  79.473900<br />Country: Bolivarian Republic of Venezuela (DISCONTINUED)","date: 2008-01-01<br />value:  28.756020<br />Country: Bolivarian Republic of Venezuela (DISCONTINUED)","date: 2009-01-01<br />value:  31.138120<br />Country: Bolivarian Republic of Venezuela (DISCONTINUED)","date: 2010-01-01<br />value:  20.265520<br />Country: Bolivarian Republic of Venezuela (DISCONTINUED)"],"type":"scatter","mode":"lines","line":{"width":3.77952755905512,"color":"rgba(68,1,84,1)","dash":"solid"},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[8401,8766,9131,9496,9862,10227,10592,10957,11323,11688,12053,12418,12784,13149,13514,13879,14245,14610,14975,15340,15706,16071,16436,16801,17167,17532,17897],"y":[null,null,null,null,null,null,null,null,null,46.7538,60.2995,61.8467,60.3806,58.7654,64.4082,44.5079,70.0698,62.9322,51.8933,55.8916,51.1246,50.6675,55.1548,77.1607,74.5587,75.069,80.438],"text":["date: 1993-01-01<br />value:         NA<br />Country: Brazil","date: 1994-01-01<br />value:         NA<br />Country: Brazil","date: 1995-01-01<br />value:         NA<br />Country: Brazil","date: 1996-01-01<br />value:         NA<br />Country: Brazil","date: 1997-01-01<br />value:         NA<br />Country: Brazil","date: 1998-01-01<br />value:         NA<br />Country: Brazil","date: 1999-01-01<br />value:         NA<br />Country: Brazil","date: 2000-01-01<br />value:         NA<br />Country: Brazil","date: 2001-01-01<br />value:         NA<br />Country: Brazil","date: 2002-01-01<br />value:  46.753800<br />Country: Brazil","date: 2003-01-01<br />value:  60.299500<br />Country: Brazil","date: 2004-01-01<br />value:  61.846700<br />Country: Brazil","date: 2005-01-01<br />value:  60.380600<br />Country: Brazil","date: 2006-01-01<br />value:  58.765400<br />Country: Brazil","date: 2007-01-01<br />value:  64.408200<br />Country: Brazil","date: 2008-01-01<br />value:  44.507900<br />Country: Brazil","date: 2009-01-01<br />value:  70.069800<br />Country: Brazil","date: 2010-01-01<br />value:  62.932200<br />Country: Brazil","date: 2011-01-01<br />value:  51.893300<br />Country: Brazil","date: 2012-01-01<br />value:  55.891600<br />Country: Brazil","date: 2013-01-01<br />value:  51.124600<br />Country: Brazil","date: 2014-01-01<br />value:  50.667500<br />Country: Brazil","date: 2015-01-01<br />value:  55.154800<br />Country: Brazil","date: 2016-01-01<br />value:  77.160700<br />Country: Brazil","date: 2017-01-01<br />value:  74.558700<br />Country: Brazil","date: 2018-01-01<br />value:  75.069000<br />Country: Brazil","date: 2019-01-01<br />value:  80.438000<br />Country: Brazil"],"type":"scatter","mode":"lines","line":{"width":3.77952755905512,"color":"rgba(72,33,115,1)","dash":"solid"},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[8401,8766,9131,9496,9862,10227,10592,10957,11323,11688,12053,12418,12784,13149,13514,13879,14245,14610,14975,15340,15706,16071,16436,16801,17167,17532,17897],"y":[42.2325,58.6095,63.2915,80.1156,81.3935,82.4193,95.7906,103.631,105.395,87.0499,87.4973,81.0971,88.3458,89.4622,82.5742,87.8123,83.5321,82.7543,81.5661,75.377,79.4511,84.8872,86.4128,91.0846,92.178,93.6295,108.059],"text":["date: 1993-01-01<br />value:  42.232500<br />Country: Lebanon","date: 1994-01-01<br />value:  58.609500<br />Country: Lebanon","date: 1995-01-01<br />value:  63.291500<br />Country: Lebanon","date: 1996-01-01<br />value:  80.115600<br />Country: Lebanon","date: 1997-01-01<br />value:  81.393500<br />Country: Lebanon","date: 1998-01-01<br />value:  82.419300<br />Country: Lebanon","date: 1999-01-01<br />value:  95.790600<br />Country: Lebanon","date: 2000-01-01<br />value: 103.631000<br />Country: Lebanon","date: 2001-01-01<br />value: 105.395000<br />Country: Lebanon","date: 2002-01-01<br />value:  87.049900<br />Country: Lebanon","date: 2003-01-01<br />value:  87.497300<br />Country: Lebanon","date: 2004-01-01<br />value:  81.097100<br />Country: Lebanon","date: 2005-01-01<br />value:  88.345800<br />Country: Lebanon","date: 2006-01-01<br />value:  89.462200<br />Country: Lebanon","date: 2007-01-01<br />value:  82.574200<br />Country: Lebanon","date: 2008-01-01<br />value:  87.812300<br />Country: Lebanon","date: 2009-01-01<br />value:  83.532100<br />Country: Lebanon","date: 2010-01-01<br />value:  82.754300<br />Country: Lebanon","date: 2011-01-01<br />value:  81.566100<br />Country: Lebanon","date: 2012-01-01<br />value:  75.377000<br />Country: Lebanon","date: 2013-01-01<br />value:  79.451100<br />Country: Lebanon","date: 2014-01-01<br />value:  84.887200<br />Country: Lebanon","date: 2015-01-01<br />value:  86.412800<br />Country: Lebanon","date: 2016-01-01<br />value:  91.084600<br />Country: Lebanon","date: 2017-01-01<br />value:  92.178000<br />Country: Lebanon","date: 2018-01-01<br />value:  93.629500<br />Country: Lebanon","date: 2019-01-01<br />value: 108.059000<br />Country: Lebanon"],"type":"scatter","mode":"lines","line":{"width":3.77952755905512,"color":"rgba(81,197,106,1)","dash":"solid"},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[7305,7670,8035,8401,8766,9131,9496,9862,10227,10592,10957,11323,11688,12053,12418,12784,13149,13514,13879,14245,14610,14975,15340,15706,16071,16436,16801,17167,17532,17897],"y":[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,13.3511,16.3789,18.0383,15.436,22.7915,22.8232,22.8354,27.9431,30.2418,29.3258,29.6794,26.9637,28.4132,28.8945,32.2335],"text":["date: 1990-01-01<br />value:         NA<br />Country: Mexico","date: 1991-01-01<br />value:         NA<br />Country: Mexico","date: 1992-01-01<br />value:         NA<br />Country: Mexico","date: 1993-01-01<br />value:         NA<br />Country: Mexico","date: 1994-01-01<br />value:         NA<br />Country: Mexico","date: 1995-01-01<br />value:         NA<br />Country: Mexico","date: 1996-01-01<br />value:         NA<br />Country: Mexico","date: 1997-01-01<br />value:         NA<br />Country: Mexico","date: 1998-01-01<br />value:         NA<br />Country: Mexico","date: 1999-01-01<br />value:         NA<br />Country: Mexico","date: 2000-01-01<br />value:         NA<br />Country: Mexico","date: 2001-01-01<br />value:         NA<br />Country: Mexico","date: 2002-01-01<br />value:         NA<br />Country: Mexico","date: 2003-01-01<br />value:         NA<br />Country: Mexico","date: 2004-01-01<br />value:         NA<br />Country: Mexico","date: 2005-01-01<br />value:  13.351100<br />Country: Mexico","date: 2006-01-01<br />value:  16.378900<br />Country: Mexico","date: 2007-01-01<br />value:  18.038300<br />Country: Mexico","date: 2008-01-01<br />value:  15.436000<br />Country: Mexico","date: 2009-01-01<br />value:  22.791500<br />Country: Mexico","date: 2010-01-01<br />value:  22.823200<br />Country: Mexico","date: 2011-01-01<br />value:  22.835400<br />Country: Mexico","date: 2012-01-01<br />value:  27.943100<br />Country: Mexico","date: 2013-01-01<br />value:  30.241800<br />Country: Mexico","date: 2014-01-01<br />value:  29.325800<br />Country: Mexico","date: 2015-01-01<br />value:  29.679400<br />Country: Mexico","date: 2016-01-01<br />value:  26.963700<br />Country: Mexico","date: 2017-01-01<br />value:  28.413200<br />Country: Mexico","date: 2018-01-01<br />value:  28.894500<br />Country: Mexico","date: 2019-01-01<br />value:  32.233500<br />Country: Mexico"],"type":"scatter","mode":"lines","line":{"width":3.77952755905512,"color":"rgba(133,213,74,1)","dash":"solid"},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[6940,7305,7670,8035,8401,8766,9131,9496,9862,10227,10592,10957,11323,11688,12053,12418,12784,13149,13514,13879,14245,14610,14975,15340,15706,16071,16436,16801,17167,17532,17897],"y":[12.9918,13.803,15.1695,15.9754,15.8489,14.9896,14.9378,15.2114,12.9669,20.2279,24.5837,25.9694,32.2802,36.1485,38.0202,38.4021,36.6801,37.6329,37.7127,37.5189,45.4514,43.0183,38.1416,39.5751,32.1335,23.5575,24.2341,23.8859,25.3958,24.5771,36.506],"text":["date: 1989-01-01<br />value:  12.991800<br />Country: Singapore","date: 1990-01-01<br />value:  13.803000<br />Country: Singapore","date: 1991-01-01<br />value:  15.169500<br />Country: Singapore","date: 1992-01-01<br />value:  15.975400<br />Country: Singapore","date: 1993-01-01<br />value:  15.848900<br />Country: Singapore","date: 1994-01-01<br />value:  14.989600<br />Country: Singapore","date: 1995-01-01<br />value:  14.937800<br />Country: Singapore","date: 1996-01-01<br />value:  15.211400<br />Country: Singapore","date: 1997-01-01<br />value:  12.966900<br />Country: Singapore","date: 1998-01-01<br />value:  20.227900<br />Country: Singapore","date: 1999-01-01<br />value:  24.583700<br />Country: Singapore","date: 2000-01-01<br />value:  25.969400<br />Country: Singapore","date: 2001-01-01<br />value:  32.280200<br />Country: Singapore","date: 2002-01-01<br />value:  36.148500<br />Country: Singapore","date: 2003-01-01<br />value:  38.020200<br />Country: Singapore","date: 2004-01-01<br />value:  38.402100<br />Country: Singapore","date: 2005-01-01<br />value:  36.680100<br />Country: Singapore","date: 2006-01-01<br />value:  37.632900<br />Country: Singapore","date: 2007-01-01<br />value:  37.712700<br />Country: Singapore","date: 2008-01-01<br />value:  37.518900<br />Country: Singapore","date: 2009-01-01<br />value:  45.451400<br />Country: Singapore","date: 2010-01-01<br />value:  43.018300<br />Country: Singapore","date: 2011-01-01<br />value:  38.141600<br />Country: Singapore","date: 2012-01-01<br />value:  39.575100<br />Country: Singapore","date: 2013-01-01<br />value:  32.133500<br />Country: Singapore","date: 2014-01-01<br />value:  23.557500<br />Country: Singapore","date: 2015-01-01<br />value:  24.234100<br />Country: Singapore","date: 2016-01-01<br />value:  23.885900<br />Country: Singapore","date: 2017-01-01<br />value:  25.395800<br />Country: Singapore","date: 2018-01-01<br />value:  24.577100<br />Country: Singapore","date: 2019-01-01<br />value:  36.506000<br />Country: Singapore"],"type":"scatter","mode":"lines","line":{"width":3.77952755905512,"color":"rgba(194,223,35,1)","dash":"solid"},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[7305,7670,8035,8401,8766,9131,9496,9862,10227,10592,10957,11323,11688,12053,12418,12784,13149,13514,13879,14245,14610,14975],"y":[null,null,null,null,null,null,56.5419,53.952,50.9977,47.661,43.2814,41.0634,41.4535,43.4514,48.711,52.6719,52.3772,51.6464,57.5695,68.0571,76.5616,82.5735],"text":["date: 1990-01-01<br />value:         NA<br />Country: United States","date: 1991-01-01<br />value:         NA<br />Country: United States","date: 1992-01-01<br />value:         NA<br />Country: United States","date: 1993-01-01<br />value:         NA<br />Country: United States","date: 1994-01-01<br />value:         NA<br />Country: United States","date: 1995-01-01<br />value:         NA<br />Country: United States","date: 1996-01-01<br />value:  56.541900<br />Country: United States","date: 1997-01-01<br />value:  53.952000<br />Country: United States","date: 1998-01-01<br />value:  50.997700<br />Country: United States","date: 1999-01-01<br />value:  47.661000<br />Country: United States","date: 2000-01-01<br />value:  43.281400<br />Country: United States","date: 2001-01-01<br />value:  41.063400<br />Country: United States","date: 2002-01-01<br />value:  41.453500<br />Country: United States","date: 2003-01-01<br />value:  43.451400<br />Country: United States","date: 2004-01-01<br />value:  48.711000<br />Country: United States","date: 2005-01-01<br />value:  52.671900<br />Country: United States","date: 2006-01-01<br />value:  52.377200<br />Country: United States","date: 2007-01-01<br />value:  51.646400<br />Country: United States","date: 2008-01-01<br />value:  57.569500<br />Country: United States","date: 2009-01-01<br />value:  68.057100<br />Country: United States","date: 2010-01-01<br />value:  76.561600<br />Country: United States","date: 2011-01-01<br />value:  82.573500<br />Country: United States"],"type":"scatter","mode":"lines","line":{"width":3.77952755905512,"color":"rgba(253,231,37,1)","dash":"solid"},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":43.7625570776256,"r":7.30593607305936,"b":40.1826484018265,"l":43.1050228310502},"plot_bgcolor":"rgba(235,235,235,1)","paper_bgcolor":"rgba(255,255,255,1)","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"title":{"text":"Public Debt to GDP","font":{"color":"rgba(0,0,0,1)","family":"","size":17.5342465753425},"x":0,"xref":"paper"},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[6392.15,18444.85],"tickmode":"array","ticktext":["1990","2000","2010","2020"],"tickvals":[7305,10957,14610,18262],"categoryorder":"array","categoryarray":["1990","2000","2010","2020"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(255,255,255,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"y","title":{"text":"date","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-8.43225905,196.02029805],"tickmode":"array","ticktext":["0","50","100","150"],"tickvals":[0,50,100,150],"categoryorder":"array","categoryarray":["0","50","100","150"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(255,255,255,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"x","title":{"text":"Public Debt to GDP","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":false,"legend":{"bgcolor":"rgba(255,255,255,1)","bordercolor":"transparent","borderwidth":1.88976377952756,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.689497716895},"title":{"text":"","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}}},"hovermode":"closest","barmode":"relative"},"config":{"doubleClick":"reset","modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"source":"A","attrs":{"18606823c15a":{"x":{},"y":{},"colour":{},"type":"scatter"}},"cur_data":"18606823c15a","visdat":{"18606823c15a":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

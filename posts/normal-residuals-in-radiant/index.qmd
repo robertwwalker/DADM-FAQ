@@ -1,0 +1,93 @@
+---
+title: "Normal Residuals in Radiant"
+author: "Robert W. Walker"
+date: "2022-04-12"
+categories: [R, regression]
+image: "image.png"
+---
+
+`radiant` is a very convenient graphical interface for a curated subset of R's capabilities.  In this example, I show how to incorporate additional code into `radiant` to examine residual normality as a component of validating regression inference.
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message=FALSE, warning=FALSE)
+```
+
+Let us first begin with some example data.  We can read the data off of the github host location for this website.
+
+```{r}
+library(tidyverse)
+State.Data <- read_csv(url("https://raw.githubusercontent.com/robertwwalker/DADM-FAQ/main/posts/normal-residuals-in-radiant/data/state77.csv"))
+State.Data
+```
+
+You can access the radiant state file [here.](https://github.com/robertwwalker/DADM-FAQ/blob/main/posts/normal-residuals-in-radiant/data/regression-residuals.state.rda)
+
+## Regression Dialog
+
+I want a regression to illustrate, let me try to explain `life_exp` or life expectancy.
+
+![Regression](img/Screen Shot 2022-12-23 at 2.32.59 PM.png)
+
+We need to make sure we write the code to the report by using the scribe button just below and to the right of `+Store`.  
+
+![RadiantCode](img/Screen Shot 2022-12-23 at 2.44.09 PM.png)
+
+Press the button and the resulting code will appear in the Report tab in radiant under Rmd.
+
+```{r, eval=FALSE}
+library(radiant)
+result <- regress(
+  State.Data, 
+  rvar = "life_exp", 
+  evar = c("population", "income", "illiteracy", "murder", "hs_grad")
+)
+summary(result)
+```
+
+`Knit the report` to see the following output.
+
+```{r, echo=FALSE}
+library(radiant)
+result <- regress(
+  State.Data, 
+  rvar = "life_exp", 
+  evar = c("population", "income", "illiteracy", "murder", "hs_grad")
+)
+summary(result)
+```
+
+
+### gvlma
+
+To investigate residuals using radiant, we need to first call a library.  The library is `gvlma` or general validation of linear model assumptions.  The necessary command is `library(gvlma)`.  Then we want to call `gvlma` on the model.  In this case, that is `gvlma(result$model)`.
+
+![gvlma](img/Screen Shot 2022-12-23 at 2.33.54 PM.png)
+
+Once we have added the code, click `knit report` and the following output should result.
+
+```{r}
+library(gvlma)
+gvlma::gvlma(result$model)
+```
+
+There are reasons to prefer `gvlma` but we could also use a few other tools.  We could deploy a command that requires no additional libraries.  With a null hypothesis that residuals are normal *and recognizing this is probably best in cases like this with only fifty observations*.
+
+```{r}
+shapiro.test(result$model$residuals)
+```
+
+We could also use plotlyreg with the requisite packages installed.  I don't currently like this because it fails to pass the axis names.
+
+```{r}
+source(url("https://github.com/robertwwalker/DADMStuff/raw/master/PlotlyReg.R"))
+RegressionPlots(result$model)
+```
+
+`radiant()` also has a nice internal dashboard for assessing this.
+
+![dashboard](img/Screen Shot 2022-12-23 at 3.51.51 PM.png)
+
+That can be added to the report by clicking on the pencil/tablet.
+
+![dashboard2](img/Screen Shot 2022-12-23 at 3.54.44 PM.png)
+

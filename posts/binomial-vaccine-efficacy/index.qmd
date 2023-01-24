@@ -1,0 +1,65 @@
+---
+title: "Vaccine Efficacy: A Binomial Problem"
+author: "Robert W. Walker"
+date: "2020-11-24"
+categories: [R]
+image: "image.png"
+---
+
+When the first bits of efficacy on the Pfizer/BioNTech vaccine were released, this provides an excellent example for analysis using the binomial.  The blog post from phastar is [here.](https://phastar.com/resources/blog/250-statisticians-view-on-pfizer-covid19-vaccine-data)
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+options(scipen=7)
+```
+
+# A Quick and Dirty Vaccine Analysis: Initial Trials
+
+Last November, we got the first formal data with very encouraging news regarding the efficacy of the Pfizer/BioNTech COVID-19 vaccine.  A thorough and interesting description of the study [can be found on phastar](https://phastar.com/resources/blog/250-statisticians-view-on-pfizer-covid19-vaccine-data).  Using supplemental data from the blog post (I had not seen these key data details elsewhere), we can more fully understand what talk of vaccine efficacy means.  I should also their use of 95% is something embedded in the study protocol.
+
+The trial is a two-armed trial with equal numbers in the vaccine and placebo groups.  The total sample is 43,538 with `r 43538/2` in each arm.  Moveover, we learn that of 94 COVID cases, there were 8 in the vaccine group and 86 in the placebo group.  Disease condition is yes/no, repeated in identical trials for the two groups, to yield the following two exact binomial analyses.  First, let us examine the vaccinated groups. 
+
+```{r}
+# The Vaccinated Group
+binom.test(8, 21769)
+```
+
+In the vaccinated group, the probability of infection, with 95% confidence/probability, is estimated to range from 0.000159 to 0.000724.  1.6 to 7.2 in 10,000.  What about the unvaccinated group?
+
+```{r}
+# The Placebo Group
+binom.test(86, 21769)
+```
+
+In the placebo group, the probability of infection, with 95% confidence/probability, is estimated to range from 0.0032 to 0.0049.  That's somewhere between 32 and 49 in 10,000.  The smallest probability for the placebo group is 0.0032 while the largest probability for the vaccinated group is 0.000724.  The ratio is over 4.4 meaning you are at least 4.4 times more likely to be infected if unvaccinated, though the circulating variants and their frequency were quite different one year ago.
+
+As the article suggests, the standard measure of interest is vaccine efficacy; it is measured as 
+$$
+VE = \frac{Pr(Infection|Placebo) - Pr(Infection|Vaccine)}{Pr(Infection|Placebo)}
+$$
+
+With the two intervals above, we have intervals for each of the two quantities in the calculation.  What I do not know is what we might assume as a distribution for the confidence interval. Because it is two-sided, a uniform doesn't seem entirely unreasonable and should at least well constitute bounds on effectiveness if not rendering an appropriate shape.  
+
+Let me use a very basic Monte Carlo simulation to work through it.  I will first generate random probabilities between the two ends of the confidence interval for the `No.Vaccine` group and then do the same thing for the `Vaccine` group.
+
+```{r, message=FALSE, warning=FALSE}
+No.Vaccine <- runif(1000, 0.003161126, 0.004876658)
+Vaccine <- runif(1000, 0.0001586712, 0.0007239827)
+```
+
+Finally, I want to calculate Vaccine Efficacy using the simulated data and the formula given above.
+
+```{r}
+Simulated.Data <- data.frame(Vaccine,No.Vaccine) %>% mutate(Vaccine.Efficacy = (No.Vaccine - Vaccine) / No.Vaccine) 
+```
+
+I conclude by plotting `Vaccine.Efficacy`.
+
+```{r}
+Simulated.Data %>% ggplot() + aes(x=Vaccine.Efficacy) + 
+  geom_histogram(binwidth=0.005) + 
+# geom_density(color="red", size=3) + 
+  labs(title="Pfizer Vaccine Efficacy", x="Simulated Vaccine Efficacy", caption="Efficacy calculated using uniform simulations from 95% exact binomial intervals; 8 and 86 of 21769 for the groups.") + theme_minimal()
+```
+

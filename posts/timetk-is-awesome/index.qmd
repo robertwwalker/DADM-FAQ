@@ -1,0 +1,85 @@
+---
+title: "timetk is really, really handy"
+author: "Robert W. Walker"
+date: "2021-03-24"
+categories: [R, time_series, tidy]
+image: "image.png"
+---
+
+# timetk
+
+The `timetk` or time toolkit package for R provides a glorious complementary fork to the `tsibble` adopted in the FPP 3 text [and the preceding `forecast` package built around `fpp2`].  If you want to know about time series data types, I cannot stress how useful and complete the vignette on time series coercion that is written into[the documentation for timetk](https://business-science.github.io/timetk/articles/TK00_Time_Series_Coercion.html)
+
+## wrangling
+
+Wrangling is tidy and some of the things that you may have found frustrating about aggregation before may make more sense when shown using this approach.  For example, we needed effort to massage daily data on equities, that's a specific function of the indexing in a daily time series where markets are closed on weekends.  Time needs to be redefined.  [Questions like this get some attention here](https://business-science.github.io/timetk/articles/TK07_Time_Series_Data_Wrangling.html)
+
+## `condense_period`
+
+This function allow you easily aggregate `data.frame` data with the declaration of a time variable.  Elsewhere, I have an example of pivoting data [from wide to long](../pivots/).  It is very handy.
+
+```{r, message=FALSE, warning=FALSE}
+library(tidyverse)
+NWS <- read.csv(
+  url("https://www.weather.gov/source/pqr/climate/webdata/Portland_dailyclimatedata.csv"), 
+                skip=6, 
+                na.strings = c("M","-", "")) %>% 
+  rename(Variable = X) %>%
+  mutate(across(where(is.character), 
+                ~str_remove(.x, "/A"))) %>%
+  filter(!(MO==1 & YR==2020))
+library(magrittr)
+# I really like the magrittr %<>% pipe for updating data during cleaning
+# Start the daily data
+NWS.Daily <- NWS %>% select(-AVG.or.Total)
+# Rename the columns because Variable is actually X
+names(NWS.Daily) <- c("YR","MO","Variable",paste0("Day.",1:31))
+# Create the daily data frame though it contains days that do not actually exist. 
+# Every month nominally has 31 days.
+NWS.DF <- NWS.Daily %>% 
+  pivot_longer(., cols=starts_with("Day."), names_to = "Day", values_to = "value") %>% 
+  mutate(Day = str_remove(Day, "Day."))
+NWS.DF %<>% pivot_wider(., names_from = "Variable", values_from = "value")
+NWS.DF %<>% mutate(date = as.Date(paste(MO,Day,YR,sep="-"), format="%m-%d-%Y"))
+NWS.DF$SN[NWS.DF$date==as.Date("1978-12-07")] <- 0
+NWS.DF %<>% 
+  mutate(PR = recode(PR, T = "0.005"), 
+         SN = recode(SN, T = "0.005")) %>%
+  mutate(High = as.numeric(TX), 
+         Low = as.numeric(TN), 
+         Precipitation = as.numeric(PR), 
+         Snow = as.numeric(SN)
+         ) %>%
+    select(date, High, Low, Precipitation, Snow)
+library(kableExtra)
+head(NWS.DF, n=40) %>% kable() %>% scroll_box(width="600px", height="400px")
+```
+
+## Aggregating
+
+This would normally be a pain; `timetk` makes it easy.  I want to aggregate them by the last period of whatever month it happens to be.
+
+```{r, message=FALSE, warning=FALSE}
+library(timetk)
+NWS.Analysis.M <- NWS.DF %>% condense_period(., date, .period="1 month", .side="end")
+```
+
+## fpp3
+
+```{r}
+library(fpp3)
+NWS.TS.M <- NWS.Analysis.M %>% mutate(YM=yearmonth(date)) %>% as_tsibble(index=YM)
+NWS.Analysis.M %>%
+  mutate(YM=yearmonth(date)) %>%
+  select(YM, High, Low) %>%
+  pivot_longer(c(High, Low)) %>%
+  mutate(Temperature=name) %>%
+  select(-name) %>%
+  as_tsibble(index=YM, key=Temperature) %>%
+  autoplot(value, alpha=0.3) + 
+  labs(title="High and Low Temperatures in Portland, Oregon",
+       x = "Month",
+       y = "Temperature (F)") +
+  theme_minimal()
+```
+

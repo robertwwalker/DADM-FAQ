@@ -1,0 +1,23 @@
+---
+title: "the clock package: a c port"
+author: "Robert W. Walker"
+date: "2021-06-28"
+categories: [R, time_series]
+image: "image.png"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message=FALSE, warning=FALSE)
+```
+
+# the `clock` package
+
+The main page for the just-released clock package by Davis Vaughan is linked.  This is a supplement to lubridate that handles a number of special cases with native C++ date/time structures instead of R's date classes.  There are many date and time edge cases and `clock` allows them to be handled in a systematic and consistent way.  There are some useful vignettes for illustration.
+
+- [Getting Started](https://clock.r-lib.org/articles/clock.html)
+- [Motivations for clock](https://clock.r-lib.org/articles/motivations.html)
+- [Frequently Asked Questions](https://clock.r-lib.org/articles/faq.html)
+
+[The full function reference](https://clock.r-lib.org/reference/index.html)
+
+[Here is the package website](https://github.com/r-lib/clock).

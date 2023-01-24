@@ -1,0 +1,14 @@
+{
+  "hash": "16892a28a3a2c5296f7e3c80747b1de4",
+  "result": {
+    "markdown": "---\ntitle: \"A nice post on seasonal adjustment\"\nauthor: \"Robert W. Walker\"\ndate: \"2021-06-24\"\ncategories: [R, time_series]\nimage: \"image.png\"\n---\n\n\n\n\n# Seasonal adjustment\n\n[A nice blog post on seasonal adjustment](https://usefulr.wordpress.com/2021/03/09/seasonal-adjustment-of-multiple-series/)\n\nThe package contains a nice vignette for handling multiple series for seasonal adjustments using `seasonal`.  [You can find it here....](https://cran.r-project.org/web/packages/seasonal/vignettes/multiple.html)\n\n![screenshot](image.png)\n\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

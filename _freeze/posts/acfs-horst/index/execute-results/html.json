@@ -1,0 +1,14 @@
+{
+  "hash": "db41d57c16b9b9b9d8cf3196426e46cc",
+  "result": {
+    "markdown": "---\ntitle: \"the clock package: a c port\"\nauthor: \"Robert W. Walker\"\ndate: \"2021-06-28\"\ncategories: [R, time_series]\nimage: \"image.png\"\n---\n\n\n\n\n# the `clock` package\n\nThe main page for the just-released clock package by Davis Vaughan is linked.  This is a supplement to lubridate that handles a number of special cases with native C++ date/time structures instead of R's date classes.  There are many date and time edge cases and `clock` allows them to be handled in a systematic and consistent way.  There are some useful vignettes for illustration.\n\n- [Getting Started](https://clock.r-lib.org/articles/clock.html)\n- [Motivations for clock](https://clock.r-lib.org/articles/motivations.html)\n- [Frequently Asked Questions](https://clock.r-lib.org/articles/faq.html)\n\n[The full function reference](https://clock.r-lib.org/reference/index.html)\n\n[Here is the package website](https://github.com/r-lib/clock).\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}
