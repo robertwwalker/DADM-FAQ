@@ -1,0 +1,16 @@
+{
+  "hash": "9f979330032a0c30558703ce9c64720e",
+  "result": {
+    "markdown": "---\ntitle: Changing the Default `ggplot` theme\nauthor: Robert W. Walker\ndate: '2023-01-25'\nslug: visualize-two-qualities\ncategories:\n  - R\ntags:\n  - plot\nsubtitle: ''\nsummary: ''\nlastmod: '2023-01-25T08:04:06-07:00'\ntoc: true\n---\n\n\nOne can globally set the theme in an RMarkdown or Quarto Markdown document with `theme_set()`.  If run at the console, every subsequent `ggplot` invocation will default to that theme.  If set inside an R/Qmd file, then it will apply to everything in the file.  First, let me load ggplot.  \n\n\n::: {.cell}\n\n```{.r .cell-code}\nlibrary(ggplot2)\n```\n:::\n\n\n## The `cars` data\n\nI will use R's internal cars dataset to illustrate.  This is the data; `?cars` will detail the variables.\n\n\n::: {.cell}\n\n```{.r .cell-code}\ncars\n```\n\n::: {.cell-output .cell-output-stdout}\n```\n   speed dist\n1      4    2\n2      4   10\n3      7    4\n4      7   22\n5      8   16\n6      9   10\n7     10   18\n8     10   26\n9     10   34\n10    11   17\n11    11   28\n12    12   14\n13    12   20\n14    12   24\n15    12   28\n16    13   26\n17    13   34\n18    13   34\n19    13   46\n20    14   26\n21    14   36\n22    14   60\n23    14   80\n24    15   20\n25    15   26\n26    15   54\n27    16   32\n28    16   40\n29    17   32\n30    17   40\n31    17   50\n32    18   42\n33    18   56\n34    18   76\n35    18   84\n36    19   36\n37    19   46\n38    19   68\n39    20   32\n40    20   48\n41    20   52\n42    20   56\n43    20   64\n44    22   66\n45    23   54\n46    24   70\n47    24   92\n48    24   93\n49    24  120\n50    25   85\n```\n:::\n:::\n\n\n## A plot with defaults\n\n\n::: {.cell}\n\n```{.r .cell-code}\nggplot(cars) + aes(x=speed, y=dist) + geom_point()\n```\n\n::: {.cell-output-display}\n![](index_files/figure-html/unnamed-chunk-3-1.png){width=672}\n:::\n:::\n\n\n## Setting a default theme\n\nLet me set the theme for this to `theme_minimal`.\n\n\n::: {.cell}\n\n```{.r .cell-code}\ntheme_set(theme_minimal())\n```\n:::\n\n\n## The Same Plot with a New Default Theme\n\n\n::: {.cell}\n\n```{.r .cell-code}\nggplot(cars) + aes(x=speed, y=dist) + geom_point()\n```\n\n::: {.cell-output-display}\n![](index_files/figure-html/unnamed-chunk-5-1.png){width=672}\n:::\n:::\n",
+    "supporting": [
+      "index_files"
+    ],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

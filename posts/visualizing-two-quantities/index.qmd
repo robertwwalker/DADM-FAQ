@@ -1,0 +1,152 @@
+---
+title: Visualizing Two Quantitative Variables
+author: Robert W. Walker
+date: '2023-01-25'
+slug: visualize-two-qualities
+categories:
+  - R
+  - dataviz
+tags:
+  - plot
+subtitle: ''
+summary: ''
+lastmod: '2023-01-25T08:04:06-07:00'
+toc: true
+image: img/preview.png
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, tidy=TRUE)
+library(tidyverse)
+```
+
+# Bonds
+
+A dataset for illustrating the various available visualizations needs a certain degree of richness with manageable size.  The dataset on *Bonds* contains three categorical and a few quantitative indicators sufficient to show what we might wish.
+
+## Loading the Data
+
+```{r}
+Bonds <- read.csv(url("https://raw.githubusercontent.com/robertwwalker/DADMStuff/master/BondFunds.csv"))
+```
+
+## A Summary
+
+```{r}
+library(skimr)
+Bonds %>% 
+  skim()
+```
+
+Most data types are represented.  There is no time variable so dates and the visualizations that go with time series are omitted.
+
+# Data Visualization
+
+The primary visualization that we might use for a combination of two quantities is the scatterplot: `geom_point()`. I will also make use of `facet`.  Let me work with Assets and Returns, then with Risk.
+
+## `geom_point()`
+
+```{r, tidy=TRUE}
+Bonds %>%
+  ggplot() +
+  aes(x=Assets, y=Return.2009) +
+  geom_point()
+```
+
+### A little better: theming
+
+I do not like the default theme.
+
+```{r, tidy=TRUE}
+Bonds %>%
+  ggplot() +
+  aes(x=Assets, y=Return.2009) +
+  geom_point() +
+  theme_minimal()
+```
+
+## Fixing Overplotting
+
+`ggplot` has an alternative geometry known as `geom_jitter()` that jitters -- adds arbitrarily small amounts to the x and y coordinates.
+
+```{r, tidy=TRUE}
+Bonds %>%
+  ggplot() +
+  aes(x=Assets, y=Return.2009) +
+  geom_jitter() +
+  theme_minimal()
+```
+
+The two controls for the jitter are width:
+
+![width](./img/Screenshot 2023-01-25 at 9.11.14 AM.png)
+
+```{r, tidy=TRUE}
+Bonds %>%
+  ggplot() +
+  aes(x=Assets, y=Return.2009) +
+  geom_jitter(width=0.25) +
+  theme_minimal()
+```
+
+```{r, tidy=TRUE}
+Bonds %>%
+  ggplot() +
+  aes(x=Assets, y=Return.2009) +
+  geom_jitter(height=0.25) +
+  theme_minimal()
+```
+
+
+and the height
+
+![height](./img/Screenshot 2023-01-25 at 9.11.25 AM.png)
+## Some other elements
+
+Since I am going to work with Risk, let's try that in color.
+
+```{r, tidy=TRUE}
+Bonds %>%
+  ggplot() +
+  aes(x=Assets, y=Return.2009, color=Risk) +
+  geom_point() +
+  theme_minimal()
+```
+
+## A bubble plot?
+
+Now I will put Risk on `x` and Returns on `y` with the size of the bubble determined by Assets.  First, without jitter.
+
+```{r, tidy=TRUE}
+Bonds %>%
+  ggplot() +
+  aes(x=Risk, y=Return.2009, size=Assets, color=Risk) +
+  geom_point() +
+  theme_minimal() +
+  guides(color="none")
+```
+
+
+
+```{r, tidy=TRUE}
+Bonds %>%
+  ggplot() +
+  aes(x=Risk, y=Return.2009, color=Risk, size=Assets) +
+  geom_jitter(width=0.45) +
+  theme_minimal() +
+  guides(color="none")
+```
+
+## Deploying Facets
+
+```{r}
+Bonds %>%
+  ggplot() +
+  aes(x=Assets, y=Return.2009, color=Risk, facet=Risk) +
+  geom_point() +
+  theme_minimal() +
+  guides(color="none") +
+  facet_wrap(~Risk)
+```
+
