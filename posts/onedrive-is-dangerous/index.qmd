@@ -1,0 +1,30 @@
+---
+title: "Friends don't let Friends use OneDrive for R Libraries"
+author: "Robert W. Walker"
+date: "2023-01-26"
+categories: [HOWTO, R]
+---
+
+
+![Annotated OneDrive Image](thumbnail.jpg)
+
+# TLDR
+
+Allowing libraries to be installed inside the OneDrive ecosystem on Windows machines is dangerous.  They have to be moved.  Here's how.
+
+
+## Brief Background
+
+For longstanding file sharing reasons, OneDrive often locks files to sync and this can cause random crashes and assorted errors if the R libraries are installed there.  On many computers, the default library location will exist inside the OneDrive's domain of directories to backup.  Indeed, Windows has generic file locking and sharing issues for certain file types.
+
+## How to Fix the Problem
+
+1. We need to create a directory outside of the OneDrive's purview; something directly off of root `C:` is best.  Though you need not following my naming convention, I will use `mkdir C:/RLibs`.  If you choose something different, that should be substituted below where I use `RLibs`.
+2. Using the RStudio's Tools > Install packages or the R Console, we will need to install `usethis`.  At the console it is, `install.packages("usethis")`
+3. `library(usethis)`
+4. `edit_r_profile()`
+5. `.libPaths(c("C:\RLibs", .libPaths()))` 
+6. Restart RStudio.
+7. `Tools > Install Packages` should now default to `C:\RLibs`.
+
+[Here is a short video on youtube](https://youtu.be/y-zY3JIBPF8). **WARNING**: it contains some slip-ups that I intentionally made so that you can see what goes wrong in the easiest places for things to get stuck.
