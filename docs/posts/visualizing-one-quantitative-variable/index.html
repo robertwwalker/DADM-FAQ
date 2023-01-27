@@ -129,8 +129,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <link rel="stylesheet" href="../../styles.css">
 <meta name="twitter:title" content="Data Analysis, Modelling, and Decision-Making FAQ - Visualizing One Quantitative Variable">
 <meta name="twitter:description" content="">
+<meta name="twitter:image" content="https://quartopub.com/sites/rww/dadm-faq/posts/visualizing-one-quantitative-variable/thumbnail.png">
 <meta name="twitter:creator" content="@PieRatio">
-<meta name="twitter:card" content="summary">
+<meta name="twitter:image-height" content="835">
+<meta name="twitter:image-width" content="1352">
+<meta name="twitter:card" content="summary_large_image">
 </head>
 
 <body class="nav-fixed">
@@ -176,6 +179,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <h1 class="title">Visualizing One Quantitative Variable</h1>
                                 <div class="quarto-categories">
                 <div class="quarto-category">R</div>
+                <div class="quarto-category">dataviz</div>
+                <div class="quarto-category">ggplot2</div>
               </div>
                   </div>
   </div>
@@ -186,7 +191,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <div>
       <div class="quarto-title-meta-heading">Author</div>
       <div class="quarto-title-meta-contents">
-               <p> </p>
+               <p>Robert W. Walker </p>
             </div>
     </div>
       
@@ -488,12 +493,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </table>
 </div>
 </div>
-<p>Most data types are represented. There is no time variable so dates and the visualizations that go with time series are omitted.</p>
+<p>Most data types are represented. There is no time variable so dates and the visualizations that go with time series are omitted. It is worth noting that many of these variables contain significant skew. For example, the mean of Assets is larger than 75% of the values. There are a small number of huge funds.</p>
 </section>
 </section>
 <section id="data-visualization" class="level1">
 <h1>Data Visualization</h1>
-<p>First, let us look at visualizations for one quantitative variable. Let me focus on assets..</p>
+<p>First, let us look at visualizations for one quantitative variable. Let me focus on assets, with the previous caveat in mind.</p>
 <section id="geom_histogram" class="level2">
 <h2 class="anchored" data-anchor-id="geom_histogram"><code>geom_histogram()</code></h2>
 <p>A histogram divides the data into categories and counts the observations per category. The width of the categories [on x] is determined by <code>binwidth=</code> or the binwidth can be calculated as a function of the range and the number of bins <code>bin=</code>. I will define it as <em>Gen.Hist</em>.</p>

@@ -6,11 +6,11 @@ slug: visualize-two-qualities
 categories:
   - R
   - dataviz
+  - gpplot2
 tags:
   - plot
 subtitle: ''
 summary: ''
-authors: []
 lastmod: '2020-09-13T20:04:06-07:00'
 toc: true
 image: preview.png
@@ -20,6 +20,7 @@ image: preview.png
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, tidy=TRUE)
 library(tidyverse)
+theme_set(theme_minimal())
 ```
 
 # Bonds

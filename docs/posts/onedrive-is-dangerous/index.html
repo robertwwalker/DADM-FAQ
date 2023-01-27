@@ -164,8 +164,9 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="how-to-fix-the-problem" class="level2">
 <h2 class="anchored" data-anchor-id="how-to-fix-the-problem">How to Fix the Problem</h2>
+<p>Anything in <code>verbatim</code> is code for the Terminal/Command prompt or R Console.</p>
 <ol type="1">
-<li>We need to create a directory outside of the OneDrive’s purview; something directly off of root <code>C:</code> is best. Though you need not following my naming convention, I will use <code>mkdir C:/RLibs</code>. If you choose something different, that should be substituted below where I use <code>RLibs</code>.</li>
+<li>We need to create a directory outside of the OneDrive’s purview; something directly off of root <code>C:</code> is best. Though you need not following my naming convention, I will use <code>mkdir C:/RLibs</code>. If you choose something different, that should be substituted below where I use <code>RLibs</code>. This must either be done in the RStudio in Terminal in the bottom left pane or from the Windows command prompt.</li>
 <li>Using the RStudio’s Tools &gt; Install packages or the R Console, we will need to install <code>usethis</code>. At the console it is, <code>install.packages("usethis")</code></li>
 <li><code>library(usethis)</code></li>
 <li><code>edit_r_profile()</code></li>

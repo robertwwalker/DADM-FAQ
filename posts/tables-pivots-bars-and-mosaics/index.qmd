@@ -1,0 +1,247 @@
+---
+title: Tables, Pivots, Bars, and Mosaics
+author: Robert W. Walker
+date: '2019-10-09'
+slug: tables-pivots-bars-and-mosaics
+categories:
+  - R
+  - tidyverse
+  - tables
+tags:
+  - tidyverse
+  - R Markdown
+image: thumbnail.jpg
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning=FALSE, message=FALSE)
+```
+
+# R Markdown
+
+There is detailed help for all that Markdown can do under Help in the RStudio.  The key to it is knitting documents with the *Knit* button in the RStudio.  If we use helpers like the R Commander, Radiant, or 
+*esquisse*, we will need the R code implanted in the Markdown document in particular ways.  I will use Markdown for *everything*.  I even use a close relation of Markdown in my scholarly pursuits.
+
+## The Packages: *tidyverse* and *esquisse*
+
+We will rely on five.  The *tidyverse* is Hadley Wickham's collection of packages.  It represents a different philosophy for the construction of exploratory data analysis with literate programming -- code that you can read.  We will rely on the `%>%` piping operators of the *magrittr* package that pipes something to a subsequent command as a core function of the tidyverse.  
+
+For everything that we want in a summary, there is the *skimr* function *skim*.  For cross-tabulation the easy way, there is *janitor*.  The other two are developmental pieces of software that have yet to deploy into the regular package system of R.  *esquisse* and parts of *that's so random* blog's package for implementing ggmosaic.
+
+```
+pkgTest <- function(x)
+  {
+    if (!require(x,character.only = TRUE))
+    {
+      install.packages(x,dep=TRUE, type="binary")
+        if(!require(x,character.only = TRUE)) stop("Package not found")
+    }
+}
+pkgTest("tidyverse")
+pkgTest("magrittr")
+pkgTest("skimr")
+pkgTest("janitor")
+pkgTest("devtools")
+devtools::install_github("EdwinTH/thatssorandom")
+pkgTest("dreamRs/esquisse")
+```
+
+## Loading the Data
+
+First, the data.
+
+```{r}
+Bond.Funds <- read.csv("https://github.com/robertwwalker/DADMStuff/raw/master/BondFunds.csv")
+```
+
+What does it measure?  Various measures for a collection of bond funds.
+
+1. Type: **Intermediate Government** or **Short-Term Corporate** 
+2. Fees: **Yes** or **No**
+3. Risk:  **Above Average**, **Average**, or **Below Average**
+4. Assets: Assets under management (in $ Millions).
+5. Return 2009: The annual returns in 2009.
+6. 3-Year-Return: The average annual return over three years.
+7. 5-Year-Return: The average annual return over five years.
+
+## A first go
+
+To get a sense of the data, I will load the *skim* function and put it to work.  In *R*, we will use the `library` command to load *functions* into the *namespace* -- the set of recognizable commands.  *R* needs to know how a function is defined to use it.  The function *skim* appears in the *skimr* library.
+
+```{r SkBF}
+library(skimr)
+skim(Bond.Funds)
+# skimr::skim(Bond.Funds)
+```
+
+
+# tidy?
+
+The beauty of *tidy* is rendering code readable with an organizational focus on data objects.  Let me take the Bond Funds example and use a simple literate example to mirror a pivot table.  Let's pivot two basic statistics, the mean and standard deviation, then the median and interquartile range grouped by Risk.  I should point out that the variable names containing spaces are difficult and have to be enclosed in quotes.  Better naming at the outset would help.  With simple names, we can ignore the quoting.
+
+## Numerical Summary
+
+```{r BF1, message=FALSE}
+library(tidyverse)
+Bond.Funds %>% 
+  group_by(Risk) %>% 
+  summarise(Avg.Return = mean(Return.2009), 
+            SD.Return=sd(Return.2009),
+            median.Return=median(Return.2009),
+            IQR.Return=IQR(Return.2009))
+```
+
+I can also use *skim*.
+
+```{r SKBF1}
+Bond.Funds %>% 
+  group_by(Risk,Fees) %>% 
+  skim(Return.2009)
+```
+
+
+I want to recreate a categorical pivot table also.  
+
+## Categorical Descriptions Requires Tables [or Graphics]
+
+There are numerous ways to build tables in R.  Base R has a *table* function that works but it does not naturally work inside data environments; we have to provide them using `$` or `with` environments [or `%$%` in *magrittr*].  This brief description of environments is part of a broader idea of *scoping* in R.
+
+### Easiest: janitor
+
+The package *janitor* contains a *tabyl* with the ability to add totals and calculate percentages of relevance.  Here are two examples.
+
+```{r BFJan}
+library(janitor)
+Bond.Funds %>% tabyl(Fees,Risk) %>% adorn_totals(c("row","col"))
+Bond.Funds %>% tabyl(Fees,Risk) %>% adorn_percentages("row")
+```
+
+
+### Easier with xtabs and formulae
+
+This is actually made much easier with a slightly new form of syntax: formulae.  Base R, as you have already learned (or will learn) with *swirl*, uses different and less readable syntax than the tidyverse.  But this is a problem that is quite easy for R in the base commands *table* and *xtabs* [crosstabs].  In the first instance, we merely create a table counting values.  In the second, the data is a named argument for the function *xtabs* that requires a statement of *margins* for the table as a series of names with "+".  The order will determine the rows [first] and the columns [second]. 
+
+```{r PTXT2}
+table(Bond.Funds$Fees,Bond.Funds$Risk)
+xtabs(~Fees+Risk, data=Bond.Funds)
+```
+
+These can also be assigned as objects using the `<-`; this saves a local version of the table as something that we can work on.  I will call mine `FR.Tab` for the F(ees)R(isk).Tab(le).
+
+```{r NT1}
+FR.Tab <- xtabs(~Fees+Risk, data=Bond.Funds)
+```
+
+### Worst: Table
+
+Base R table is great but it requires that we specify an environment.  To grab a variable from inside a data.frame requires `$`, as in
+
+```{r BRT1}
+table(Bond.Funds$Fees,Bond.Funds$Risk)
+BRTab1 <- table(Bond.Funds$Fees,Bond.Funds$Risk)
+```
+
+We can accomplish the same with *with*, telling R to evaluate something inside whatever data object is in *with*, for example,
+
+```{r WTab1}
+with(Bond.Funds, table(Fees,Risk))
+WBF1 <- with(Bond.Funds, table(Fees,Risk))
+```
+
+## Conditional Frequency
+
+If we think about conditional probability as measured in proportions of the table, we can ask R to calculate them.  The command is *prop.table* and the inputs are a table and a *margin* here 1 is rows [conditioning on the first name you entered] and 2 is columns [the second name you entered].  Nothing specified is joint or total.
+
+```{r PTXT1}
+prop.table(FR.Tab)
+prop.table(FR.Tab, 1)
+prop.table(FR.Tab, 2)
+prop.table(WBF1)
+prop.table(WBF1, 1)
+prop.table(WBF1, 2)
+```
+
+
+## Pivot Plots [Mosaic]
+
+Base R Graphics contain a mosaic with the same formula as the cross-tabulation above.
+
+```{r MP1, message=FALSE}
+mosaicplot(~Risk+Fees, data=Bond.Funds)
+```
+
+I recently came across a nice plotter for tabular data on *github*.  You can search for it as *thatssorandom*.  We installed it above.
+
+```{r pMos, echo=FALSE, eval=TRUE, message=FALSE}
+library(thatssorandom)
+ggmm(Bond.Funds, y=Fees, x=Risk, add_text = "n")
+```
+
+Notice it handles an implicit plotting of the set of conditional probabilities along the relevant margin.  It is plotting $Pr(Fees|Risk)$ as breaks along the *y-axis* defined by frequency/empirical probability.  This would be the equivalent of taking the *column marginal* of the table of Fees and Risk that we saw before.  Now it has a graphical representation.
+
+```{r PTRes1}
+prop.table(FR.Tab, 2)
+```
+
+## For Berkeley Admissions:
+
+```{r}
+data("UCBAdmissions")
+UCB <- DescTools::Untable(UCBAdmissions)
+UCB$Gender <- as.character(UCB$Gender)
+UCB$Gender[UCB$Gender=="Male"] <- "M"
+UCB$Gender[UCB$Gender=="Female"] <- "F"
+UCB$DeptMF <- paste(UCB$Dept,UCB$Gender, sep=":")
+UCB <- UCB %>% select(Admit,DeptMF)
+p1 <- ggmm(UCB, x=DeptMF, y=Admit, add_text = "n")
+p1 + labs(x="Dept:M/F", y="Admitted") + theme(axis.text=element_text(size=10))
+```
+
+
+## Barplots
+
+Basic things like barplots can be accomplished in many ways.  Using the *R4DS* approach, we have
+
+```{r GGBar}
+ggplot(data = Bond.Funds) + 
+  stat_count(mapping = aes(x = Risk))
+```
+
+Placed into densities.  This is really only helpful with another dimension because the X is categorical so all bars will be height 1.
+
+```{r GGBar2}
+ggplot(data = Bond.Funds, aes(x = Risk, fill=Fees)) + geom_bar(position="fill") + theme_minimal()
+```
+
+Or in Base R
+
+```{r BRBar}
+par(mfrow=c(1,2))
+barplot(table(Bond.Funds$Risk))
+barplot(table(Bond.Funds$Fees,Bond.Funds$Risk))
+```
+
+A legend would help.
+
+```{r BRBar2}
+par(mfrow=c(1,2))
+barplot(table(Bond.Funds$Fees,Bond.Funds$Risk), legend=TRUE)
+barplot(table(Bond.Funds$Fees,Bond.Funds$Risk), legend=TRUE, args.legend=list(bty="n"))
+```
+
+## Simple Visualization: *esquisse()*
+
+There is a wonderful tool for quickly succeeding with one of the most elegant and frustrating parts of R -- *ggplot2*.  Hadley Wickham's *Grammar of Graphics* is brilliant when understood but is hard to comprehend initially and the programming structure of the package *makes* it hard for learners.  Fortunately, a package called *esquisse* is available to make *ggplot2* drag and drop to harness much of the power in an easy fashion.  With code in the output, it also facilitates learning how to manipulate the code of *ggplot2*.
+
+*esquisse* is quite powerful; we can explore this at length.  Here is a simple graphic that I created with x and fills.
+
+```{r GGP1}
+library(ggplot2)
+plt1 <- ggplot(data = Bond.Funds) +
+  aes(x = Type, fill = Fees) +
+  geom_bar() +
+  theme_minimal()
+plt1
+```
+
+If you notice, *esquisse* directly outputs graphics to powerpoint.  This feature is quite useful.

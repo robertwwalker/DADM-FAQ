@@ -128,11 +128,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <link rel="stylesheet" href="../../styles.css">
 <meta name="twitter:title" content="Data Analysis, Modelling, and Decision-Making FAQ - Visualizing One Qualitative and One Quantitative Variable">
 <meta name="twitter:description" content="">
+<meta name="twitter:image" content="https://quartopub.com/sites/rww/dadm-faq/posts/visualizing-mixed-data/thumbnail.png">
 <meta name="twitter:creator" content="@PieRatio">
-<meta name="twitter:card" content="summary">
+<meta name="twitter:image-height" content="865">
+<meta name="twitter:image-width" content="1400">
+<meta name="twitter:card" content="summary_large_image">
 </head>
 
-<body class="nav-fixed fullcontent">
+<body class="nav-fixed">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -186,7 +189,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <div>
       <div class="quarto-title-meta-heading">Author</div>
       <div class="quarto-title-meta-contents">
-               <p> </p>
+               <p>Robert W. Walker </p>
             </div>
     </div>
       
@@ -204,7 +207,35 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
-    
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#bonds" id="toc-bonds" class="nav-link active" data-scroll-target="#bonds">Bonds</a>
+  <ul class="collapse">
+  <li><a href="#loading-the-data" id="toc-loading-the-data" class="nav-link" data-scroll-target="#loading-the-data">Loading the Data</a></li>
+  <li><a href="#a-summary" id="toc-a-summary" class="nav-link" data-scroll-target="#a-summary">A Summary</a></li>
+  </ul></li>
+  <li><a href="#data-visualization" id="toc-data-visualization" class="nav-link" data-scroll-target="#data-visualization">Data Visualization</a>
+  <ul class="collapse">
+  <li><a href="#geom_boxplot" id="toc-geom_boxplot" class="nav-link" data-scroll-target="#geom_boxplot"><code>geom_boxplot()</code></a></li>
+  <li><a href="#geom_dotplot" id="toc-geom_dotplot" class="nav-link" data-scroll-target="#geom_dotplot"><code>geom_dotplot()</code></a>
+  <ul class="collapse">
+  <li><a href="#improved" id="toc-improved" class="nav-link" data-scroll-target="#improved">Improved</a></li>
+  </ul></li>
+  <li><a href="#geom_violin" id="toc-geom_violin" class="nav-link" data-scroll-target="#geom_violin"><code>geom_violin()</code></a>
+  <ul class="collapse">
+  <li><a href="#adjusting-the-area-scalecount" id="toc-adjusting-the-area-scalecount" class="nav-link" data-scroll-target="#adjusting-the-area-scalecount">Adjusting the area: <code>scale=count</code></a></li>
+  <li><a href="#adjusting-the-area-scalewidth" id="toc-adjusting-the-area-scalewidth" class="nav-link" data-scroll-target="#adjusting-the-area-scalewidth">Adjusting the area: <code>scale=width</code></a></li>
+  <li><a href="#adjusting-the-bandwidth" id="toc-adjusting-the-bandwidth" class="nav-link" data-scroll-target="#adjusting-the-bandwidth">Adjusting the bandwidth</a></li>
+  </ul></li>
+  <li><a href="#geom_density-with-colorfill" id="toc-geom_density-with-colorfill" class="nav-link" data-scroll-target="#geom_density-with-colorfill"><code>geom_density()</code> with color/fill</a></li>
+  <li><a href="#geom_beeswarm" id="toc-geom_beeswarm" class="nav-link" data-scroll-target="#geom_beeswarm"><code>geom_beeswarm()</code></a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
 <!-- main -->
 <main class="content quarto-banner-title-block" id="quarto-document-content">
 

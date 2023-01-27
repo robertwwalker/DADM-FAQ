@@ -3,6 +3,7 @@ title: "Friends don't let Friends use OneDrive for R Libraries"
 author: "Robert W. Walker"
 date: "2023-01-26"
 categories: [HOWTO, R]
+
 ---
 
 
@@ -19,7 +20,9 @@ For longstanding file sharing reasons, OneDrive often locks files to sync and th
 
 ## How to Fix the Problem
 
-1. We need to create a directory outside of the OneDrive's purview; something directly off of root `C:` is best.  Though you need not following my naming convention, I will use `mkdir C:/RLibs`.  If you choose something different, that should be substituted below where I use `RLibs`.
+Anything in `verbatim` is code for the Terminal/Command prompt or R Console.
+
+1. We need to create a directory outside of the OneDrive's purview; something directly off of root `C:` is best.  Though you need not following my naming convention, I will use `mkdir C:/RLibs`.  If you choose something different, that should be substituted below where I use `RLibs`.  This must either be done in the RStudio in Terminal in the bottom left pane or from the Windows command prompt.
 2. Using the RStudio's Tools > Install packages or the R Console, we will need to install `usethis`.  At the console it is, `install.packages("usethis")`
 3. `library(usethis)`
 4. `edit_r_profile()`

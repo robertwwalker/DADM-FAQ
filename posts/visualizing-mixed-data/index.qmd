@@ -6,17 +6,20 @@ slug: visualize-mixed-data
 categories:
   - R
   - dataviz
+  - ggplot2
 tags:
   - plot
 subtitle: ''
 summary: ''
-lastmod: '2023-01-25T09:04:06-07:00'
+image: thumbnail.png
+toc: true
 ---
 
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, tidy=TRUE)
 library(tidyverse)
+theme_set(theme_minimal())
 ```
 
 # Bonds
