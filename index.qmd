@@ -1,5 +1,5 @@
 ---
-title: "Data Analysis, Modelling, and Decision-Making"
+title: "Occasionally and Frequently Asked Questions"
 listing:
   type: table
   contents: posts

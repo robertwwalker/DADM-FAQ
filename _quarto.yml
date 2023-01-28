@@ -3,10 +3,13 @@ project:
   output-dir: docs
 
 website:
-  title: "Data Analysis, Modelling, and Decision-Making FAQ"
+  title: "Data Analysis, Modelling, and Decision-Making"
   twitter-card: 
     creator: "@PieRatio"
   navbar:
+    logo: "AGSMlogo.jpeg"
+#    background: "lavender"
+#    foreground: "purple"
     right:
       - about.qmd
       - icon: github
@@ -15,5 +18,6 @@ website:
         href: https://twitter.com/PieRatio
 format:
   html:
-    theme: minty
+    theme: morph
     css: styles.css
+#    backgroundcolor: "purple"
