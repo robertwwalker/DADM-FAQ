@@ -1,5 +1,5 @@
 ---
-title: "About the DADM FAQ"
+title: "About the DADM O/FAQ"
 image: profile.jpg
 about:
   template: jolla
