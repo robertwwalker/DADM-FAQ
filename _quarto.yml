@@ -16,8 +16,16 @@ website:
         href: https://github.com/robertwwalker/DADM-FAQ
       - icon: twitter
         href: https://twitter.com/PieRatio
+  page-footer:
+    left: |
+      <span class="faux-block">License: [{{< fa brands creative-commons >}} {{< fa brands creative-commons-by >}} {{< fa brands creative-commons-sa >}} Creative Commons CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)</span>      
+    right: |
+      <span class="faux-block">{{< fa brands r-project >}} and [Quarto](https://quarto.org/)</span>
+      <span class="faux-block">[View the source at {{< fa brands github >}} GitHub]({{< var github-url >}})</span>
+
 format:
   html:
     theme: morph
     css: styles.css
+    mainfont: Inconsolata
 #    backgroundcolor: "purple"

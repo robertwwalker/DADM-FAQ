@@ -1,5 +1,5 @@
 ---
-title: "Occasionally and Frequently Asked Questions"
+title: "Occasionally and Frequently Asked Questions [O/FAQ]"
 listing:
   type: table
   contents: posts
