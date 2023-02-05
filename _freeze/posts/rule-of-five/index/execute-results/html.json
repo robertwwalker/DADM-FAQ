@@ -1,0 +1,16 @@
+{
+  "hash": "76db69d819fb018a93ee1cb38bdc0f7e",
+  "result": {
+    "markdown": "---\ntitle: \"Hubbard's Rule of Five\"\nauthor: \"Robert W. Walker\"\nbibliography: \"bibliography.bib\"\nnocite: |\n     @*\ndate: \"2023-02-05\"\ncategories: [R, binomial]\nimage: \"image.png\"\n---\n\n\n\n\n## Rule of Five\n\nThe Rule of Five states that the median of any population should be between the lowest and highest collected values in a sample of five with almost 94 percent probability.  Why?\n\n1. The probability of any given observation being above or below the median is 0.5 each.\n2. With a sample of size 5, let's plot the relevant binomial.\n\n## Binomial Plots\n\n\n::: {.cell}\n\n```{.r .cell-code}\npar(mfrow=c(1,2))\nplot(x=seq(0,5), y=dbinom(seq(0,5), 5, 0.5), xlab=\"Number Bigger/Smaller\")\nplot(x=seq(0,5), y=pbinom(seq(0,5), 5, 0.5), xlab=\"Number Bigger/Smaller\")\n```\n\n::: {.cell-output-display}\n![](index_files/figure-html/Plt1-1.png){width=672}\n:::\n:::\n\n\n## A More Informative Plot\n\n\n::: {.cell}\n\n```{.r .cell-code}\npar(mfrow=c(1,1))\nplot(x=seq(0,5), y=dbinom(seq(0,5), 5, 0.5), xlab=\"Number Bigger/Smaller\", pch=\"\", ylab=\"Binomial Prob. (5, 0.5)\", xlim=c(-1,6))\ntext(x=seq(0,5), y=dbinom(seq(0,5), 5, 0.5), labels=round(dbinom(seq(0,5), 5, 0.5), digits=4))\n```\n\n::: {.cell-output-display}\n![](index_files/figure-html/BP2-1.png){width=672}\n:::\n:::\n\n\nThe probability that all five observations are above [0.03125] or below [0.03125] totals to 0.0625; there is a 93.75% chance it is interior to the five random observations.\n\n",
+    "supporting": [
+      "index_files"
+    ],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}
