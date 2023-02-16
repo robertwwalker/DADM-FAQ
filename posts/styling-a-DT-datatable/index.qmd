@@ -1,0 +1,123 @@
+---
+title: "Styling a DT::datatable"
+author: "Robert W. Walker"
+date: "2023-02-15"
+categories: [R]
+image: "uglytable.png"
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message=FALSE, warning=FALSE, cache=TRUE)
+options(scipen=7)
+```
+
+# Colors and DT::Datatable
+
+`DT::datatable` is a wonderful tool for tables with many neat features.  Styling them can be tricky, especially on a webpage.  Let me show an example using the `mtcars` data.
+
+```{r}
+library(tidyverse)
+library(DT)
+mtcars %>% datatable()
+```
+
+This example looks fine because of the theme that is used in deploying this particular website.  But that is not always true.  Using the bootstrap theme `darkly`, the above table looks like this.
+
+![DT::datatable in darkly](img/darkly-dt.png)
+
+It is very hard to read.  Supposing that I was committed to a darkly theme, how could I fix the table?  That's the task though I will start with some colors for it.
+
+## Pigeons for a palette
+
+My favorite color palette originated with a pigeon.  Here is the palette.
+
+![pigeon palette](img/pigeon-palette.png)
+
+I have five colors to use from this which is exactly what I require.
+
+## Modifying elements of the `datatable`
+
+There seem to be four elements that can be adjusted, or at least these are the four that I have located in the documents.
+
+1. main table background: the cell background.  These can be adjusted on a column-by-column basis.  This will also enable us to treat the row names as a separate column.
+3. the header background for the column names.
+4. the container background for the controls.
+
+Let me adjust each in turn.
+
+### Adjusting the cell background
+
+I want to use the ecruish color: `#E0D092` for the background of all the cells; this can be varied on a column by column basis using the quoted name of the column.  Here, I will use the `names` function to do them all.
+
+```{r}
+mtcars %>% 
+  datatable() %>%
+  formatStyle(names(mtcars), background = "#E0D092")
+```
+
+Though I don't want to keep the following change, to change one column by itself, I can name it and give it a color.
+
+```{r}
+mtcars %>% 
+  datatable() %>%
+  formatStyle(names(mtcars), background = "#E0D092") %>%
+  formatStyle(c("cyl","hp"), background = "white")
+```
+Or we can address them with numbers.
+
+```{r}
+mtcars %>% 
+  datatable() %>%
+  formatStyle(names(mtcars), background = "#E0D092") %>%
+  formatStyle(c("cyl","hp"), background = "white") %>%
+  formatStyle(c(1,3,5,7), background = "red")
+```
+
+This is hideous but is only intended for explanation purposes.  Now let's adjust the row names to accord with the pigeon palette by making the row names the neat periwinkle color from the palette.
+
+```{r}
+mtcars %>% 
+  datatable() %>%
+  formatStyle(names(mtcars), background = "#E0D092") %>%
+  formatStyle(0, background = "#9FB1E7")  
+```
+
+This looks ok.  Now let me turn to two other adjustments.  These are a bit more difficult.
+
+### Adjusting the column names -- header
+
+Adjusting the column names requires that we get into the table's api.  The relevant part of the api for the column headers resides in `table.header()`.  I will turn the `table.header()` into the dark salmon color from the palette: `#ED8BBE`.  This requires an adjustment of the `options` in the original `datatable` configuration.  This information was buried deep in the documents.  There is a lot of stuff in there though mostly it involves going to the original `Datatables` in javascript documentation and poking about.
+
+```{r}
+mtcars %>% 
+  datatable(., options = list( 
+  initComplete = JS(
+    "function(settings, json) {",
+    "$(this.api().table().header()).css({'background-color': '#ED8BBE'});",
+    "}")
+    )
+  ) %>%
+  formatStyle(names(mtcars), background = "#E0D092") %>%
+  formatStyle(0, background = "#9FB1E7")
+```
+
+That completes three of the four elements that I wish to adjust.  Now it is time to adjust the containers in which the table resides that holds the navigation.
+
+### Adjusting the container
+
+The container in which the table resides can also be adjusted using the API.  I want to turn it into the brighter pink: `#E88FDE`.  The code is similar to what was previously adjusted, only the name differs.
+
+```{r}
+mtcars %>% 
+  datatable(., options = list( 
+  initComplete = JS(
+    "function(settings, json) {",
+    "$(this.api().table().header()).css({'background-color': '#ED8BBE'});",
+    "$(this.api().table().container()).css({'background-color': '#E8BFDE'});",
+    "}")
+    )
+  ) %>%
+  formatStyle(names(mtcars), background = "#E0D092") %>%
+  formatStyle(0, background = "#9FB1E7")
+```
