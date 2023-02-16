@@ -4,6 +4,8 @@ author: "Robert W. Walker"
 date: "2023-02-15"
 categories: [R]
 image: "uglytable.png"
+toc: true
+toc-depth: 3
 ---
 
 
@@ -34,17 +36,21 @@ My favorite color palette originated with a pigeon.  Here is the palette.
 
 ![pigeon palette](img/pigeon-palette.png)
 
-I have five colors to use from this which is exactly what I require.
+I have five colors to use from this which is exactly what I require.  If you need to find colors and their associated hex codes, ask a search engine for `hex color wheel`.
 
 ## Modifying elements of the `datatable`
 
 There seem to be four elements that can be adjusted, or at least these are the four that I have located in the documents.
 
 1. main table background: the cell background.  These can be adjusted on a column-by-column basis.  This will also enable us to treat the row names as a separate column.
-3. the header background for the column names.
-4. the container background for the controls.
+2. the header background for the column names.
+3. the container background for the controls.
 
-Let me adjust each in turn.
+Let me first pull up the help file for `?formatStyle` and see how far that will get me.
+
+![formatStyle](img/help-formatStyle.png)
+
+The help makes clear that coloring the background [in either of two ways, it is not clear that `background` and `backgroundColor` do not do exactly the same thing.
 
 ### Adjusting the cell background
 
@@ -56,14 +62,24 @@ mtcars %>%
   formatStyle(names(mtcars), background = "#E0D092")
 ```
 
-Though I don't want to keep the following change, to change one column by itself, I can name it and give it a color.
+::: {.callout-note}
+It seems that `background` and `backgroundColor` do exactly the same thing.  Taking the following example, they appear to but `background` overrides `backgroundColor`.
 
 ```{r}
 mtcars %>% 
   datatable() %>%
-  formatStyle(names(mtcars), background = "#E0D092") %>%
+  formatStyle(names(mtcars), backgroundColor = "#E0D092",  background = "#000000") %>%
+# Keep the backgroundColor argument and 
   formatStyle(c("cyl","hp"), background = "white")
 ```
+
+:::
+
+### Coloring by columns
+
+Though I don't want to keep the following change, to change one column by itself, I can name it and give it a color.
+
+
 Or we can address them with numbers.
 
 ```{r}
@@ -121,3 +137,79 @@ mtcars %>%
   formatStyle(names(mtcars), background = "#E0D092") %>%
   formatStyle(0, background = "#9FB1E7")
 ```
+
+This is a rather complete characterization of background color control in `DT::datatable`.  Now let me turn to other elements.
+
+## Formatting the text in cells and row names
+
+Going back to the help, there is a `color` argument that will control the color of the text.  Let me try *white* [`#FFFFFF`] to make sure.
+
+```{r}
+mtcars %>% 
+  datatable(., options = list( 
+  initComplete = JS(
+    "function(settings, json) {",
+    "$(this.api().table().header()).css({'background-color': '#ED8BBE'});",
+    "$(this.api().table().container()).css({'background-color': '#E8BFDE'});",
+    "}")
+    )
+  ) %>%
+  formatStyle(names(mtcars), background = "#E0D092", color="#FFFFFF") %>%
+  formatStyle(0, backgroundColor = "#9FB1E7", color="#FFFFFF")
+```
+
+So far so good.  The `styleInterval` option allows us more control over this by allowing something akin to a color legend for cell coloring.  For example, let's use cylinders -- `cyl`.  I will cut it into the three distinct values, since they are 4, 6, and 8 and the argument is cutpoints, any number between 4 and 6 for the first and 6 and 8 for the second will suffice.
+
+```{r}
+mtcars %>% 
+  datatable(., options = list( 
+  initComplete = JS(
+    "function(settings, json) {",
+    "$(this.api().table().header()).css({'background-color': '#ED8BBE'});",
+    "$(this.api().table().container()).css({'background-color': '#E8BFDE'});",
+    "}")
+    )
+  ) %>%
+  formatStyle(names(mtcars), background = "#E0D092", color="#FFFFFF") %>%
+  formatStyle("cyl", background = "#E0D092", color=styleInterval(c(5,7), c("red","blue","green"))) %>%
+  formatStyle(0, backgroundColor = "#9FB1E7", color="#FFFFFF")
+```
+
+There is a great deal that can be done with that.
+
+### Formatting the container and the header
+
+The arguments to create *json* for the header and container can be altered in a similar fashion.  I will copy the lines for the background-color and use those to manipulate the individual text entries with `color`.
+
+```{r}
+mtcars %>% 
+  datatable(., options = list( 
+  initComplete = JS(
+    "function(settings, json) {",
+    "$(this.api().table().header()).css({'background-color': '#ED8BBE', 'color': '#FFFFFF'});",
+    "$(this.api().table().container()).css({'background-color': '#E8BFDE', 'color': '#FFFFFF'});",
+    "}")
+    )
+  ) %>%
+  formatStyle(names(mtcars), background = "#E0D092", color="#FFFFFF") %>%
+  formatStyle("cyl", background = "#E0D092", color=styleInterval(c(5,7), c("red","blue","green"))) %>%
+  formatStyle(0, backgroundColor = "#9FB1E7", color="#FFFFFF")
+```
+
+I make no claim that this is a pretty table but the intent is to show how to manipulate colors.  This seems to be a pretty complete rendition.  With that, let me let the pigeon's colors finish it off.  I am going to switch up an initial bad choice and make all the text ecru because it has the highest contrast.
+
+```{r}
+mtcars %>% 
+  datatable(., options = list( 
+  initComplete = JS(
+    "function(settings, json) {",
+    "$(this.api().table().header()).css({'background-color': '#ED8BBE', 'color': '#E0D092'});",
+    "$(this.api().table().container()).css({'background-color': '#E8BFDE', 'color': '#E0D092'});",
+    "}")
+    )
+  ) %>%
+  formatStyle(names(mtcars), background = "#C7A0E4", color="#E0D092") %>%
+  formatStyle(0, backgroundColor = "#9FB1E7", color="#E0D092")
+```
+
+It worked for the header.  It did not work for the container.  I looked around for a bit and it is not obvious how to fix the container's elements and the css-selector doesn't help much.

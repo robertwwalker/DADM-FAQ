@@ -6,7 +6,7 @@ slug: visualize-two-qualities
 categories:
   - R
   - dataviz
-  - gpplot2
+  - ggplot2
 tags:
   - plot
 subtitle: ''
