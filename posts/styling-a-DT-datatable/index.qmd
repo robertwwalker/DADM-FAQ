@@ -199,12 +199,24 @@ mtcars %>%
 I make no claim that this is a pretty table but the intent is to show how to manipulate colors.  This seems to be a pretty complete rendition.  With that, let me let the pigeon's colors finish it off.  I am going to switch up an initial bad choice and make all the text ecru because it has the highest contrast.
 
 ```{r}
+callback <- c(
+  "$('#DataTables_Table_10_length').css('color', 'blue');",
+  "$('#DataTables_Table_10_length').css('background-color', 'purple');",
+  "$('#DataTables_Table_10_filter').css('color', 'green');",
+  "$('#DataTables_Table_10_filter').css('background-color', 'purple');",
+  "$('#DataTables_Table_10_length select').css('color', 'red');",
+  "$('#DataTables_Table_10_length select').css('background-color', 'brown');",
+  "$('#DataTables_Table_10_filter input').css('color', 'red');",
+  "$('#DataTables_Table_10_filter input').css('background-color', 'brown');",
+  "$('#DataTables_Table_10_info').css('color', 'purple');",
+  "$('#DataTables_Table_10_paginate').css('background-color', 'yellow');"
+  )
 mtcars %>% 
-  datatable(., options = list( 
+  datatable(., callback = JS(callback), options = list( 
   initComplete = JS(
     "function(settings, json) {",
     "$(this.api().table().header()).css({'background-color': '#ED8BBE', 'color': '#E0D092'});",
-    "$(this.api().table().container()).css({'background-color': '#E8BFDE', 'color': '#E0D092'});",
+    "$(this.api().table().container()).css({'background-color': '#ED8BBE', 'color': '#E0D092'});",
     "}")
     )
   ) %>%
@@ -212,4 +224,19 @@ mtcars %>%
   formatStyle(0, backgroundColor = "#9FB1E7", color="#E0D092")
 ```
 
-It worked for the header.  It did not work for the container.  I looked around for a bit and it is not obvious how to fix the container's elements and the css-selector doesn't help much.
+I cannot, for the life of me, fix the buttons.
+
+
+```{r}
+mtcars %>% 
+  datatable(., options = list( 
+  initComplete = JS(
+    "function(settings, json) {",
+    "$(this.api().table().header()).css({'background-color': '#ED8BBE', 'color': '#E0D092'});",
+    "$(this.api().table().container()).css({'background-color': '#ED8BBE', 'color': '#E0D092'});",
+    "}")
+    )
+  ) %>%
+  formatStyle(names(mtcars), background = "#C7A0E4", color="#E0D092") %>%
+  formatStyle(0, backgroundColor = "#9FB1E7", color="#E0D092")
+```
