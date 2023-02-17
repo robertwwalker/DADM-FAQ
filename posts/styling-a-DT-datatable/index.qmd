@@ -234,6 +234,7 @@ mtcars %>%
     "function(settings, json) {",
     "$(this.api().table().header()).css({'background-color': '#ED8BBE', 'color': '#E0D092'});",
     "$(this.api().table().container()).css({'background-color': '#ED8BBE', 'color': '#E0D092'});",
+    "$(this.api().table().paginate()).css({'background-color': '#ED8BBE', 'color': '#E0D092'});",
     "}")
     )
   ) %>%
