@@ -38,7 +38,7 @@ knitr::opts_chunk$set(cache=TRUE, message=FALSE, warning=FALSE)
 For this week:
 1. The basic link to the [`#tidyTuesday`](https://github.com/rfordatascience/tidytuesday) shows [an original article](http://flowingdata.com/2014/03/18/coffee-place-geography/) for Week 6.
 
-The page notes that Starbucks, Tim Horton, and Dunkin Donuts have raw data available.
+The page notes that Starbucks, Tim Horton, and Dunkin Donuts have raw data available.  The data come in Excel format.  We will first need to import them from Excel and then manipulate it.  You can find the file in the github repository [here](https://github.com/robertwwalker/DADM-FAQ/posts/tidyTuesday-coffee-chains/data)
 
 ```{r LoadData, message=FALSE, warning=FALSE}
 library(readxl)
@@ -66,7 +66,7 @@ What do the data look like?
 
 ```{r}
 library(skimr)
-Starbucks <- Starbucks %>% mutate(popup = paste0("Starbucks <br>",`Street Address`, "<br>", City, ", ", `State/Province`,"<br>",Postcode,"<br>",Country, sep=""))
+Starbucks <- Starbucks %>% mutate(popup = paste0(`Store Name`,"<br>",`Street Address`, "<br>", City, ", ", `State/Province`,"<br>",Postcode,"<br>",Country, sep=""))
 skim(Starbucks)
 ```
 
