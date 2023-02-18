@@ -73,7 +73,8 @@ ul.task-list li input[type="checkbox"] {
 
     const options = {
       valueNames: ['listing-image','listing-date','listing-title','listing-author','listing-reading-time',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-title-sort'] }],
-      
+      page: 30,
+    pagination: { item: "<li class='page-item'><a class='page page-link' href='#'></a></li>" },
       searchColumns: ["listing-date","listing-title","listing-author"],
     };
 
@@ -96,7 +97,7 @@ ul.task-list li input[type="checkbox"] {
 
 <link rel="stylesheet" href="styles.css">
 <meta name="twitter:title" content="Data Analysis, Modelling, and Decision-Making - Occasionally and Frequently Asked Questions [O/FAQ]">
-<meta name="twitter:image" content="./posts/onedrive-is-dangerous/thumbnail.jpg">
+<meta name="twitter:image" content="https://quartopub.com/sites/rww/dadm-faq/posts/onedrive-is-dangerous/thumbnail.jpg">
 <meta name="twitter:creator" content="@PieRatio">
 <meta name="twitter:card" content="summary_large_image">
 </head>
@@ -162,7 +163,7 @@ ul.task-list li input[type="checkbox"] {
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         
-    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(30)</span></div><div class="category" data-category="HOWTO">HOWTO <span class="quarto-category-count">(1)</span></div><div class="category" data-category="R">R <span class="quarto-category-count">(26)</span></div><div class="category" data-category="binomial">binomial <span class="quarto-category-count">(1)</span></div><div class="category" data-category="dataviz">dataviz <span class="quarto-category-count">(5)</span></div><div class="category" data-category="ggplot2">ggplot2 <span class="quarto-category-count">(5)</span></div><div class="category" data-category="news">news <span class="quarto-category-count">(1)</span></div><div class="category" data-category="panel data">panel data <span class="quarto-category-count">(1)</span></div><div class="category" data-category="regression">regression <span class="quarto-category-count">(1)</span></div><div class="category" data-category="tables">tables <span class="quarto-category-count">(1)</span></div><div class="category" data-category="tidy">tidy <span class="quarto-category-count">(3)</span></div><div class="category" data-category="tidyverse">tidyverse <span class="quarto-category-count">(2)</span></div><div class="category" data-category="time_series">time_series <span class="quarto-category-count">(7)</span></div></div></div>
+    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(31)</span></div><div class="category" data-category="HOWTO">HOWTO <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Maps">Maps <span class="quarto-category-count">(1)</span></div><div class="category" data-category="R">R <span class="quarto-category-count">(27)</span></div><div class="category" data-category="binomial">binomial <span class="quarto-category-count">(1)</span></div><div class="category" data-category="dataviz">dataviz <span class="quarto-category-count">(5)</span></div><div class="category" data-category="ggplot2">ggplot2 <span class="quarto-category-count">(5)</span></div><div class="category" data-category="news">news <span class="quarto-category-count">(1)</span></div><div class="category" data-category="panel data">panel data <span class="quarto-category-count">(1)</span></div><div class="category" data-category="regression">regression <span class="quarto-category-count">(1)</span></div><div class="category" data-category="tables">tables <span class="quarto-category-count">(1)</span></div><div class="category" data-category="tidy">tidy <span class="quarto-category-count">(3)</span></div><div class="category" data-category="tidyverse">tidyverse <span class="quarto-category-count">(3)</span></div><div class="category" data-category="time_series">time_series <span class="quarto-category-count">(7)</span></div></div></div>
 <!-- main -->
 <main class="content quarto-banner-title-block column-page-left" id="quarto-document-content">
 
@@ -707,12 +708,34 @@ Robert W. Walker
 0 min
 </td>
 </tr>
+<tr data-index="30" data-categories="R,tidyverse,Maps" data-listing-date-sort="1525849200000" data-listing-file-modified-sort="1676696836273" data-listing-reading-time-sort="0.98" data-listing-title-sort="tidyTuesday: coffee chains" data-listing-filename-sort="index.qmd">
+<td class="listing-image">
+<div class="table-img" style="height: 40px;">
+&nbsp;
+</div>
+</td>
+<td class="listing-date">
+May 9, 2018
+</td>
+<td class="listing-title">
+<a href="./posts/tidyTuesday-coffee-chains/index.html" class="title">tidyTuesday: coffee chains</a>
+</td>
+<td class="listing-author">
+Robert W. Walker
+</td>
+<td class="listing-reading-time">
+0 min
+</td>
+</tr>
 </tbody>
 
 </table>
 <div class="listing-no-matching d-none">
 No matching items
 </div>
+<nav id="listing-pagination" class="listing-pagination" aria-label="Page Navigation">
+  <ul class="pagination"></ul>
+</nav>
 </div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
