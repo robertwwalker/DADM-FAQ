@@ -1,11 +1,12 @@
 ---
 title: 'tidyTuesday: coffee chains'
 author: 'Robert W. Walker'
-date: '2018-05-09'
+date: '2023-02-05'
 categories:
   - R
   - tidyverse
   - Maps
+  - geocoding
 tags:
   - R
   - tidyTuesday
@@ -45,6 +46,7 @@ library(janitor)
 library(geofacet)
 library(ggbeeswarm)
 library(ggrepel)
+library(leaflet)
 Starbucks <- readRDS(url("https://github.com/robertwwalker/academic-mymod/raw/master/data/week6SB.rds"))
 Dunkin.Donuts <- readRDS(url("https://github.com/robertwwalker/academic-mymod/raw/master/data/week6DD.rds"))
 Tim.Hortons <- readRDS(url("https://github.com/robertwwalker/academic-mymod/raw/master/data/week6TH.rds"))
@@ -87,25 +89,74 @@ mp
 
 ## Starbucks and Dunkin
 
-Google Maps interface changed and I have not updated this part.  Shame.
+Google Maps interface changed and there are limits to what can be geocoded without fees.  It can get rather expensive if one is not careful.  Let me try this out.  The first step is to create the addresses to be geocoded.  Let's look at the `Tim.Hortons` data.
+
+```{r}
+library(DT)
+head(Tim.Hortons) %>% datatable()
+```
+
+I will need to paste/glue them together.  I want to paste the address, the city, the state and postal code, then the country but the state and postal code are separate entries so paste them with a space delimiter embedded in the bigger paste command with a comma separation.
+
+### Geocoding Tim Horton's
+
+What follows is the code that I used to create them and to geocode them.  I then saved the result and will load it from the saved version.
 
 ```{r, eval=FALSE}
-coffee.xl$timhorton <- coffee.xl$timhorton %>% mutate(full.address=paste(address,city,state,toupper(country),sep=", "))
-# Tim.H <- coffee.xl$timhorton %>% filter(country=="us") %>% mutate_geocode(full.address, source="dsk")
-load(paste0(here(),"/data/geocoded.RData"))
-THUS <- Tim.H %>% select(country,full.address,lon,lat)
+Tim.Hortons.GC <- Tim.Hortons %>% mutate(full.address=paste(address,city,paste(state, postal_code, sep=" "),toupper(country),sep=", "))
+Tim.Hortons.GC <- Tim.Hortons.GC %>% mutate_geocode(full.address, output="latlon")
+save(Tim.Hortons.GC, file="data/THGC.RData")
+```
+
+Load the saved and geocoded data
+
+```{r}
+load("data/THGC.RData")
+head(Tim.Hortons.GC)
+```
+
+Now I want to filter off US locations and create the most basic data structure to map.
+
+```{r}
+THUS <- Tim.Hortons.GC %>% filter(country=="us") %>% select(country,full.address,lon,lat)
 names(THUS) <- c("Country","Address","Longitude","Latitude")
 THUS$chain <- "Tim Horton's"
-DDUS <- coffee.xl$dunkin %>% select(e_country, e_address, loc_LONG_centroid,loc_LAT_centroid)
+head(THUS)
+```
+
+### Dunkin Donuts
+
+Thankfully, Dunkin Donuts is already geocoded just as Starbucks was.  In this case, I just need some organized data that I can bind together with the same structure as the Tim Horton's data.
+
+```{r}
+DDUS <- Dunkin.Donuts %>% select(e_country, e_address, loc_LONG_centroid,loc_LAT_centroid)
 names(DDUS) <- c("Country","Address","Longitude","Latitude")
 DDUS$chain <- "Dunkin"
-SBUX <- coffee.xl$starbucks %>% filter(Country=="us") %>% select(Country,`Street Address`,Longitude,Latitude)
+head(DDUS)
+```
+
+Finally, let me put together a version of the Starbucks data that looks just as the others.
+
+```{r}
+SBUX <- Starbucks %>% filter(Country=="US") %>% select(Country,`Street Address`,Longitude,Latitude)
 names(SBUX) <- c("Country","Address","Longitude","Latitude")
+SBUX$chain <- "Starbucks"
+head(SBUX)
+```
+
+With all three of the data sources in a similar format and the like, it is now time to bind them together.
+
+```{r}
 US.Map.Coffee <- bind_rows(DDUS,SBUX,THUS)
-USmap <- get_stamenmap(us, zoom = 5)
-mp <- ggmap(USmap)
-mp <- mp + geom_point(aes(x=Starbucks$Longitude, y=Starbucks$Latitude) ,color="dark green", size=0.5) + xlab("") + ylab("")
-mp <- mp + geom_point(aes(x=Dunkin.Donuts$loc_LONG_centroid, y=Dunkin.Donuts$loc_LAT_centroid) ,color="orange", size=0.5) + xlab("") + ylab("")
+```
+
+Now I have all the data that I need to build the map.  
+That works as planned.
+
+```{r}
+mp <- leaflet() %>% 
+  addTiles() %>%
+  addMarkers(~Longitude, ~Latitude, data=US.Map.Coffee, popup=~Address)
 mp
 ```
 
