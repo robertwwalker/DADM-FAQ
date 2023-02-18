@@ -265,6 +265,7 @@ div.csl-indent {
   <li><a href="#geocoding-tim-hortons" id="toc-geocoding-tim-hortons" class="nav-link" data-scroll-target="#geocoding-tim-hortons">Geocoding Tim Horton’s</a></li>
   <li><a href="#dunkin-donuts" id="toc-dunkin-donuts" class="nav-link" data-scroll-target="#dunkin-donuts">Dunkin Donuts</a></li>
   </ul></li>
+  <li><a href="#a-full-world-map" id="toc-a-full-world-map" class="nav-link" data-scroll-target="#a-full-world-map">A Full World Map</a></li>
   </ul></li>
   <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
   </ul>
@@ -1101,19 +1102,20 @@ div.csl-indent {
 </div>
 </div>
 <p>Now I want to filter off US locations and create the most basic data structure to map.</p>
-<div class="cell" data-hash="index_cache/html/unnamed-chunk-8_1e03469fe2e06afb6f67d439a3a51db0">
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-8_39388c3eb13f7141eb445f77c656a91e">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>THUS <span class="ot">&lt;-</span> Tim.Hortons.GC <span class="sc">%&gt;%</span> <span class="fu">filter</span>(country<span class="sc">==</span><span class="st">"us"</span>) <span class="sc">%&gt;%</span> <span class="fu">select</span>(country,full.address,lon,lat)</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(THUS) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Country"</span>,<span class="st">"Address"</span>,<span class="st">"Longitude"</span>,<span class="st">"Latitude"</span>)</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>THUS<span class="sc">$</span>chain <span class="ot">&lt;-</span> <span class="st">"Tim Horton's"</span></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(THUS)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>THUS <span class="ot">&lt;-</span> Tim.Hortons.GC <span class="sc">%&gt;%</span> </span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(country,full.address,lon,lat)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(THUS) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Country"</span>,<span class="st">"Address"</span>,<span class="st">"Longitude"</span>,<span class="st">"Latitude"</span>)</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>THUS<span class="sc">$</span>chain <span class="ot">&lt;-</span> <span class="st">"Tim Horton's"</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(THUS)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 
 <div data-pagedtable="false">
   <script data-pagedtable-source="" type="application/json">
-{"columns":[{"label":["Country"],"name":[1],"type":["chr"],"align":["left"]},{"label":["Address"],"name":[2],"type":["chr"],"align":["left"]},{"label":["Longitude"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["Latitude"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["chain"],"name":[5],"type":["chr"],"align":["left"]}],"data":[{"1":"us","2":"12677 Coldwater Rd, Fort Wayne, IN 46845, US","3":"-85.13361","4":"41.19945","5":"Tim Horton's"},{"1":"us","2":"1919 West Cook Rd, Fort Wayne, IN 46818, US","3":"-85.16658","4":"41.14503","5":"Tim Horton's"},{"1":"us","2":"3975 Ice Way, Fort Wayne, IN 46805, US","3":"-85.14800","4":"41.11421","5":"Tim Horton's"},{"1":"us","2":"4000 Parnell Ave, Fort Wayne, IN 46805, US","3":"-85.12429","4":"41.11422","5":"Tim Horton's"},{"1":"us","2":"4210 Crescent Ave, Fort Wayne, IN 46815, US","3":"-85.10135","4":"41.11797","5":"Tim Horton's"},{"1":"us","2":"5625 W Jefferson Blvd, Fort Wayne, IN 46804, US","3":"-85.21310","4":"41.06067","5":"Tim Horton's"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["Country"],"name":[1],"type":["chr"],"align":["left"]},{"label":["Address"],"name":[2],"type":["chr"],"align":["left"]},{"label":["Longitude"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["Latitude"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["chain"],"name":[5],"type":["chr"],"align":["left"]}],"data":[{"1":"ca","2":"185 East Lake Cres Ne, Airdrie, AB T4A 2H7, CA","3":"-113.9990","4":"51.28636","5":"Tim Horton's"},{"1":"ca","2":"204 Veterans Blvd Ne, Airdrie, AB T4B 3P2, CA","3":"-114.0058","4":"51.30015","5":"Tim Horton's"},{"1":"ca","2":"2639 Main St South, Airdrie, AB T4B 2V7, CA","3":"-114.0089","4":"51.26984","5":"Tim Horton's"},{"1":"ca","2":"2881 Main St Sw, Airdrie, AB T4B 3G5, CA","3":"-114.0071","4":"51.26245","5":"Tim Horton's"},{"1":"ca","2":"401 1 Midtown Blvd, Airdrie, AB T4B 4E7, CA","3":"-114.0247","4":"51.28453","5":"Tim Horton's"},{"1":"ca","2":"900 Market St Se, Airdrie, AB T4A 0K9, CA","3":"-113.9948","4":"51.27014","5":"Tim Horton's"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 </div>
@@ -1140,10 +1142,10 @@ div.csl-indent {
 </div>
 </div>
 <p>Finally, let me put together a version of the Starbucks data that looks just as the others.</p>
-<div class="cell" data-hash="index_cache/html/unnamed-chunk-10_7fcb6ec85cbf96a97a3a37915ada5e26">
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-10_69b875197f02b5e8156b7b11a9d7e84c">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>SBUX <span class="ot">&lt;-</span> Starbucks <span class="sc">%&gt;%</span> <span class="fu">filter</span>(Country<span class="sc">==</span><span class="st">"US"</span>) <span class="sc">%&gt;%</span> <span class="fu">select</span>(Country,<span class="st">`</span><span class="at">Street Address</span><span class="st">`</span>,Longitude,Latitude)</span>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>SBUX <span class="ot">&lt;-</span> Starbucks <span class="sc">%&gt;%</span> <span class="fu">select</span>(Country,<span class="st">`</span><span class="at">Street Address</span><span class="st">`</span>,Longitude,Latitude)</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(SBUX) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Country"</span>,<span class="st">"Address"</span>,<span class="st">"Longitude"</span>,<span class="st">"Latitude"</span>)</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>SBUX<span class="sc">$</span>chain <span class="ot">&lt;-</span> <span class="st">"Starbucks"</span></span>
 <span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(SBUX)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -1152,16 +1154,17 @@ div.csl-indent {
 
 <div data-pagedtable="false">
   <script data-pagedtable-source="" type="application/json">
-{"columns":[{"label":["Country"],"name":[1],"type":["chr"],"align":["left"]},{"label":["Address"],"name":[2],"type":["chr"],"align":["left"]},{"label":["Longitude"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["Latitude"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["chain"],"name":[5],"type":["chr"],"align":["left"]}],"data":[{"1":"US","2":"5600 Debarr Rd Ste 9","3":"-149.78","4":"61.21","5":"Starbucks"},{"1":"US","2":"1725 Abbott Rd","3":"-149.84","4":"61.14","5":"Starbucks"},{"1":"US","2":"1501 Huffman Rd","3":"-149.85","4":"61.11","5":"Starbucks"},{"1":"US","2":"320 W. 100th Ave, 100, Southgate Shopping Ctr - Anchorage","3":"-149.89","4":"61.13","5":"Starbucks"},{"1":"US","2":"1005 E Dimond Blvd","3":"-149.86","4":"61.14","5":"Starbucks"},{"1":"US","2":"1000 E Northern Lights Blvd","3":"-149.87","4":"61.19","5":"Starbucks"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["Country"],"name":[1],"type":["chr"],"align":["left"]},{"label":["Address"],"name":[2],"type":["chr"],"align":["left"]},{"label":["Longitude"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["Latitude"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["chain"],"name":[5],"type":["chr"],"align":["left"]}],"data":[{"1":"AD","2":"Av. Meritxell, 96","3":"1.53","4":"42.51","5":"Starbucks"},{"1":"AE","2":"1 Street 69, Al Jarf","3":"55.47","4":"25.42","5":"Starbucks"},{"1":"AE","2":"Sheikh Khalifa Bin Zayed St.","3":"55.47","4":"25.39","5":"Starbucks"},{"1":"AE","2":"Al Salam Street","3":"54.38","4":"24.48","5":"Starbucks"},{"1":"AE","2":"Khaldiya Area, Abu Dhabi Island","3":"54.54","4":"24.51","5":"Starbucks"},{"1":"AE","2":"Dalma Mall, Mussafah","3":"54.49","4":"24.40","5":"Starbucks"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 </div>
 </div>
-<p>With all three of the data sources in a similar format and the like, it is now time to bind them together.</p>
-<div class="cell" data-hash="index_cache/html/unnamed-chunk-11_2ddccbdd4435be5057c655b8a00111cc">
+<p>With all three of the data sources in a similar format and the like, it is now time to bind them together. There are over 19,000 rows and this would yield 19,000+ popups. That will excessively task resources so, as proof of concept, I will simply sample 300 of them and plot those.</p>
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-11_74c09ebad5741dbe01559851aea3a739">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>US.Map.Coffee <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(DDUS,SBUX,THUS)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>Map.Coffee.Complete <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(DDUS,SBUX,THUS)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>US.Map.Coffee <span class="ot">&lt;-</span> Map.Coffee.Complete[<span class="fu">c</span>(<span class="fu">sample</span>(<span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">19246</span>), <span class="at">size=</span><span class="dv">300</span>, <span class="at">replace=</span><span class="cn">FALSE</span>)),]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <p>Now I have all the data that I need to build the map.<br>
@@ -1182,13 +1185,29 @@ That works as planned.</p>
 </div>
 </section>
 </section>
+<section id="a-full-world-map" class="level2">
+<h2 class="anchored" data-anchor-id="a-full-world-map">A Full World Map</h2>
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-13_bc06f37efa71a1117bbfe5f1df20dc1d">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggmap)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>mapWorld <span class="ot">&lt;-</span> <span class="fu">borders</span>(<span class="st">"world"</span>, <span class="at">colour=</span><span class="st">"gray50"</span>, <span class="at">fill=</span><span class="st">"gray50"</span>) <span class="co"># create a layer of borders</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>mp <span class="ot">&lt;-</span> <span class="fu">ggplot</span>() <span class="sc">+</span> mapWorld</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>mp <span class="ot">&lt;-</span> mp <span class="sc">+</span> <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x=</span>Longitude, <span class="at">y=</span>Latitude, <span class="at">color=</span>chain), <span class="at">size=</span><span class="fl">0.5</span>, <span class="at">alpha=</span><span class="fl">0.5</span>, <span class="at">data=</span>Map.Coffee.Complete) <span class="sc">+</span> <span class="fu">xlab</span>(<span class="st">""</span>) <span class="sc">+</span> <span class="fu">ylab</span>(<span class="st">""</span>) <span class="sc">+</span> <span class="fu">theme_void</span>()</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>mp</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="index_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
 </section>
 <section id="references" class="level1">
 <h1>References</h1>
-<div class="cell" data-hash="index_cache/html/unnamed-chunk-13_8387042d250b45911308e3257a0e424e">
+<div class="cell" data-hash="index_cache/html/unnamed-chunk-14_c27765800ae30d9eb3ed2fcb93fc7c0e">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">write_bib</span>(<span class="fu">names</span>(<span class="fu">sessionInfo</span>()<span class="sc">$</span>otherPkgs), <span class="at">file=</span><span class="st">"bibliography.bib"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">write_bib</span>(<span class="fu">names</span>(<span class="fu">sessionInfo</span>()<span class="sc">$</span>otherPkgs), <span class="at">file=</span><span class="st">"bibliography.bib"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 

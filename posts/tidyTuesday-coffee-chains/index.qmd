@@ -118,7 +118,8 @@ head(Tim.Hortons.GC)
 Now I want to filter off US locations and create the most basic data structure to map.
 
 ```{r}
-THUS <- Tim.Hortons.GC %>% filter(country=="us") %>% select(country,full.address,lon,lat)
+THUS <- Tim.Hortons.GC %>% 
+  select(country,full.address,lon,lat)
 names(THUS) <- c("Country","Address","Longitude","Latitude")
 THUS$chain <- "Tim Horton's"
 head(THUS)
@@ -138,16 +139,17 @@ head(DDUS)
 Finally, let me put together a version of the Starbucks data that looks just as the others.
 
 ```{r}
-SBUX <- Starbucks %>% filter(Country=="US") %>% select(Country,`Street Address`,Longitude,Latitude)
+SBUX <- Starbucks %>% select(Country,`Street Address`,Longitude,Latitude)
 names(SBUX) <- c("Country","Address","Longitude","Latitude")
 SBUX$chain <- "Starbucks"
 head(SBUX)
 ```
 
-With all three of the data sources in a similar format and the like, it is now time to bind them together.
+With all three of the data sources in a similar format and the like, it is now time to bind them together.  There are over 19,000 rows and this would yield 19,000+ popups.  That will excessively task resources so, as proof of concept, I will simply sample 300 of them and plot those.
 
 ```{r}
-US.Map.Coffee <- bind_rows(DDUS,SBUX,THUS)
+Map.Coffee.Complete <- bind_rows(DDUS,SBUX,THUS)
+US.Map.Coffee <- Map.Coffee.Complete[c(sample(c(1:19246), size=300, replace=FALSE)),]
 ```
 
 Now I have all the data that I need to build the map.  
@@ -157,6 +159,16 @@ That works as planned.
 mp <- leaflet() %>% 
   addTiles() %>%
   addMarkers(~Longitude, ~Latitude, data=US.Map.Coffee, popup=~Address)
+mp
+```
+
+## A Full World Map
+
+```{r}
+library(ggmap)
+mapWorld <- borders("world", colour="gray50", fill="gray50") # create a layer of borders
+mp <- ggplot() + mapWorld
+mp <- mp + geom_point(aes(x=Longitude, y=Latitude, color=chain), size=0.5, alpha=0.5, data=Map.Coffee.Complete) + xlab("") + ylab("") + theme_void()
 mp
 ```
 
