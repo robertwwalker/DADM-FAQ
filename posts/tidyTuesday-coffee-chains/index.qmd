@@ -29,7 +29,7 @@ format:
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(message=FALSE, warning=FALSE)
+knitr::opts_chunk$set(cache=TRUE, message=FALSE, warning=FALSE)
 ```
 
 
@@ -48,9 +48,16 @@ library(geofacet)
 library(ggbeeswarm)
 library(ggrepel)
 library(leaflet)
-Starbucks <- readRDS(url("https://github.com/robertwwalker/academic-mymod/raw/master/data/week6SB.rds"))
-Dunkin.Donuts <- readRDS(url("https://github.com/robertwwalker/academic-mymod/raw/master/data/week6DD.rds"))
-Tim.Hortons <- readRDS(url("https://github.com/robertwwalker/academic-mymod/raw/master/data/week6TH.rds"))
+Starbucks <- read_excel("data/coffee.xlsx", sheet = "starbucks")
+Dunkin.Donuts <- read_excel("data/coffee.xlsx", 
+    sheet = "dunkin", col_types = c("numeric", 
+        "text", "text", "text", "text", "text", 
+        "text", "text", "text", "numeric", 
+        "numeric", "numeric", "text", "text", 
+        "text", "numeric", "numeric", "numeric", 
+        "numeric", "text", "text", "text"))
+Tim.Hortons <- read_excel("data/coffee.xlsx", 
+    sheet = "timhorton")
 ```
 
 What do the data look like?
@@ -114,7 +121,7 @@ Load the saved and geocoded data
 
 ```{r}
 load("data/THGC.RData")
-Tim.Hortons.GC <- Tim.Hortons.GC %>% mutate(popup = paste0("Tim Horton's <br>",address,"<br>",city,", ",state,"<br>",postal_code,"<br>",toupper(country), sep=""))
+Tim.Hortons.GC <- Tim.Hortons.GC %>% mutate(popup = paste0(store_name,"<br>",address,"<br>",city,", ",state,"<br>",as.character(postal_code),"<br>",toupper(country), sep=""))
 head(Tim.Hortons.GC)
 ```
 
@@ -133,7 +140,8 @@ head(THUS)
 Thankfully, Dunkin Donuts is already geocoded just as Starbucks was.  In this case, I just need some organized data that I can bind together with the same structure as the Tim Horton's data.
 
 ```{r}
-Dunkin.Donuts <- Dunkin.Donuts %>% mutate(popup = paste0("Dunkin Donuts <br>",e_address,"<br>",e_state," ", e_postal,"<br>",e_country, sep=""))
+Dunkin.Donuts$PostCode <- as.character(ifelse(length(Dunkin.Donuts$e_postal)==4, paste0("0",Dunkin.Donuts$e_postal),Dunkin.Donuts$e_postal))
+Dunkin.Donuts <- Dunkin.Donuts %>% mutate(popup = paste0("Dunkin Donuts <br>",e_address,"<br>",e_city, ", ",e_state,"<br>", PostCode,"<br>",e_country, sep=""))
 DDUS <- Dunkin.Donuts %>% select(e_country, popup, loc_LONG_centroid,loc_LAT_centroid)
 names(DDUS) <- c("Country","Address","Longitude","Latitude")
 DDUS$chain <- "Dunkin"
@@ -163,7 +171,7 @@ That works as planned.
 ```{r}
 mp <- leaflet() %>% 
   addTiles() %>%
-  addMarkers(~Longitude, ~Latitude, data=US.Map.Coffee, popup=~Address) %>% setView(-71.0382679, 42.3489054, zoom = 8)
+  addMarkers(~Longitude, ~Latitude, data=US.Map.Coffee, popup=~Address) %>% setView(-94.67, 39.1, zoom = 6)
 mp
 ```
 
