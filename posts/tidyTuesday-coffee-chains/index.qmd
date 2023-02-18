@@ -2,6 +2,7 @@
 title: 'tidyTuesday: coffee chains'
 author: 'Robert W. Walker'
 date: '2023-02-05'
+image: "image.png"
 categories:
   - R
   - tidyverse
@@ -28,7 +29,7 @@ format:
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(cache=TRUE, message=FALSE, warning=FALSE)
+knitr::opts_chunk$set(message=FALSE, warning=FALSE)
 ```
 
 
@@ -58,6 +59,7 @@ What do the data look like?
 
 ```{r}
 library(skimr)
+Starbucks <- Starbucks %>% mutate(popup = paste0("Starbucks <br>",`Street Address`, "<br>", City, ", ", `State/Province`,"<br>",Postcode,"<br>",Country, sep=""))
 skim(Starbucks)
 ```
 
@@ -112,6 +114,7 @@ Load the saved and geocoded data
 
 ```{r}
 load("data/THGC.RData")
+Tim.Hortons.GC <- Tim.Hortons.GC %>% mutate(popup = paste0("Tim Horton's <br>",address,"<br>",city,", ",state,"<br>",postal_code,"<br>",toupper(country), sep=""))
 head(Tim.Hortons.GC)
 ```
 
@@ -119,7 +122,7 @@ Now I want to filter off US locations and create the most basic data structure t
 
 ```{r}
 THUS <- Tim.Hortons.GC %>% 
-  select(country,full.address,lon,lat)
+  select(country,popup,lon,lat)
 names(THUS) <- c("Country","Address","Longitude","Latitude")
 THUS$chain <- "Tim Horton's"
 head(THUS)
@@ -130,7 +133,8 @@ head(THUS)
 Thankfully, Dunkin Donuts is already geocoded just as Starbucks was.  In this case, I just need some organized data that I can bind together with the same structure as the Tim Horton's data.
 
 ```{r}
-DDUS <- Dunkin.Donuts %>% select(e_country, e_address, loc_LONG_centroid,loc_LAT_centroid)
+Dunkin.Donuts <- Dunkin.Donuts %>% mutate(popup = paste0("Dunkin Donuts <br>",e_address,"<br>",e_state," ", e_postal,"<br>",e_country, sep=""))
+DDUS <- Dunkin.Donuts %>% select(e_country, popup, loc_LONG_centroid,loc_LAT_centroid)
 names(DDUS) <- c("Country","Address","Longitude","Latitude")
 DDUS$chain <- "Dunkin"
 head(DDUS)
@@ -139,7 +143,7 @@ head(DDUS)
 Finally, let me put together a version of the Starbucks data that looks just as the others.
 
 ```{r}
-SBUX <- Starbucks %>% select(Country,`Street Address`,Longitude,Latitude)
+SBUX <- Starbucks %>% select(Country,popup,Longitude,Latitude)
 names(SBUX) <- c("Country","Address","Longitude","Latitude")
 SBUX$chain <- "Starbucks"
 head(SBUX)
@@ -148,8 +152,9 @@ head(SBUX)
 With all three of the data sources in a similar format and the like, it is now time to bind them together.  There are over 19,000 rows and this would yield 19,000+ popups.  That will excessively task resources so, as proof of concept, I will simply sample 300 of them and plot those.
 
 ```{r}
-Map.Coffee.Complete <- bind_rows(DDUS,SBUX,THUS)
-US.Map.Coffee <- Map.Coffee.Complete[c(sample(c(1:19246), size=300, replace=FALSE)),]
+Map.Coffee.Complete <- bind_rows(DDUS,SBUX,THUS) %>% mutate(Country = toupper(Country))
+US.Map.Coffee <- Map.Coffee.Complete %>% filter(Country=="US")
+US.Map.Coffee <- US.Map.Coffee[c(sample(c(1:19246), size=300, replace=FALSE)),]
 ```
 
 Now I have all the data that I need to build the map.  
@@ -158,7 +163,7 @@ That works as planned.
 ```{r}
 mp <- leaflet() %>% 
   addTiles() %>%
-  addMarkers(~Longitude, ~Latitude, data=US.Map.Coffee, popup=~Address)
+  addMarkers(~Longitude, ~Latitude, data=US.Map.Coffee, popup=~Address) %>% setView(-71.0382679, 42.3489054, zoom = 8)
 mp
 ```
 
@@ -168,7 +173,12 @@ mp
 library(ggmap)
 mapWorld <- borders("world", colour="gray50", fill="gray50") # create a layer of borders
 mp <- ggplot() + mapWorld
-mp <- mp + geom_point(aes(x=Longitude, y=Latitude, color=chain), size=0.5, alpha=0.5, data=Map.Coffee.Complete) + xlab("") + ylab("") + theme_void()
+mp <- mp + 
+  geom_point(aes(x=Longitude, y=Latitude, color=chain), size=0.3, alpha=0.3, data=Map.Coffee.Complete) + 
+  xlab("") + 
+  ylab("") + 
+  theme_void() + 
+  labs(color="Coffee Chain", title="Coffee Chains #tidyTuesday")
 mp
 ```
 
