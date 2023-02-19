@@ -1,0 +1,16 @@
+{
+  "hash": "e371f9617d32b252176907f0feeca3c9",
+  "result": {
+    "markdown": "---\ntitle: 'tt: Employment and Earnings'\nauthor: RWW\ndate: '2021-02-22'\nslug: []\ncategories:\n  - R\n  - tidyTuesday\n  - dataviz\ntags:\n  - R\n  - tidyTuesday\n  - R Markdown\n---\n\n\n\n\n\nAs a continuation of the #DuBoisChallenge, this week's tidyTuesday presents employment by industry, sex, race, and occupation.  There is also some scraped data from the self-service tool that generates weekly and hourly earnings data from the CPS.  Let's see what we have.\n\n\n::: {.cell}\n\n```{.r .cell-code}\nlibrary(tidyverse)\nlibrary(fpp3)\nlibrary(magrittr)\nemployed <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2021/2021-02-23/employed.csv')\nearn <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2021/2021-02-23/earn.csv')\nemployed %<>% as_tsibble(index=year, key=c(industry,major_occupation,minor_occupation,race_gender))\n```\n:::\n\n\nLet me try to plot something.\n\n\n::: {.cell}\n\n```{.r .cell-code}\nemployed %>% filter(race_gender==\"TOTAL\") %>% autoplot(employ_n) + guides(color=FALSE)\n```\n\n::: {.cell-output-display}\n![](index_files/figure-html/unnamed-chunk-2-1.png){width=672}\n:::\n:::\n\n\nTo be continued....\n",
+    "supporting": [
+      "index_files"
+    ],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

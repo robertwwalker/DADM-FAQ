@@ -1,0 +1,85 @@
+---
+title: "Datasaurus Dozen"
+author: 'Robert W. Walker'
+image: "image.png"
+date: '2020-10-19'
+categories:
+  - tidyTuesday
+  - dataviz
+tags:
+  - tidyTuesday
+  - tidyverse
+bibliography: "bibliography.bib"
+nocite: |
+     @*
+format: 
+   html:
+     code-fold: true
+     code-copy: hover
+     code-block-border-left: true
+     df-print: paged
+     fig-format: retina
+     footnotes-hover: true
+     html-math-method: katex
+     toc: true
+     toc-title: Navigation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(cache=TRUE, message=FALSE, warning=FALSE)
+library(tidyverse)
+library(skimr)
+library(kableExtra)
+```
+
+# The `datasaurus dozen`
+
+The datasaurus dozen is a fantastic teaching resource for examining the importance of data visualization.  Let's have a look.  The basic idea is that all thirteen (datasaurus plus 12) contain nearly identical means and standard deviations though they do vary if the five number summaries are deployed.  The scatterplots that are derived from data with similar x-y summaries is a useful reminder that data science is about patterns, not just statistics.
+
+```{r}
+datasaurus <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-10-13/datasaurus.csv')
+```
+
+Two libraries to make our work easy.
+
+```
+library(tidyverse)
+library(skimr)
+```
+
+First, the summary statistics.  Summary statistics are great but they are no substitute for basic data familiarity.  Notice, we have nearly identical means and standard deviations though the five number summaries do vary.
+
+:::: {.columns}
+::: {.column width="50%"}
+
+```{r, warning=FALSE, message=FALSE}
+datasaurus %>% 
+  group_by(dataset) %>% 
+  skim(x)
+```
+
+:::
+::: {.column width="50%"}
+```{r, warning=FALSE, message=FALSE}
+datasaurus %>% 
+  group_by(dataset) %>% 
+  skim(y)
+```
+
+:::
+::::
+
+
+Notice that all of the datasets are nearly identical.  But have a look at them.
+
+```{r}
+DP <- datasaurus %>% ggplot() + aes(x=x, y=y, color=dataset, group=dataset) + geom_point() + guides(color=FALSE) + facet_wrap(vars(dataset))
+DP
+```
+
+# References
+
+```{r}
+knitr::write_bib(names(sessionInfo()$otherPkgs), file="bibliography.bib")
+```
+

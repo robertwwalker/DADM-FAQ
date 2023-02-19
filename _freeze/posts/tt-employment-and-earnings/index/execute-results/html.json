@@ -1,0 +1,18 @@
+{
+  "hash": "9f80d3a71e08a21e59703712c46a77ec",
+  "result": {
+    "markdown": "---\ntitle: 'tt: Employment and Earnings'\nimage: \"image.png\"\ndate: '2021-02-22'\ncategories:\n  - R\n  - tidyTuesday\n  - dataviz\ntags:\n  - R\n  - tidyTuesday\nbibliography: \"bibliography.bib\"\nnocite: |\n     @*\nformat: \n   html:\n     code-fold: true\n     code-copy: hover\n     code-block-border-left: true\n     df-print: paged\n     fig-format: retina\n     footnotes-hover: true\n     html-math-method: katex\n     toc: true\n     toc-title: Navigation\n---\n\n\n\n\n\nAs a continuation of the #DuBoisChallenge, this week's tidyTuesday presents employment by industry, sex, race, and occupation.  There is also some scraped data from the self-service tool that generates weekly and hourly earnings data from the CPS.  Let's see what we have.\n\n\n::: {.cell hash='index_cache/html/unnamed-chunk-1_b8de3465aa9a83cd1713256249747e50'}\n\n```{.r .cell-code}\nlibrary(tidyverse)\nlibrary(fpp3)\nlibrary(magrittr)\nemployed <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2021/2021-02-23/employed.csv')\nearn <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2021/2021-02-23/earn.csv')\nemployed %<>% as_tsibble(index=year, key=c(industry,major_occupation,minor_occupation,race_gender))\n```\n:::\n\n\nLet me try to plot something.\n\n\n::: {.cell hash='index_cache/html/unnamed-chunk-2_97303b52d4335f1c6af7da43671de47d'}\n\n```{.r .cell-code}\nemployed %>% filter(race_gender==\"TOTAL\") %>% autoplot(employ_n) + guides(color=FALSE)\n```\n\n::: {.cell-output-display}\n![](index_files/figure-html/unnamed-chunk-2-1.png){width=672}\n:::\n:::\n\n\n\n# References\n\n\n::: {.cell hash='index_cache/html/unnamed-chunk-3_34896d908c8a8e2d91103e72cab5de54'}\n\n```{.r .cell-code}\nknitr::write_bib(names(sessionInfo()$otherPkgs), file=\"bibliography.bib\")\n```\n:::\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {
+      "include-in-header": [
+        "<link href=\"../../site_libs/pagedtable-1.1/css/pagedtable.css\" rel=\"stylesheet\" />\n<script src=\"../../site_libs/pagedtable-1.1/js/pagedtable.js\"></script>\n"
+      ]
+    },
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}
