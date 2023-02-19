@@ -36,7 +36,7 @@ knitr::opts_chunk$set(cache=TRUE, message=FALSE, warning=FALSE)
 
 ## The Data
 
-Robert Husseman [@RHusseman on Twitter](https://twitter.com/RHusseman/) is running to represent Oregon District 21 in the Oregon House of Representatives. He has a platform that focuses on housing and livability in the state by making sensible allocations of public resources to public problems. He has an MBA; he was my student and his head and heart are very much in the right place to serve Oregon well.
+Robert Husseman [`@RHusseman` on Twitter](https://twitter.com/RHusseman/) is running to represent Oregon District 21 in the Oregon House of Representatives. He has a platform that focuses on housing and livability in the state by making sensible allocations of public resources to public problems. He has an MBA; he was my student and his head and heart are very much in the right place to serve Oregon well.
 
 His campaign has a voter list for the Democratic voters in Oregon 21. He shared access to this. Let me load them up from a saved Excel spreadsheet derived from a Google sheet.
 
