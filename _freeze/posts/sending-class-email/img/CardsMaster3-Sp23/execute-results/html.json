@@ -1,0 +1,16 @@
+{
+  "hash": "931a4577e1166d62188f717d6659b38f",
+  "result": {
+    "markdown": "---\ntitle: \"Happy Mid-Semester\"\nauthor: Robert W. Walker\ndate: '2023-02-27'\noutput:\n   html_document:\n     self_contained: true\nparams:\n  fname: \"Robert\"\n  name: \"Walker, Robert\"\n  User.ID: \"rwalker\"\n---\n\n\nTo: Walker, Robert\n\nHi Robert,\n\nIn preparation for class tonight, I could not help myself.  Let me close with a little generative aRt, made special for you.\n\nWith my highest regards,\nRobert\n\n\n::: {.cell}\n::: {.cell-output-display}\n![](CardsMaster3-Sp23_files/figure-html/unnamed-chunk-1-1.png){width=672}\n:::\n:::\n",
+    "supporting": [
+      "CardsMaster3-Sp23_files"
+    ],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

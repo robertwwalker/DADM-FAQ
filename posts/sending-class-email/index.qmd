@@ -1,0 +1,115 @@
+---
+title: "Sending Email with R"
+author: "Robert W. Walker"
+date: "2023-02-28"
+categories: [R]
+image: "image.png"
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message=FALSE, warning=FALSE, cache=TRUE)
+options(scipen=7)
+```
+
+# Sending an Email to the Class
+
+I want to send an email to my class.  
+
+- I could use the LMS.
+- I can use `gmailr`.
+
+## The `gmailr` package
+
+The key command to get started is authorization.
+
+```
+gmailr::gm_auth
+```
+
+Now I need to set up a function to write the emails.  I have a basic .Rmd template file `CardsMaster3-Sp23.Rmd`
+
+```{r}
+# Step 1
+library(tidyverse)
+library(rmarkdown)
+library(purrr)
+# Create a function with three inputs: User.ID, First, and Name
+CardsMaker2 <- function(User.ID, First, Name) {
+  render("img/CardsMaster3-Sp23.Rmd", params = list(User.ID=User.ID, fname=First, name=Name), output_file = paste0("cards3/",User.ID,".html", sep=""))
+}
+```
+
+We have a markdown file.  It looks like this.
+
+![Screen shot of email template file](img/Screenshot 2023-02-28 at 8.17.58 AM.png)
+
+From there on in the file is a piece of generative art.  The key to parameterized markdown is the `params`.  There are three here, the first name -- `fname` -- the `name` -- Last, First -- and the `User.ID` to deploy in constructing the email address.  The email will begin with a `to:` line with the full name.  Then a `Hi ` first name.  Then the text of the email including the generative art.
+
+To make this work, I need a roster.
+
+```
+# Modify this to import the spreadsheet
+Email.List <- read.csv("ClassRoster.csv")
+```
+
+Take the email list, select the students, and yield a data.frame.
+
+```
+# Select students
+Email.List.Use <- Email.List %>% 
+  filter(Role=="Student") %>% 
+  mutate(email = Email) 
+# Use rowwise and then split up the names into a First name
+Email.List.Use %<>% 
+  rowwise() %>% 
+  mutate(Last = unlist(str_split(Name, ","))[1], First = unlist(str_split(Name, ","))[2]) %>% 
+  data.frame()
+```
+
+Use `pmap` to generate the emails.
+
+```{r, eval=FALSE}
+Email.List.Use <- data.frame(First="Robert",Last="Walker", Name="Walker, Robert", email="rwalker@willamette.edu", User.ID="rwalker", fstub="rwalker")
+Email.List.Use %>% select(Name, User.ID, First) %>% pmap(CardsMaker2)
+```
+
+## Step 2: Send the Emails using `gmailr`
+
+I want a function to create a send the emails.  The inputs need to be an email address, a first name, a last name, and a file stub for the .html email file.
+
+```{r}
+library(gmailr)
+library(tidyverse)
+library(magrittr)
+# use_secret_file("~/Client-Secret-RWALKER.json")
+send.IPmail.WU <- function(email, firstname, lastname, fstub) {
+  html_msg <-
+    gm_mime() %>%
+    gm_to(paste0(firstname," ",lastname," <",email,">")) %>%
+    gm_from("Robert W. Walker <rwalker@willamette.edu>") %>%
+    gm_subject(paste0("A Mid-Semester Function...")) %>%
+    gm_html_body(paste0("To: ", lastname,", ",firstname,", <hr /> <br> 
+  Hello ",firstname,", <br> A wee gift in an .html card.<br> <br>
+                      With my highest regards, <br> Robert W. Walker <br> <br>")) %>%
+    gm_attach_file(paste0("./img/cards3/",fstub,".html", sep=""))
+  gm_send_message(html_msg)
+  return(list(Success=1, email=email, Message = html_msg))
+}
+```
+
+## `map` for sending the emails to each address
+
+My final step is to use map on the collection of email addresses.  I run through the rows of the dataset and feed it the three values in each iteration.
+
+```{r, eval=FALSE}
+gm_auth_configure(path="~/client-secret-RWALKER.json")
+# A pedestrian use of map.
+1:dim(Email.List.Use)[[1]] %>% 
+  map(~ send.IPmail.WU(email=Email.List.Use$email[.x], 
+                       firstname=Email.List.Use$First[.x], 
+                       lastname=Email.List.Use$Last[.x], 
+                       fstub=Email.List.Use$User.ID[.x])
+      )
+```
+![The email](img/Screenshot 2023-02-28 at 11.51.21 AM.png)
