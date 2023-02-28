@@ -102,6 +102,8 @@ send.IPmail.WU <- function(email, firstname, lastname, fstub) {
 
 My final step is to use map on the collection of email addresses.  I run through the rows of the dataset and feed it the three values in each iteration.
 
+<iframe src="https://robertwwalker.github.io/dadm-docs/Cards/rwalker.html" width="680" height="600" allowfullscreen></iframe>
+
 ```{r, eval=FALSE}
 gm_auth_configure(path="~/client-secret-RWALKER.json")
 # A pedestrian use of map.
