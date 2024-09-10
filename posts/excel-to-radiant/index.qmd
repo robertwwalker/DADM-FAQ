@@ -1,0 +1,63 @@
+---
+title: "Excel to Radiant"
+subtitle: "A Workflow Guide"
+author: 'Robert W. Walker'
+date: '2024-09-10'
+image: "image.png"
+categories:
+  - R
+  - tidyverse
+  - radiant
+tags:
+  - R
+  - tidyverse
+  - radiant
+bibliography: "bibliography.bib"
+nocite: |
+     @*
+format: 
+   html:
+     code-fold: true
+     code-copy: hover
+     code-block-border-left: true
+     df-print: paged
+     fig-format: retina
+     footnotes-hover: true
+     html-math-method: katex
+     toc: true
+     toc-title: Navigation
+---
+
+# Two Step
+
+1.  Ingest an Excel file to R through RStudio.
+2.  Move or copy the injested data from RStudio's Global Environment to radiant's workspace.
+
+Side notes. There are other roughly equivalent workflows. Following Wu and Broman's advice, we could save each sheet in the Excel workbook as a raw text file: .csv \[comma separated values\] or .txt \[tab separated values\]. Those can be directly imported to Radiant. The quickest but least reliable is to cut and paste via the clipboard. It is least reliable because missing data handling only really exists by implementing a bad practice -- blank cells. But if we use blank cells as missing, it generally works.
+
+## Ingest an Excel file through RStudio
+
+Under the Environment tab in the top right quadrant there is an Import Dataset drop down. Choose from Excel.
+
+![Import Dataset](./img/Screenshot 2024-09-10 at 10.49.00 AM.png)
+
+I want to ingest the FastFood worksheet from a Week-2 workbook in my Downloads.
+
+![FastFood](./img/Screenshot 2024-09-10 at 10.50.01 AM.png)
+
+
+It will be absolutely crucial to make sure the types are correct in the presence of missing data.  In this example, the missing data cells contain NA and we need tell R/RStudio about that.  I don't like the data viewer particularly so I untick that.  Then Import.
+
+I need to see this, and possibly other objects.
+
+![Global Environment](./img/Screenshot 2024-09-10 at 10.57.02 AM.png)
+
+## Copy RStudio data to Radiant
+
+The radiant page under Data and Manage shows a preview and populates a left hand side menu including a drop-down for `Load data of type:`
+
+![Radiant main page](./img/Screenshot 2024-09-10 at 10.54.41 AM.png)
+
+I want to choose `from global workspace` which presents me with the options presented by the Global environment above.  Click load and the data are available for use in radiant.
+
+![Load](./img/Screenshot 2024-09-10 at 10.58.23 AM.png)
