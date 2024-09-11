@@ -2,12 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.2.335">
+<meta name="generator" content="quarto-1.5.24">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Data Analysis, Modelling, and Decision-Making - Occasionally and Frequently Asked Questions [O/FAQ]</title>
+<title>Data Analysis, Modelling, and Decision-Making – Occasionally and Frequently Asked Questions [O/FAQ]</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -17,7 +17,7 @@ div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
   width: 0.8em;
-  margin: 0 0.8em 0.2em -1.6em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
 </style>
@@ -49,7 +49,13 @@ ul.task-list li input[type="checkbox"] {
   "collapse-after": 3,
   "panel-placement": "end",
   "type": "overlay",
-  "limit": 20,
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
   "language": {
     "search-no-results-text": "No results",
     "search-matching-documents-text": "matching documents",
@@ -58,8 +64,10 @@ ul.task-list li input[type="checkbox"] {
     "search-more-match-text": "more match in this document",
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
     "search-detached-cancel-button-title": "Cancel",
-    "search-submit-button-title": "Submit"
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
   }
 }</script>
 <script>
@@ -93,11 +101,39 @@ ul.task-list li input[type="checkbox"] {
   })
   </script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="styles.css">
 <meta name="twitter:title" content="Data Analysis, Modelling, and Decision-Making - Occasionally and Frequently Asked Questions [O/FAQ]">
-<meta name="twitter:image" content="https://quartopub.com/sites/rww/dadm-faq/posts/onedrive-is-dangerous/thumbnail.jpg">
+<meta name="twitter:image" content="./posts/default-ggplot-theme-set/preview.png">
 <meta name="twitter:creator" content="@PieRatio">
 <meta name="twitter:card" content="summary_large_image">
 </head>
@@ -105,10 +141,10 @@ ul.task-list li input[type="checkbox"] {
 <body class="nav-fixed">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top">
-    <nav class="navbar navbar-expand-lg navbar-dark ">
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
-      <div class="navbar-brand-container">
+      <div class="navbar-brand-container mx-auto">
     <a href="./index.html" class="navbar-brand navbar-brand-logo">
     <img src="./AGSMlogo.jpeg" alt="" class="navbar-logo">
     </a>
@@ -116,28 +152,30 @@ ul.task-list li input[type="checkbox"] {
     <span class="navbar-title">Data Analysis, Modelling, and Decision-Making</span>
     </a>
   </div>
+            <div id="quarto-search" class="" title="Search"></div>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
-    <a class="nav-link" href="./about.html">
- <span class="menu-text">About the DADM O/FAQ</span></a>
+    <a class="nav-link" href="./about.html"> 
+<span class="menu-text">About the DADM O/FAQ</span></a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="https://github.com/robertwwalker/DADM-FAQ"><i class="bi bi-github" role="img">
+    <a class="nav-link" href="https://github.com/robertwwalker/DADM-FAQ"> <i class="bi bi-github" role="img">
 </i> 
- <span class="menu-text"></span></a>
+<span class="menu-text"></span></a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="https://twitter.com/PieRatio"><i class="bi bi-twitter" role="img">
+    <a class="nav-link" href="https://twitter.com/PieRatio"> <i class="bi bi-twitter" role="img">
 </i> 
- <span class="menu-text"></span></a>
+<span class="menu-text"></span></a>
   </li>  
 </ul>
-              <div id="quarto-search" class="" title="Search"></div>
           </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
       </div> <!-- /container-fluid -->
     </nav>
 </header>
@@ -150,7 +188,7 @@ ul.task-list li input[type="checkbox"] {
   </div>
     
   
-  <div class="quarto-title-meta">
+  <div class="quarto-title-meta column-page-left">
 
       
     
@@ -163,7 +201,7 @@ ul.task-list li input[type="checkbox"] {
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         
-    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(39)</span></div><div class="category" data-category="HOWTO">HOWTO <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Maps">Maps <span class="quarto-category-count">(3)</span></div><div class="category" data-category="R">R <span class="quarto-category-count">(32)</span></div><div class="category" data-category="Socrata">Socrata <span class="quarto-category-count">(1)</span></div><div class="category" data-category="binomial">binomial <span class="quarto-category-count">(1)</span></div><div class="category" data-category="dataviz">dataviz <span class="quarto-category-count">(7)</span></div><div class="category" data-category="geocoding">geocoding <span class="quarto-category-count">(2)</span></div><div class="category" data-category="ggplot">ggplot <span class="quarto-category-count">(1)</span></div><div class="category" data-category="ggplot2">ggplot2 <span class="quarto-category-count">(5)</span></div><div class="category" data-category="map">map <span class="quarto-category-count">(1)</span></div><div class="category" data-category="news">news <span class="quarto-category-count">(1)</span></div><div class="category" data-category="panel data">panel data <span class="quarto-category-count">(1)</span></div><div class="category" data-category="regression">regression <span class="quarto-category-count">(1)</span></div><div class="category" data-category="tables">tables <span class="quarto-category-count">(1)</span></div><div class="category" data-category="tidy">tidy <span class="quarto-category-count">(3)</span></div><div class="category" data-category="tidyTuesday">tidyTuesday <span class="quarto-category-count">(2)</span></div><div class="category" data-category="tidyverse">tidyverse <span class="quarto-category-count">(7)</span></div><div class="category" data-category="time_series">time_series <span class="quarto-category-count">(7)</span></div></div></div>
+    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(40)</span></div><div class="category" data-category="HOWTO">HOWTO <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Maps">Maps <span class="quarto-category-count">(3)</span></div><div class="category" data-category="R">R <span class="quarto-category-count">(33)</span></div><div class="category" data-category="Socrata">Socrata <span class="quarto-category-count">(1)</span></div><div class="category" data-category="binomial">binomial <span class="quarto-category-count">(1)</span></div><div class="category" data-category="dataviz">dataviz <span class="quarto-category-count">(7)</span></div><div class="category" data-category="geocoding">geocoding <span class="quarto-category-count">(2)</span></div><div class="category" data-category="ggplot">ggplot <span class="quarto-category-count">(1)</span></div><div class="category" data-category="ggplot2">ggplot2 <span class="quarto-category-count">(5)</span></div><div class="category" data-category="map">map <span class="quarto-category-count">(1)</span></div><div class="category" data-category="news">news <span class="quarto-category-count">(1)</span></div><div class="category" data-category="panel data">panel data <span class="quarto-category-count">(1)</span></div><div class="category" data-category="radiant">radiant <span class="quarto-category-count">(1)</span></div><div class="category" data-category="regression">regression <span class="quarto-category-count">(1)</span></div><div class="category" data-category="tables">tables <span class="quarto-category-count">(1)</span></div><div class="category" data-category="tidy">tidy <span class="quarto-category-count">(3)</span></div><div class="category" data-category="tidyTuesday">tidyTuesday <span class="quarto-category-count">(2)</span></div><div class="category" data-category="tidyverse">tidyverse <span class="quarto-category-count">(8)</span></div><div class="category" data-category="time_series">time_series <span class="quarto-category-count">(7)</span></div></div></div>
 <!-- main -->
 <main class="content quarto-banner-title-block column-page-left" id="quarto-document-content">
 
@@ -174,8 +212,8 @@ ul.task-list li input[type="checkbox"] {
 
 
 
-<div class="quarto-listing quarto-listing-container-table" id="listing-listing">
 
+<div class="quarto-listing quarto-listing-container-table" id="listing-listing">
 <table class="quarto-listing-table table">
 <thead>
 <tr>
@@ -196,673 +234,687 @@ Reading Time
 </tr>
 </thead>
 <tbody class="list">
-<tr data-index="0" data-categories="R" data-listing-date-sort="1677571200000" data-listing-file-modified-sort="1677620145447" data-listing-reading-time-sort="2.76" data-listing-title-sort="Sending Email with R" data-listing-filename-sort="index.qmd">
-<td class="listing-image">
-<img src="./posts/sending-class-email/image.png" style="height: 40px;">
+<tr data-index="0" data-categories="R,tidyverse,radiant" data-listing-date-sort="1725951600000" data-listing-file-modified-sort="1726061324160" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="290" data-listing-title-sort="Excel to Radiant" data-listing-filename-sort="index.qmd">
+<td>
+<span class="listing-image"><img src="./posts/excel-to-radiant/image.png" style="height: 40px;"></span>
 </td>
-<td class="listing-date">
-Feb 28, 2023
+<td>
+<span class="listing-date">Sep 10, 2024</span>
 </td>
-<td class="listing-title">
-<a href="./posts/sending-class-email/index.html" class="title">Sending Email with R</a>
+<td>
+<a href="./posts/excel-to-radiant/index.html" class="title listing-title">Excel to Radiant</a>
 </td>
-<td class="listing-author">
-Robert W. Walker
+<td>
+<span class="listing-author">Robert W. Walker</span>
 </td>
-<td class="listing-reading-time">
-2 min
-</td>
-</tr>
-<tr data-index="1" data-listing-date-sort="1676793600000" data-listing-file-modified-sort="1676929954836" data-listing-reading-time-sort="11.3" data-listing-title-sort="The Economist's Visualization Errors" data-listing-filename-sort="index.qmd">
-<td class="listing-image">
-<img src="./posts/economist-errors/image.png" style="height: 40px;">
-</td>
-<td class="listing-date">
-Feb 19, 2023
-</td>
-<td class="listing-title">
-<a href="./posts/economist-errors/index.html" class="title">The Economist’s Visualization Errors</a>
-</td>
-<td class="listing-author">
-Robert W. Walker
-</td>
-<td class="listing-reading-time">
-11 min
+<td>
+<span class="listing-reading-time">2 min</span>
 </td>
 </tr>
-
-<tr data-index="2" data-categories="R" data-listing-date-sort="1676448000000" data-listing-file-modified-sort="1676673076754" data-listing-reading-time-sort="6.735" data-listing-title-sort="Styling a DT::datatable" data-listing-filename-sort="index.qmd">
-<td class="listing-image">
-<img src="./posts/styling-a-DT-datatable/uglytable.png" style="height: 40px;">
+<tr data-index="1" data-categories="R" data-listing-date-sort="1677571200000" data-listing-file-modified-sort="1677620145000" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="552" data-listing-title-sort="Sending Email with R" data-listing-filename-sort="index.qmd">
+<td>
+<span class="listing-image"><img src="./posts/sending-class-email/image.png" style="height: 40px;"></span>
 </td>
-<td class="listing-date">
-Feb 15, 2023
+<td>
+<span class="listing-date">Feb 28, 2023</span>
 </td>
-<td class="listing-title">
-<a href="./posts/styling-a-DT-datatable/index.html" class="title">Styling a DT::datatable</a>
+<td>
+<a href="./posts/sending-class-email/index.html" class="title listing-title">Sending Email with R</a>
 </td>
-<td class="listing-author">
-Robert W. Walker
+<td>
+<span class="listing-author">Robert W. Walker</span>
 </td>
-<td class="listing-reading-time">
-6 min
-</td>
-</tr>
-<tr data-index="3" data-listing-date-sort="1676275200000" data-listing-file-modified-sort="1676563853000" data-listing-reading-time-sort="2.005" data-listing-title-sort="Pigeons and Palettes" data-listing-filename-sort="index.qmd">
-<td class="listing-image">
-<img src="./posts/pigeons-palettes/image.png" style="height: 40px;">
-</td>
-<td class="listing-date">
-Feb 13, 2023
-</td>
-<td class="listing-title">
-<a href="./posts/pigeons-palettes/index.html" class="title">Pigeons and Palettes</a>
-</td>
-<td class="listing-author">
-Robert W. Walker
-</td>
-<td class="listing-reading-time">
-2 min
+<td>
+<span class="listing-reading-time">3 min</span>
 </td>
 </tr>
-<tr data-index="4" data-categories="R,tidyverse,map" data-listing-date-sort="1675584000000" data-listing-file-modified-sort="1676782650000" data-listing-reading-time-sort="1.58" data-listing-title-sort="Marveling at map()" data-listing-filename-sort="index.qmd">
-<td class="listing-image">
-<img src="./posts/marveling-at-map/image.png" style="height: 40px;">
+<tr data-index="2" data-listing-date-sort="1676793600000" data-listing-file-modified-sort="1676929954000" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="12" data-listing-word-count-sort="2260" data-listing-title-sort="The Economist's Visualization Errors" data-listing-filename-sort="index.qmd">
+<td>
+<span class="listing-image"><img src="./posts/economist-errors/image.png" style="height: 40px;"></span>
 </td>
-<td class="listing-date">
-Feb 5, 2023
+<td>
+<span class="listing-date">Feb 19, 2023</span>
 </td>
-<td class="listing-title">
-<a href="./posts/marveling-at-map/index.html" class="title">Marveling at map()</a>
+<td>
+<a href="./posts/economist-errors/index.html" class="title listing-title">The Economist’s Visualization Errors</a>
 </td>
-<td class="listing-author">
-Robert W. Walker
+<td>
+<span class="listing-author">Robert W. Walker</span>
 </td>
-<td class="listing-reading-time">
-1 min
-</td>
-</tr>
-<tr data-index="5" data-categories="R,binomial" data-listing-date-sort="1675584000000" data-listing-file-modified-sort="1676563853170" data-listing-reading-time-sort="0.635" data-listing-title-sort="Hubbard's Rule of Five" data-listing-filename-sort="index.qmd">
-<td class="listing-image">
-<img src="./posts/rule-of-five/image.png" style="height: 40px;">
-</td>
-<td class="listing-date">
-Feb 5, 2023
-</td>
-<td class="listing-title">
-<a href="./posts/rule-of-five/index.html" class="title">Hubbard’s Rule of Five</a>
-</td>
-<td class="listing-author">
-Robert W. Walker
-</td>
-<td class="listing-reading-time">
-0 min
+<td>
+<span class="listing-reading-time">12 min</span>
 </td>
 </tr>
-<tr data-index="6" data-categories="R,tidyverse,Maps,geocoding" data-listing-date-sort="1675584000000" data-listing-file-modified-sort="1676733789000" data-listing-reading-time-sort="3.3" data-listing-title-sort="tidyTuesday: coffee chains" data-listing-filename-sort="index.qmd">
-<td class="listing-image">
-<img src="./posts/tidyTuesday-coffee-chains/image.png" style="height: 40px;">
+<tr data-index="3" data-categories="R" data-listing-date-sort="1676448000000" data-listing-file-modified-sort="1676673076000" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="7" data-listing-word-count-sort="1347" data-listing-title-sort="Styling a DT::datatable" data-listing-filename-sort="index.qmd">
+<td>
+<span class="listing-image"><img src="./posts/styling-a-DT-datatable/uglytable.png" style="height: 40px;"></span>
 </td>
-<td class="listing-date">
-Feb 5, 2023
+<td>
+<span class="listing-date">Feb 15, 2023</span>
 </td>
-<td class="listing-title">
-<a href="./posts/tidyTuesday-coffee-chains/index.html" class="title">tidyTuesday: coffee chains</a>
+<td>
+<a href="./posts/styling-a-DT-datatable/index.html" class="title listing-title">Styling a DT::datatable</a>
 </td>
-<td class="listing-author">
-Robert W. Walker
+<td>
+<span class="listing-author">Robert W. Walker</span>
 </td>
-<td class="listing-reading-time">
-3 min
-</td>
-</tr>
-<tr data-index="7" data-categories="ggplot,Maps" data-listing-date-sort="1675584000000" data-listing-file-modified-sort="1676783725255" data-listing-reading-time-sort="1.065" data-listing-title-sort="Flows to Marion County" data-listing-filename-sort="index.qmd">
-<td class="listing-image">
-<img src="./posts/flows-to-marion-county/image.png" style="height: 40px;">
-</td>
-<td class="listing-date">
-Feb 5, 2023
-</td>
-<td class="listing-title">
-<a href="./posts/flows-to-marion-county/index.html" class="title">Flows to Marion County</a>
-</td>
-<td class="listing-author">
-Robert W. Walker
-</td>
-<td class="listing-reading-time">
-1 min
+<td>
+<span class="listing-reading-time">7 min</span>
 </td>
 </tr>
-<tr data-index="8" data-listing-date-sort="1675497600000" data-listing-file-modified-sort="1676563853182" data-listing-reading-time-sort="6.26" data-listing-title-sort="Working an Example on Proportions" data-listing-filename-sort="index.qmd">
-<td class="listing-image">
-<img src="./posts/worked-proportion/image.png" style="height: 40px;">
+<tr data-index="4" data-listing-date-sort="1676275200000" data-listing-file-modified-sort="1676563853000" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="401" data-listing-title-sort="Pigeons and Palettes" data-listing-filename-sort="index.qmd">
+<td>
+<span class="listing-image"><img src="./posts/pigeons-palettes/image.png" style="height: 40px;"></span>
 </td>
-<td class="listing-date">
-Feb 4, 2023
+<td>
+<span class="listing-date">Feb 13, 2023</span>
 </td>
-<td class="listing-title">
-<a href="./posts/worked-proportion/index.html" class="title">Working an Example on Proportions</a>
+<td>
+<a href="./posts/pigeons-palettes/index.html" class="title listing-title">Pigeons and Palettes</a>
 </td>
-<td class="listing-author">
-Robert W. Walker
+<td>
+<span class="listing-author">Robert W. Walker</span>
 </td>
-<td class="listing-reading-time">
-6 min
-</td>
-</tr>
-<tr data-index="9" data-listing-date-sort="1675324800000" data-listing-file-modified-sort="1676563853087" data-listing-reading-time-sort="4.23" data-listing-title-sort="Alluvial Plots" data-listing-filename-sort="index.qmd">
-<td class="listing-image">
-<img src="./posts/alluvials/image.png" style="height: 40px;">
-</td>
-<td class="listing-date">
-Feb 2, 2023
-</td>
-<td class="listing-title">
-<a href="./posts/alluvials/index.html" class="title">Alluvial Plots</a>
-</td>
-<td class="listing-author">
-Robert W. Walker
-</td>
-<td class="listing-reading-time">
-4 min
+<td>
+<span class="listing-reading-time">3 min</span>
 </td>
 </tr>
-<tr data-index="10" data-categories="HOWTO,R" data-listing-date-sort="1674720000000" data-listing-file-modified-sort="1676563853127" data-listing-reading-time-sort="1.215" data-listing-title-sort="Friends don't let Friends use OneDrive for R Libraries" data-listing-filename-sort="index.qmd">
-<td class="listing-image">
-<img src="./posts/onedrive-is-dangerous/thumbnail.jpg" style="height: 40px;">
+<tr data-index="5" data-categories="ggplot,Maps" data-listing-date-sort="1675584000000" data-listing-file-modified-sort="1676783725000" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="213" data-listing-title-sort="Flows to Marion County" data-listing-filename-sort="index.qmd">
+<td>
+<span class="listing-image"><img src="./posts/flows-to-marion-county/image.png" style="height: 40px;"></span>
 </td>
-<td class="listing-date">
-Jan 26, 2023
+<td>
+<span class="listing-date">Feb 5, 2023</span>
 </td>
-<td class="listing-title">
-<a href="./posts/onedrive-is-dangerous/index.html" class="title">Friends don’t let Friends use OneDrive for R Libraries</a>
+<td>
+<a href="./posts/flows-to-marion-county/index.html" class="title listing-title">Flows to Marion County</a>
 </td>
-<td class="listing-author">
-Robert W. Walker
+<td>
+<span class="listing-author">Robert W. Walker</span>
 </td>
-<td class="listing-reading-time">
-1 min
-</td>
-</tr>
-<tr data-index="11" data-categories="R,dataviz,ggplot2" data-listing-date-sort="1674633600000" data-listing-file-modified-sort="1676572578259" data-listing-reading-time-sort="1.58" data-listing-title-sort="Visualizing Two Qualitative Variables" data-listing-filename-sort="index.qmd">
-<td class="listing-image">
-<img src="./posts/visualizing-two-qualities/preview.png" style="height: 40px;">
-</td>
-<td class="listing-date">
-Jan 25, 2023
-</td>
-<td class="listing-title">
-<a href="./posts/visualizing-two-qualities/index.html" class="title">Visualizing Two Qualitative Variables</a>
-</td>
-<td class="listing-author">
-Robert W. Walker
-</td>
-<td class="listing-reading-time">
-1 min
+<td>
+<span class="listing-reading-time">2 min</span>
 </td>
 </tr>
-<tr data-index="12" data-categories="R,dataviz,ggplot2" data-listing-date-sort="1674633600000" data-listing-file-modified-sort="1676563853178" data-listing-reading-time-sort="6.03" data-listing-title-sort="Visualizing One Quantitative Variable" data-listing-filename-sort="index.qmd">
-<td class="listing-image">
-<img src="./posts/visualizing-one-quantitative-variable/thumbnail.png" style="height: 40px;">
+<tr data-index="6" data-categories="R,tidyverse,map" data-listing-date-sort="1675584000000" data-listing-file-modified-sort="1676782650000" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="316" data-listing-title-sort="Marveling at map()" data-listing-filename-sort="index.qmd">
+<td>
+<span class="listing-image"><img src="./posts/marveling-at-map/image.png" style="height: 40px;"></span>
 </td>
-<td class="listing-date">
-Jan 25, 2023
+<td>
+<span class="listing-date">Feb 5, 2023</span>
 </td>
-<td class="listing-title">
-<a href="./posts/visualizing-one-quantitative-variable/index.html" class="title">Visualizing One Quantitative Variable</a>
+<td>
+<a href="./posts/marveling-at-map/index.html" class="title listing-title">Marveling at map()</a>
 </td>
-<td class="listing-author">
-Robert W. Walker
+<td>
+<span class="listing-author">Robert W. Walker</span>
 </td>
-<td class="listing-reading-time">
-6 min
-</td>
-</tr>
-<tr data-index="13" data-categories="R,dataviz,ggplot2" data-listing-date-sort="1674633600000" data-listing-file-modified-sort="1676563853090" data-listing-reading-time-sort="0.785" data-listing-title-sort="Changing the Default `ggplot` theme" data-listing-filename-sort="index.qmd">
-<td class="listing-image">
-<img src="./posts/default-ggplot-theme-set/preview.png" style="height: 40px;">
-</td>
-<td class="listing-date">
-Jan 25, 2023
-</td>
-<td class="listing-title">
-<a href="./posts/default-ggplot-theme-set/index.html" class="title">Changing the Default <code>ggplot</code> theme</a>
-</td>
-<td class="listing-author">
-Robert W. Walker
-</td>
-<td class="listing-reading-time">
-0 min
+<td>
+<span class="listing-reading-time">2 min</span>
 </td>
 </tr>
-<tr data-index="14" data-categories="R,dataviz,ggplot2" data-listing-date-sort="1674633600000" data-listing-file-modified-sort="1676563853181" data-listing-reading-time-sort="1.725" data-listing-title-sort="Visualizing Two Quantitative Variables" data-listing-filename-sort="index.qmd">
-<td class="listing-image">
-<img src="./posts/visualizing-two-quantities/img/preview.png" style="height: 40px;">
+<tr data-index="7" data-categories="R,binomial" data-listing-date-sort="1675584000000" data-listing-file-modified-sort="1676563853000" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="127" data-listing-title-sort="Hubbard's Rule of Five" data-listing-filename-sort="index.qmd">
+<td>
+<span class="listing-image"><img src="./posts/rule-of-five/image.png" style="height: 40px;"></span>
 </td>
-<td class="listing-date">
-Jan 25, 2023
+<td>
+<span class="listing-date">Feb 5, 2023</span>
 </td>
-<td class="listing-title">
-<a href="./posts/visualizing-two-quantities/index.html" class="title">Visualizing Two Quantitative Variables</a>
+<td>
+<a href="./posts/rule-of-five/index.html" class="title listing-title">Hubbard’s Rule of Five</a>
 </td>
-<td class="listing-author">
-Robert W. Walker
+<td>
+<span class="listing-author">Robert W. Walker</span>
 </td>
-<td class="listing-reading-time">
-1 min
-</td>
-</tr>
-<tr data-index="15" data-categories="R" data-listing-date-sort="1674633600000" data-listing-file-modified-sort="1676563853177" data-listing-reading-time-sort="4.545" data-listing-title-sort="Visualizing One Qualitative Variable" data-listing-filename-sort="index.qmd">
-<td class="listing-image">
-<img src="./posts/visualizing-one-qualitative-variable/thumbnail.png" style="height: 40px;">
-</td>
-<td class="listing-date">
-Jan 25, 2023
-</td>
-<td class="listing-title">
-<a href="./posts/visualizing-one-qualitative-variable/index.html" class="title">Visualizing One Qualitative Variable</a>
-</td>
-<td class="listing-author">
-Robert W. Walker
-</td>
-<td class="listing-reading-time">
-4 min
+<td>
+<span class="listing-reading-time">1 min</span>
 </td>
 </tr>
-<tr data-index="16" data-categories="R,dataviz,ggplot2" data-listing-date-sort="1674633600000" data-listing-file-modified-sort="1676563853177" data-listing-reading-time-sort="2.385" data-listing-title-sort="Visualizing One Qualitative and One Quantitative Variable" data-listing-filename-sort="index.qmd">
-<td class="listing-image">
-<img src="./posts/visualizing-mixed-data/thumbnail.png" style="height: 40px;">
+<tr data-index="8" data-categories="R,tidyverse,Maps,geocoding" data-listing-date-sort="1675584000000" data-listing-file-modified-sort="1676733789000" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="660" data-listing-title-sort="tidyTuesday: coffee chains" data-listing-filename-sort="index.qmd">
+<td>
+<span class="listing-image"><img src="./posts/tidyTuesday-coffee-chains/image.png" style="height: 40px;"></span>
 </td>
-<td class="listing-date">
-Jan 25, 2023
+<td>
+<span class="listing-date">Feb 5, 2023</span>
 </td>
-<td class="listing-title">
-<a href="./posts/visualizing-mixed-data/index.html" class="title">Visualizing One Qualitative and One Quantitative Variable</a>
+<td>
+<a href="./posts/tidyTuesday-coffee-chains/index.html" class="title listing-title">tidyTuesday: coffee chains</a>
 </td>
-<td class="listing-author">
-Robert W. Walker
+<td>
+<span class="listing-author">Robert W. Walker</span>
 </td>
-<td class="listing-reading-time">
-2 min
-</td>
-</tr>
-<tr data-index="17" data-categories="R" data-listing-date-sort="1672905600000" data-listing-file-modified-sort="1676563853085" data-listing-reading-time-sort="0.52" data-listing-title-sort="Getting Started: R and RStudio" data-listing-filename-sort="index.qmd">
-<td class="listing-image">
-<img src="./posts/R-RStudio/image.png" style="height: 40px;">
-</td>
-<td class="listing-date">
-Jan 5, 2023
-</td>
-<td class="listing-title">
-<a href="./posts/R-RStudio/index.html" class="title">Getting Started: R and RStudio</a>
-</td>
-<td class="listing-author">
-Robert W. Walker
-</td>
-<td class="listing-reading-time">
-0 min
+<td>
+<span class="listing-reading-time">4 min</span>
 </td>
 </tr>
-<tr data-index="18" data-categories="R" data-listing-date-sort="1672819200000" data-listing-file-modified-sort="1676563853183" data-listing-reading-time-sort="0.245" data-listing-title-sort="Tutorials on Wrangling" data-listing-filename-sort="index.qmd">
-<td class="listing-image">
-<img src="./posts/wrangling-tutorials/image.png" style="height: 40px;">
+<tr data-index="9" data-listing-date-sort="1675497600000" data-listing-file-modified-sort="1676563853000" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="7" data-listing-word-count-sort="1252" data-listing-title-sort="Working an Example on Proportions" data-listing-filename-sort="index.qmd">
+<td>
+<span class="listing-image"><img src="./posts/worked-proportion/image.png" style="height: 40px;"></span>
 </td>
-<td class="listing-date">
-Jan 4, 2023
+<td>
+<span class="listing-date">Feb 4, 2023</span>
 </td>
-<td class="listing-title">
-<a href="./posts/wrangling-tutorials/index.html" class="title">Tutorials on Wrangling</a>
+<td>
+<a href="./posts/worked-proportion/index.html" class="title listing-title">Working an Example on Proportions</a>
 </td>
-<td class="listing-author">
-Robert W. Walker
+<td>
+<span class="listing-author">Robert W. Walker</span>
 </td>
-<td class="listing-reading-time">
-0 min
-</td>
-</tr>
-<tr data-index="19" data-categories="R" data-listing-date-sort="1662447600000" data-listing-file-modified-sort="1676563853172" data-listing-reading-time-sort="5.155" data-listing-title-sort="A Small Thread on Smart Prediction" data-listing-filename-sort="index.qmd">
-<td class="listing-image">
-<img src="./posts/smart-Prediction/image.png" style="height: 40px;">
-</td>
-<td class="listing-date">
-Sep 6, 2022
-</td>
-<td class="listing-title">
-<a href="./posts/smart-Prediction/index.html" class="title">A Small Thread on Smart Prediction</a>
-</td>
-<td class="listing-author">
-Robert W. Walker
-</td>
-<td class="listing-reading-time">
-5 min
+<td>
+<span class="listing-reading-time">7 min</span>
 </td>
 </tr>
-<tr data-index="20" data-categories="R,tidyverse,Maps,geocoding" data-listing-date-sort="1650438000000" data-listing-file-modified-sort="1676784280001" data-listing-reading-time-sort="2.655" data-listing-title-sort="Mapping Voters" data-listing-filename-sort="index.qmd">
-<td class="listing-image">
-<img src="./posts/mapping-voters/image.png" style="height: 40px;">
+<tr data-index="10" data-listing-date-sort="1675324800000" data-listing-file-modified-sort="1676563853000" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5" data-listing-word-count-sort="846" data-listing-title-sort="Alluvial Plots" data-listing-filename-sort="index.qmd">
+<td>
+<span class="listing-image"><img src="./posts/alluvials/image.png" style="height: 40px;"></span>
 </td>
-<td class="listing-date">
-Apr 20, 2022
+<td>
+<span class="listing-date">Feb 2, 2023</span>
 </td>
-<td class="listing-title">
-<a href="./posts/mapping-voters/index.html" class="title">Mapping Voters</a>
+<td>
+<a href="./posts/alluvials/index.html" class="title listing-title">Alluvial Plots</a>
 </td>
-<td class="listing-author">
-Robert W. Walker
+<td>
+<span class="listing-author">Robert W. Walker</span>
 </td>
-<td class="listing-reading-time">
-2 min
-</td>
-</tr>
-<tr data-index="21" data-categories="R,regression" data-listing-date-sort="1649746800000" data-listing-file-modified-sort="1676563853126" data-listing-reading-time-sort="1.765" data-listing-title-sort="Normal Residuals in Radiant" data-listing-filename-sort="index.qmd">
-<td class="listing-image">
-<img src="./posts/normal-residuals-in-radiant/image.png" style="height: 40px;">
-</td>
-<td class="listing-date">
-Apr 12, 2022
-</td>
-<td class="listing-title">
-<a href="./posts/normal-residuals-in-radiant/index.html" class="title">Normal Residuals in Radiant</a>
-</td>
-<td class="listing-author">
-Robert W. Walker
-</td>
-<td class="listing-reading-time">
-1 min
+<td>
+<span class="listing-reading-time">5 min</span>
 </td>
 </tr>
-<tr data-index="22" data-categories="R,time_series,tidy" data-listing-date-sort="1625036400000" data-listing-file-modified-sort="1676563853092" data-listing-reading-time-sort="0.27" data-listing-title-sort="ggtimeseries" data-listing-filename-sort="index.qmd">
-<td class="listing-image">
-<img src="./posts/ggtimeseries/image.png" style="height: 40px;">
+<tr data-index="11" data-categories="HOWTO,R" data-listing-date-sort="1674720000000" data-listing-file-modified-sort="1676563853000" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="243" data-listing-title-sort="Friends don't let Friends use OneDrive for R Libraries" data-listing-filename-sort="index.qmd">
+<td>
+<span class="listing-image"><p class="card-img-top"><img src="posts/onedrive-is-dangerous/thumbnail.jpg" style="height: 40px;"  class="thumbnail-image card-img"/></p></span>
 </td>
-<td class="listing-date">
-Jun 30, 2021
+<td>
+<span class="listing-date">Jan 26, 2023</span>
 </td>
-<td class="listing-title">
-<a href="./posts/ggtimeseries/index.html" class="title">ggtimeseries</a>
+<td>
+<a href="./posts/onedrive-is-dangerous/index.html" class="title listing-title">Friends don’t let Friends use OneDrive for R Libraries</a>
 </td>
-<td class="listing-author">
-Robert W. Walker
+<td>
+<span class="listing-author">Robert W. Walker</span>
 </td>
-<td class="listing-reading-time">
-0 min
-</td>
-</tr>
-<tr data-index="23" data-categories="R,time_series" data-listing-date-sort="1624863600000" data-listing-file-modified-sort="1676563853088" data-listing-reading-time-sort="0.44" data-listing-title-sort="the clock package: a c port" data-listing-filename-sort="index.qmd">
-<td class="listing-image">
-<img src="./posts/clock-c-datetimes/image.png" style="height: 40px;">
-</td>
-<td class="listing-date">
-Jun 28, 2021
-</td>
-<td class="listing-title">
-<a href="./posts/clock-c-datetimes/index.html" class="title">the clock package: a c port</a>
-</td>
-<td class="listing-author">
-Robert W. Walker
-</td>
-<td class="listing-reading-time">
-0 min
+<td>
+<span class="listing-reading-time">2 min</span>
 </td>
 </tr>
-<tr data-index="24" data-categories="R,time_series" data-listing-date-sort="1624518000000" data-listing-file-modified-sort="1676563853171" data-listing-reading-time-sort="0.165" data-listing-title-sort="A nice post on seasonal adjustment" data-listing-filename-sort="index.qmd">
-<td class="listing-image">
-<img src="./posts/seasonal-adjustment/image.png" style="height: 40px;">
+<tr data-index="12" data-categories="R,dataviz,ggplot2" data-listing-date-sort="1674633600000" data-listing-file-modified-sort="1676563853000" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="157" data-listing-title-sort="Changing the Default `ggplot` theme" data-listing-filename-sort="index.qmd">
+<td>
+<span class="listing-image"><img src="./posts/default-ggplot-theme-set/preview.png" style="height: 40px;"></span>
 </td>
-<td class="listing-date">
-Jun 24, 2021
+<td>
+<span class="listing-date">Jan 25, 2023</span>
 </td>
-<td class="listing-title">
-<a href="./posts/seasonal-adjustment/index.html" class="title">A nice post on seasonal adjustment</a>
+<td>
+<a href="./posts/default-ggplot-theme-set/index.html" class="title listing-title">Changing the Default <code>ggplot</code> theme</a>
 </td>
-<td class="listing-author">
-Robert W. Walker
+<td>
+<span class="listing-author">Robert W. Walker</span>
 </td>
-<td class="listing-reading-time">
-0 min
-</td>
-</tr>
-<tr data-index="25" data-categories="R,time_series,tidy" data-listing-date-sort="1624518000000" data-listing-file-modified-sort="1676563853119" data-listing-reading-time-sort="0.995" data-listing-title-sort="Easy moving averages" data-listing-filename-sort="index.qmd">
-<td class="listing-image">
-<img src="./posts/moving-averages-link/image.png" style="height: 40px;">
-</td>
-<td class="listing-date">
-Jun 24, 2021
-</td>
-<td class="listing-title">
-<a href="./posts/moving-averages-link/index.html" class="title">Easy moving averages</a>
-</td>
-<td class="listing-author">
-Robert W. Walker
-</td>
-<td class="listing-reading-time">
-0 min
+<td>
+<span class="listing-reading-time">1 min</span>
 </td>
 </tr>
-<tr data-index="26" data-categories="R,time_series" data-listing-date-sort="1624518000000" data-listing-file-modified-sort="1676563853169" data-listing-reading-time-sort="2.465" data-listing-title-sort="A brief look at VIX" data-listing-filename-sort="index.qmd">
-<td class="listing-image">
-<img src="./posts/quick-look-at-vix/image.png" style="height: 40px;">
+<tr data-index="13" data-categories="R,dataviz,ggplot2" data-listing-date-sort="1674633600000" data-listing-file-modified-sort="1676563853000" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="477" data-listing-title-sort="Visualizing One Qualitative and One Quantitative Variable" data-listing-filename-sort="index.qmd">
+<td>
+<span class="listing-image"><img src="./posts/visualizing-mixed-data/thumbnail.png" style="height: 40px;"></span>
 </td>
-<td class="listing-date">
-Jun 24, 2021
+<td>
+<span class="listing-date">Jan 25, 2023</span>
 </td>
-<td class="listing-title">
-<a href="./posts/quick-look-at-vix/index.html" class="title">A brief look at VIX</a>
+<td>
+<a href="./posts/visualizing-mixed-data/index.html" class="title listing-title">Visualizing One Qualitative and One Quantitative Variable</a>
 </td>
-<td class="listing-author">
-Robert W. Walker
+<td>
+<span class="listing-author">Robert W. Walker</span>
 </td>
-<td class="listing-reading-time">
-2 min
-</td>
-</tr>
-<tr data-index="27" data-categories="R,time_series" data-listing-date-sort="1622271600000" data-listing-file-modified-sort="1676563853086" data-listing-reading-time-sort="0.375" data-listing-title-sort="Allison Horst teaches ACFs" data-listing-filename-sort="index.qmd">
-<td class="listing-image">
-<img src="./posts/acfs-horst/image.png" style="height: 40px;">
-</td>
-<td class="listing-date">
-May 29, 2021
-</td>
-<td class="listing-title">
-<a href="./posts/acfs-horst/index.html" class="title">Allison Horst teaches ACFs</a>
-</td>
-<td class="listing-author">
-Robert W. Walker
-</td>
-<td class="listing-reading-time">
-0 min
+<td>
+<span class="listing-reading-time">3 min</span>
 </td>
 </tr>
-<tr data-index="28" data-categories="R,time_series,tidy" data-listing-date-sort="1616569200000" data-listing-file-modified-sort="1676563853177" data-listing-reading-time-sort="2.58" data-listing-title-sort="timetk is really, really handy" data-listing-filename-sort="index.qmd">
-<td class="listing-image">
-<img src="./posts/timetk-is-awesome/image.png" style="height: 40px;">
+<tr data-index="14" data-categories="R" data-listing-date-sort="1674633600000" data-listing-file-modified-sort="1676563853000" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5" data-listing-word-count-sort="909" data-listing-title-sort="Visualizing One Qualitative Variable" data-listing-filename-sort="index.qmd">
+<td>
+<span class="listing-image"><img src="./posts/visualizing-one-qualitative-variable/thumbnail.png" style="height: 40px;"></span>
 </td>
-<td class="listing-date">
-Mar 24, 2021
+<td>
+<span class="listing-date">Jan 25, 2023</span>
 </td>
-<td class="listing-title">
-<a href="./posts/timetk-is-awesome/index.html" class="title">timetk is really, really handy</a>
+<td>
+<a href="./posts/visualizing-one-qualitative-variable/index.html" class="title listing-title">Visualizing One Qualitative Variable</a>
 </td>
-<td class="listing-author">
-Robert W. Walker
+<td>
+<span class="listing-author">Robert W. Walker</span>
 </td>
-<td class="listing-reading-time">
-2 min
-</td>
-</tr>
-<tr data-index="29" data-categories="R,tidyTuesday,tidyverse" data-listing-date-sort="1612771200000" data-listing-file-modified-sort="1676822515000" data-listing-reading-time-sort="2.085" data-listing-title-sort="TT: Wealth and Income" data-listing-filename-sort="index.qmd">
-<td class="listing-image">
-<img src="./posts/tt-wealth-and-income/image.png" style="height: 40px;">
-</td>
-<td class="listing-date">
-Feb 8, 2021
-</td>
-<td class="listing-title">
-<a href="./posts/tt-wealth-and-income/index.html" class="title">TT: Wealth and Income</a>
-</td>
-<td class="listing-author">
-Robert W. Walker
-</td>
-<td class="listing-reading-time">
-2 min
+<td>
+<span class="listing-reading-time">5 min</span>
 </td>
 </tr>
-<tr data-index="30" data-categories="R,panel data" data-listing-date-sort="1606550400000" data-listing-file-modified-sort="1676563853168" data-listing-reading-time-sort="1.9" data-listing-title-sort="fredr: quick and dirty" data-listing-filename-sort="index.qmd">
-<td class="listing-image">
-<img data-src="./posts/quick-fredr/image.png" style="height: 40px;">
+<tr data-index="15" data-categories="R,dataviz,ggplot2" data-listing-date-sort="1674633600000" data-listing-file-modified-sort="1676563853000" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="7" data-listing-word-count-sort="1206" data-listing-title-sort="Visualizing One Quantitative Variable" data-listing-filename-sort="index.qmd">
+<td>
+<span class="listing-image"><img src="./posts/visualizing-one-quantitative-variable/thumbnail.png" style="height: 40px;"></span>
 </td>
-<td class="listing-date">
-Nov 28, 2020
+<td>
+<span class="listing-date">Jan 25, 2023</span>
 </td>
-<td class="listing-title">
-<a href="./posts/quick-fredr/index.html" class="title">fredr: quick and dirty</a>
+<td>
+<a href="./posts/visualizing-one-quantitative-variable/index.html" class="title listing-title">Visualizing One Quantitative Variable</a>
 </td>
-<td class="listing-author">
-Robert W. Walker
+<td>
+<span class="listing-author">Robert W. Walker</span>
 </td>
-<td class="listing-reading-time">
-1 min
-</td>
-</tr>
-<tr data-index="31" data-categories="R,tidyverse,Socrata,dataviz" data-listing-date-sort="1606291200000" data-listing-file-modified-sort="1676821709008" data-listing-reading-time-sort="2.3" data-listing-title-sort="Socrata is amazingly handy for open data" data-listing-filename-sort="index.qmd">
-<td class="listing-image">
-<img data-src="./posts/socrata-is-amazingly-handy-for-open-data/image.png" style="height: 40px;">
-</td>
-<td class="listing-date">
-Nov 25, 2020
-</td>
-<td class="listing-title">
-<a href="./posts/socrata-is-amazingly-handy-for-open-data/index.html" class="title">Socrata is amazingly handy for open data</a>
-</td>
-<td class="listing-author">
-Robert W. Walker
-</td>
-<td class="listing-reading-time">
-2 min
+<td>
+<span class="listing-reading-time">7 min</span>
 </td>
 </tr>
-<tr data-index="32" data-categories="R" data-listing-date-sort="1606204800000" data-listing-file-modified-sort="1676563853088" data-listing-reading-time-sort="2.545" data-listing-title-sort="Vaccine Efficacy: A Binomial Problem" data-listing-filename-sort="index.qmd">
-<td class="listing-image">
-<img data-src="./posts/binomial-vaccine-efficacy/image.png" style="height: 40px;">
+<tr data-index="16" data-categories="R,dataviz,ggplot2" data-listing-date-sort="1674633600000" data-listing-file-modified-sort="1676572578000" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="316" data-listing-title-sort="Visualizing Two Qualitative Variables" data-listing-filename-sort="index.qmd">
+<td>
+<span class="listing-image"><img src="./posts/visualizing-two-qualities/preview.png" style="height: 40px;"></span>
 </td>
-<td class="listing-date">
-Nov 24, 2020
+<td>
+<span class="listing-date">Jan 25, 2023</span>
 </td>
-<td class="listing-title">
-<a href="./posts/binomial-vaccine-efficacy/index.html" class="title">Vaccine Efficacy: A Binomial Problem</a>
+<td>
+<a href="./posts/visualizing-two-qualities/index.html" class="title listing-title">Visualizing Two Qualitative Variables</a>
 </td>
-<td class="listing-author">
-Robert W. Walker
+<td>
+<span class="listing-author">Robert W. Walker</span>
 </td>
-<td class="listing-reading-time">
-2 min
-</td>
-</tr>
-<tr data-index="33" data-categories="tidyTuesday,dataviz" data-listing-date-sort="1603090800000" data-listing-file-modified-sort="1676821891412" data-listing-reading-time-sort="0.885" data-listing-title-sort="Datasaurus Dozen" data-listing-filename-sort="index.qmd">
-<td class="listing-image">
-<img data-src="./posts/datasaurus-dozen/image.png" style="height: 40px;">
-</td>
-<td class="listing-date">
-Oct 19, 2020
-</td>
-<td class="listing-title">
-<a href="./posts/datasaurus-dozen/index.html" class="title">Datasaurus Dozen</a>
-</td>
-<td class="listing-author">
-Robert W. Walker
-</td>
-<td class="listing-reading-time">
-0 min
+<td>
+<span class="listing-reading-time">2 min</span>
 </td>
 </tr>
-<tr data-index="34" data-categories="R" data-listing-date-sort="1599980400000" data-listing-file-modified-sort="1676563853092" data-listing-reading-time-sort="1.805" data-listing-title-sort="Importing Excel Data" data-listing-filename-sort="index.qmd">
-<td class="listing-image">
-<img data-src="./posts/importing-excel-data/thumbnail.png" style="height: 40px;">
+<tr data-index="17" data-categories="R,dataviz,ggplot2" data-listing-date-sort="1674633600000" data-listing-file-modified-sort="1676563853000" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="345" data-listing-title-sort="Visualizing Two Quantitative Variables" data-listing-filename-sort="index.qmd">
+<td>
+<span class="listing-image"><img src="./posts/visualizing-two-quantities/img/preview.png" style="height: 40px;"></span>
 </td>
-<td class="listing-date">
-Sep 13, 2020
+<td>
+<span class="listing-date">Jan 25, 2023</span>
 </td>
-<td class="listing-title">
-<a href="./posts/importing-excel-data/index.html" class="title">Importing Excel Data</a>
+<td>
+<a href="./posts/visualizing-two-quantities/index.html" class="title listing-title">Visualizing Two Quantitative Variables</a>
 </td>
-<td class="listing-author">
-Robert W. Walker
+<td>
+<span class="listing-author">Robert W. Walker</span>
 </td>
-<td class="listing-reading-time">
-1 min
-</td>
-</tr>
-<tr data-index="35" data-categories="R" data-listing-date-sort="1599894000000" data-listing-file-modified-sort="1676563853133" data-listing-reading-time-sort="7.55" data-listing-title-sort="Pivoting Data: Long and Wide" data-listing-filename-sort="index.qmd">
-<td class="listing-image">
-<img data-src="./posts/pivots/image.png" style="height: 40px;">
-</td>
-<td class="listing-date">
-Sep 12, 2020
-</td>
-<td class="listing-title">
-<a href="./posts/pivots/index.html" class="title">Pivoting Data: Long and Wide</a>
-</td>
-<td class="listing-author">
-Robert W. Walker
-</td>
-<td class="listing-reading-time">
-7 min
+<td>
+<span class="listing-reading-time">2 min</span>
 </td>
 </tr>
-<tr data-index="36" data-categories="R,tidyverse" data-listing-date-sort="1571986800000" data-listing-file-modified-sort="1676563853085" data-listing-reading-time-sort="1.405" data-listing-title-sort="A Quick and Dirty Introduction to R" data-listing-filename-sort="index.qmd">
-<td class="listing-image">
-<img data-src="./posts/a-quick-and-dirty-introduction-to-r/thumbnail.png" style="height: 40px;">
+<tr data-index="18" data-categories="R" data-listing-date-sort="1672905600000" data-listing-file-modified-sort="1676563853000" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="104" data-listing-title-sort="Getting Started: R and RStudio" data-listing-filename-sort="index.qmd">
+<td>
+<span class="listing-image"><img src="./posts/R-RStudio/image.png" style="height: 40px;"></span>
 </td>
-<td class="listing-date">
-Oct 25, 2019
+<td>
+<span class="listing-date">Jan 5, 2023</span>
 </td>
-<td class="listing-title">
-<a href="./posts/a-quick-and-dirty-introduction-to-r/index.html" class="title">A Quick and Dirty Introduction to R</a>
+<td>
+<a href="./posts/R-RStudio/index.html" class="title listing-title">Getting Started: R and RStudio</a>
 </td>
-<td class="listing-author">
-RWW
+<td>
+<span class="listing-author">Robert W. Walker</span>
 </td>
-<td class="listing-reading-time">
-1 min
-</td>
-</tr>
-
-<tr data-index="37" data-categories="R,tidyverse,tables" data-listing-date-sort="1570604400000" data-listing-file-modified-sort="1676563853175" data-listing-reading-time-sort="6.38" data-listing-title-sort="Tables, Pivots, Bars, and Mosaics" data-listing-filename-sort="index.qmd">
-<td class="listing-image">
-<img data-src="./posts/tables-pivots-bars-and-mosaics/thumbnail.jpg" style="height: 40px;">
-</td>
-<td class="listing-date">
-Oct 9, 2019
-</td>
-<td class="listing-title">
-<a href="./posts/tables-pivots-bars-and-mosaics/index.html" class="title">Tables, Pivots, Bars, and Mosaics</a>
-</td>
-<td class="listing-author">
-Robert W. Walker
-</td>
-<td class="listing-reading-time">
-6 min
+<td>
+<span class="listing-reading-time">1 min</span>
 </td>
 </tr>
-<tr data-index="38" data-categories="news" data-listing-date-sort="1546329600000" data-listing-file-modified-sort="1676563853181" data-listing-reading-time-sort="0.53" data-listing-title-sort="Welcome to the FAQ for DADM" data-listing-filename-sort="index.qmd">
-<td class="listing-image">
-<img data-src="./posts/welcome/thumbnail.jpg" style="height: 40px;">
+<tr data-index="19" data-categories="R" data-listing-date-sort="1672819200000" data-listing-file-modified-sort="1676563853000" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="49" data-listing-title-sort="Tutorials on Wrangling" data-listing-filename-sort="index.qmd">
+<td>
+<span class="listing-image"><img src="./posts/wrangling-tutorials/image.png" style="height: 40px;"></span>
 </td>
-<td class="listing-date">
-Jan 1, 2019
+<td>
+<span class="listing-date">Jan 4, 2023</span>
 </td>
-<td class="listing-title">
-<a href="./posts/welcome/index.html" class="title">Welcome to the FAQ for DADM</a>
+<td>
+<a href="./posts/wrangling-tutorials/index.html" class="title listing-title">Tutorials on Wrangling</a>
 </td>
-<td class="listing-author">
-Robert W. Walker
+<td>
+<span class="listing-author">Robert W. Walker</span>
 </td>
-<td class="listing-reading-time">
-0 min
+<td>
+<span class="listing-reading-time">1 min</span>
+</td>
+</tr>
+<tr data-index="20" data-categories="R" data-listing-date-sort="1662447600000" data-listing-file-modified-sort="1676563853000" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="6" data-listing-word-count-sort="1031" data-listing-title-sort="A Small Thread on Smart Prediction" data-listing-filename-sort="index.qmd">
+<td>
+<span class="listing-image"><img src="./posts/smart-Prediction/image.png" style="height: 40px;"></span>
+</td>
+<td>
+<span class="listing-date">Sep 6, 2022</span>
+</td>
+<td>
+<a href="./posts/smart-Prediction/index.html" class="title listing-title">A Small Thread on Smart Prediction</a>
+</td>
+<td>
+<span class="listing-author">Robert W. Walker</span>
+</td>
+<td>
+<span class="listing-reading-time">6 min</span>
+</td>
+</tr>
+<tr data-index="21" data-categories="R,tidyverse,Maps,geocoding" data-listing-date-sort="1650438000000" data-listing-file-modified-sort="1676784280000" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="531" data-listing-title-sort="Mapping Voters" data-listing-filename-sort="index.qmd">
+<td>
+<span class="listing-image"><img src="./posts/mapping-voters/image.png" style="height: 40px;"></span>
+</td>
+<td>
+<span class="listing-date">Apr 20, 2022</span>
+</td>
+<td>
+<a href="./posts/mapping-voters/index.html" class="title listing-title">Mapping Voters</a>
+</td>
+<td>
+<span class="listing-author">Robert W. Walker</span>
+</td>
+<td>
+<span class="listing-reading-time">3 min</span>
+</td>
+</tr>
+<tr data-index="22" data-categories="R,regression" data-listing-date-sort="1649746800000" data-listing-file-modified-sort="1676563853000" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="353" data-listing-title-sort="Normal Residuals in Radiant" data-listing-filename-sort="index.qmd">
+<td>
+<span class="listing-image"><img src="./posts/normal-residuals-in-radiant/image.png" style="height: 40px;"></span>
+</td>
+<td>
+<span class="listing-date">Apr 12, 2022</span>
+</td>
+<td>
+<a href="./posts/normal-residuals-in-radiant/index.html" class="title listing-title">Normal Residuals in Radiant</a>
+</td>
+<td>
+<span class="listing-author">Robert W. Walker</span>
+</td>
+<td>
+<span class="listing-reading-time">2 min</span>
+</td>
+</tr>
+<tr data-index="23" data-categories="R,time_series,tidy" data-listing-date-sort="1625036400000" data-listing-file-modified-sort="1676563853000" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="54" data-listing-title-sort="ggtimeseries" data-listing-filename-sort="index.qmd">
+<td>
+<span class="listing-image"><img src="./posts/ggtimeseries/image.png" style="height: 40px;"></span>
+</td>
+<td>
+<span class="listing-date">Jun 30, 2021</span>
+</td>
+<td>
+<a href="./posts/ggtimeseries/index.html" class="title listing-title">ggtimeseries</a>
+</td>
+<td>
+<span class="listing-author">Robert W. Walker</span>
+</td>
+<td>
+<span class="listing-reading-time">1 min</span>
+</td>
+</tr>
+<tr data-index="24" data-categories="R,time_series" data-listing-date-sort="1624863600000" data-listing-file-modified-sort="1676563853000" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="88" data-listing-title-sort="the clock package: a c port" data-listing-filename-sort="index.qmd">
+<td>
+<span class="listing-image"><img src="./posts/clock-c-datetimes/image.png" style="height: 40px;"></span>
+</td>
+<td>
+<span class="listing-date">Jun 28, 2021</span>
+</td>
+<td>
+<a href="./posts/clock-c-datetimes/index.html" class="title listing-title">the clock package: a c port</a>
+</td>
+<td>
+<span class="listing-author">Robert W. Walker</span>
+</td>
+<td>
+<span class="listing-reading-time">1 min</span>
+</td>
+</tr>
+<tr data-index="25" data-categories="R,time_series,tidy" data-listing-date-sort="1624518000000" data-listing-file-modified-sort="1676563853000" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="199" data-listing-title-sort="Easy moving averages" data-listing-filename-sort="index.qmd">
+<td>
+<span class="listing-image"><img src="./posts/moving-averages-link/image.png" style="height: 40px;"></span>
+</td>
+<td>
+<span class="listing-date">Jun 24, 2021</span>
+</td>
+<td>
+<a href="./posts/moving-averages-link/index.html" class="title listing-title">Easy moving averages</a>
+</td>
+<td>
+<span class="listing-author">Robert W. Walker</span>
+</td>
+<td>
+<span class="listing-reading-time">1 min</span>
+</td>
+</tr>
+<tr data-index="26" data-categories="R,time_series" data-listing-date-sort="1624518000000" data-listing-file-modified-sort="1676563853000" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="493" data-listing-title-sort="A brief look at VIX" data-listing-filename-sort="index.qmd">
+<td>
+<span class="listing-image"><img src="./posts/quick-look-at-vix/image.png" style="height: 40px;"></span>
+</td>
+<td>
+<span class="listing-date">Jun 24, 2021</span>
+</td>
+<td>
+<a href="./posts/quick-look-at-vix/index.html" class="title listing-title">A brief look at VIX</a>
+</td>
+<td>
+<span class="listing-author">Robert W. Walker</span>
+</td>
+<td>
+<span class="listing-reading-time">3 min</span>
+</td>
+</tr>
+<tr data-index="27" data-categories="R,time_series" data-listing-date-sort="1624518000000" data-listing-file-modified-sort="1676563853000" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="33" data-listing-title-sort="A nice post on seasonal adjustment" data-listing-filename-sort="index.qmd">
+<td>
+<span class="listing-image"><img src="./posts/seasonal-adjustment/image.png" style="height: 40px;"></span>
+</td>
+<td>
+<span class="listing-date">Jun 24, 2021</span>
+</td>
+<td>
+<a href="./posts/seasonal-adjustment/index.html" class="title listing-title">A nice post on seasonal adjustment</a>
+</td>
+<td>
+<span class="listing-author">Robert W. Walker</span>
+</td>
+<td>
+<span class="listing-reading-time">1 min</span>
+</td>
+</tr>
+<tr data-index="28" data-categories="R,time_series" data-listing-date-sort="1622271600000" data-listing-file-modified-sort="1676563853000" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="75" data-listing-title-sort="Allison Horst teaches ACFs" data-listing-filename-sort="index.qmd">
+<td>
+<span class="listing-image"><img src="./posts/acfs-horst/image.png" style="height: 40px;"></span>
+</td>
+<td>
+<span class="listing-date">May 29, 2021</span>
+</td>
+<td>
+<a href="./posts/acfs-horst/index.html" class="title listing-title">Allison Horst teaches ACFs</a>
+</td>
+<td>
+<span class="listing-author">Robert W. Walker</span>
+</td>
+<td>
+<span class="listing-reading-time">1 min</span>
+</td>
+</tr>
+<tr data-index="29" data-categories="R,time_series,tidy" data-listing-date-sort="1616569200000" data-listing-file-modified-sort="1676563853000" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="516" data-listing-title-sort="timetk is really, really handy" data-listing-filename-sort="index.qmd">
+<td>
+<span class="listing-image"><img src="./posts/timetk-is-awesome/image.png" style="height: 40px;"></span>
+</td>
+<td>
+<span class="listing-date">Mar 24, 2021</span>
+</td>
+<td>
+<a href="./posts/timetk-is-awesome/index.html" class="title listing-title">timetk is really, really handy</a>
+</td>
+<td>
+<span class="listing-author">Robert W. Walker</span>
+</td>
+<td>
+<span class="listing-reading-time">3 min</span>
+</td>
+</tr>
+<tr data-index="30" data-categories="R,tidyTuesday,tidyverse" data-listing-date-sort="1612771200000" data-listing-file-modified-sort="1676822515000" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="417" data-listing-title-sort="TT: Wealth and Income" data-listing-filename-sort="index.qmd">
+<td>
+<span class="listing-image"><img data-src="./posts/tt-wealth-and-income/image.png" style="height: 40px;"></span>
+</td>
+<td>
+<span class="listing-date">Feb 8, 2021</span>
+</td>
+<td>
+<a href="./posts/tt-wealth-and-income/index.html" class="title listing-title">TT: Wealth and Income</a>
+</td>
+<td>
+<span class="listing-author">Robert W. Walker</span>
+</td>
+<td>
+<span class="listing-reading-time">3 min</span>
+</td>
+</tr>
+<tr data-index="31" data-categories="R,panel data" data-listing-date-sort="1606550400000" data-listing-file-modified-sort="1676563853000" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="380" data-listing-title-sort="fredr: quick and dirty" data-listing-filename-sort="index.qmd">
+<td>
+<span class="listing-image"><img data-src="./posts/quick-fredr/image.png" style="height: 40px;"></span>
+</td>
+<td>
+<span class="listing-date">Nov 28, 2020</span>
+</td>
+<td>
+<a href="./posts/quick-fredr/index.html" class="title listing-title">fredr: quick and dirty</a>
+</td>
+<td>
+<span class="listing-author">Robert W. Walker</span>
+</td>
+<td>
+<span class="listing-reading-time">2 min</span>
+</td>
+</tr>
+<tr data-index="32" data-categories="R,tidyverse,Socrata,dataviz" data-listing-date-sort="1606291200000" data-listing-file-modified-sort="1676821709000" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="460" data-listing-title-sort="Socrata is amazingly handy for open data" data-listing-filename-sort="index.qmd">
+<td>
+<span class="listing-image"><img data-src="./posts/socrata-is-amazingly-handy-for-open-data/image.png" style="height: 40px;"></span>
+</td>
+<td>
+<span class="listing-date">Nov 25, 2020</span>
+</td>
+<td>
+<a href="./posts/socrata-is-amazingly-handy-for-open-data/index.html" class="title listing-title">Socrata is amazingly handy for open data</a>
+</td>
+<td>
+<span class="listing-author">Robert W. Walker</span>
+</td>
+<td>
+<span class="listing-reading-time">3 min</span>
+</td>
+</tr>
+<tr data-index="33" data-categories="R" data-listing-date-sort="1606204800000" data-listing-file-modified-sort="1676563853000" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3" data-listing-word-count-sort="509" data-listing-title-sort="Vaccine Efficacy: A Binomial Problem" data-listing-filename-sort="index.qmd">
+<td>
+<span class="listing-image"><img data-src="./posts/binomial-vaccine-efficacy/image.png" style="height: 40px;"></span>
+</td>
+<td>
+<span class="listing-date">Nov 24, 2020</span>
+</td>
+<td>
+<a href="./posts/binomial-vaccine-efficacy/index.html" class="title listing-title">Vaccine Efficacy: A Binomial Problem</a>
+</td>
+<td>
+<span class="listing-author">Robert W. Walker</span>
+</td>
+<td>
+<span class="listing-reading-time">3 min</span>
+</td>
+</tr>
+<tr data-index="34" data-categories="tidyTuesday,dataviz" data-listing-date-sort="1603090800000" data-listing-file-modified-sort="1676821891000" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="177" data-listing-title-sort="Datasaurus Dozen" data-listing-filename-sort="index.qmd">
+<td>
+<span class="listing-image"><img data-src="./posts/datasaurus-dozen/image.png" style="height: 40px;"></span>
+</td>
+<td>
+<span class="listing-date">Oct 19, 2020</span>
+</td>
+<td>
+<a href="./posts/datasaurus-dozen/index.html" class="title listing-title">Datasaurus Dozen</a>
+</td>
+<td>
+<span class="listing-author">Robert W. Walker</span>
+</td>
+<td>
+<span class="listing-reading-time">1 min</span>
+</td>
+</tr>
+<tr data-index="35" data-categories="R" data-listing-date-sort="1599980400000" data-listing-file-modified-sort="1676563853000" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="361" data-listing-title-sort="Importing Excel Data" data-listing-filename-sort="index.qmd">
+<td>
+<span class="listing-image"><img data-src="./posts/importing-excel-data/thumbnail.png" style="height: 40px;"></span>
+</td>
+<td>
+<span class="listing-date">Sep 13, 2020</span>
+</td>
+<td>
+<a href="./posts/importing-excel-data/index.html" class="title listing-title">Importing Excel Data</a>
+</td>
+<td>
+<span class="listing-author">Robert W. Walker</span>
+</td>
+<td>
+<span class="listing-reading-time">2 min</span>
+</td>
+</tr>
+<tr data-index="36" data-categories="R" data-listing-date-sort="1599894000000" data-listing-file-modified-sort="1676563853000" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="8" data-listing-word-count-sort="1510" data-listing-title-sort="Pivoting Data: Long and Wide" data-listing-filename-sort="index.qmd">
+<td>
+<span class="listing-image"><img data-src="./posts/pivots/image.png" style="height: 40px;"></span>
+</td>
+<td>
+<span class="listing-date">Sep 12, 2020</span>
+</td>
+<td>
+<a href="./posts/pivots/index.html" class="title listing-title">Pivoting Data: Long and Wide</a>
+</td>
+<td>
+<span class="listing-author">Robert W. Walker</span>
+</td>
+<td>
+<span class="listing-reading-time">8 min</span>
+</td>
+</tr>
+<tr data-index="37" data-categories="R,tidyverse" data-listing-date-sort="1571986800000" data-listing-file-modified-sort="1676563853000" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="281" data-listing-title-sort="A Quick and Dirty Introduction to R" data-listing-filename-sort="index.qmd">
+<td>
+<span class="listing-image"><img data-src="./posts/a-quick-and-dirty-introduction-to-r/thumbnail.png" style="height: 40px;"></span>
+</td>
+<td>
+<span class="listing-date">Oct 25, 2019</span>
+</td>
+<td>
+<a href="./posts/a-quick-and-dirty-introduction-to-r/index.html" class="title listing-title">A Quick and Dirty Introduction to R</a>
+</td>
+<td>
+<span class="listing-author">RWW </span>
+</td>
+<td>
+<span class="listing-reading-time">2 min</span>
+</td>
+</tr>
+<tr data-index="38" data-categories="R,tidyverse,tables" data-listing-date-sort="1570604400000" data-listing-file-modified-sort="1676563853000" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="7" data-listing-word-count-sort="1276" data-listing-title-sort="Tables, Pivots, Bars, and Mosaics" data-listing-filename-sort="index.qmd">
+<td>
+<span class="listing-image"><img data-src="./posts/tables-pivots-bars-and-mosaics/thumbnail.jpg" style="height: 40px;"></span>
+</td>
+<td>
+<span class="listing-date">Oct 9, 2019</span>
+</td>
+<td>
+<a href="./posts/tables-pivots-bars-and-mosaics/index.html" class="title listing-title">Tables, Pivots, Bars, and Mosaics</a>
+</td>
+<td>
+<span class="listing-author">Robert W. Walker</span>
+</td>
+<td>
+<span class="listing-reading-time">7 min</span>
+</td>
+</tr>
+<tr data-index="39" data-categories="news" data-listing-date-sort="1546329600000" data-listing-file-modified-sort="1676563853000" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="106" data-listing-title-sort="Welcome to the FAQ for DADM" data-listing-filename-sort="index.qmd">
+<td>
+<span class="listing-image"><p class="card-img-top"><img data-src="posts/welcome/thumbnail.jpg" style="height: 40px;"  class="thumbnail-image card-img"/></p></span>
+</td>
+<td>
+<span class="listing-date">Jan 1, 2019</span>
+</td>
+<td>
+<a href="./posts/welcome/index.html" class="title listing-title">Welcome to the FAQ for DADM</a>
+</td>
+<td>
+<span class="listing-author">Robert W. Walker</span>
+</td>
+<td>
+<span class="listing-reading-time">1 min</span>
 </td>
 </tr>
 </tbody>
-
 </table>
 <div class="listing-no-matching d-none">
 No matching items
@@ -898,9 +950,23 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     icon: icon
   };
   anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
   const clipboard = new window.ClipboardJS('.code-copy-button', {
-    target: function(trigger) {
-      return trigger.previousElementSibling;
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
     }
   });
   clipboard.on('success', function(e) {
@@ -936,10 +1002,27 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // clear code selection
     e.clearSelection();
   });
-  function tippyHover(el, contentFn) {
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
-      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -949,8 +1032,17 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start'
+      placement: 'bottom-start',
     };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
@@ -962,9 +1054,245 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
     });
   }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
   const findCites = (el) => {
     const parentEl = el.parentElement;
     if (parentEl) {
@@ -1007,11 +1335,18 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </div> <!-- /content -->
 <footer class="footer">
   <div class="nav-footer">
-    <div class="nav-footer-left"><span class="faux-block">License: <a href="https://creativecommons.org/licenses/by-sa/4.0/"><i class="fa-brands fa-creative-commons" aria-label="creative-commons"></i> <i class="fa-brands fa-creative-commons-by" aria-label="creative-commons-by"></i> <i class="fa-brands fa-creative-commons-sa" aria-label="creative-commons-sa"></i> Creative Commons CC BY-SA 4.0</a></span><br>
+    <div class="nav-footer-left">
+<p><span class="faux-block">License: <a href="https://creativecommons.org/licenses/by-sa/4.0/"><i class="fa-brands fa-creative-commons" aria-label="creative-commons"></i> <i class="fa-brands fa-creative-commons-by" aria-label="creative-commons-by"></i> <i class="fa-brands fa-creative-commons-sa" aria-label="creative-commons-sa"></i> Creative Commons CC BY-SA 4.0</a></span></p>
 </div>   
-    <div class="nav-footer-right"><span class="faux-block"><i class="fa-brands fa-r-project" aria-label="r-project"></i> and <a href="https://quarto.org/">Quarto</a></span> <span class="faux-block"><a href="https://github.com/robertwwalker/dadm-faq">View the source at <i class="fa-brands fa-github" aria-label="github"></i> GitHub</a></span></div>
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">
+<p><span class="faux-block"><i class="fa-brands fa-r-project" aria-label="r-project"></i> and <a href="https://quarto.org/">Quarto</a></span> <span class="faux-block"><a href="https://github.com/robertwwalker/dadm-faq">View the source at <i class="fa-brands fa-github" aria-label="github"></i> GitHub</a></span></p>
+</div>
   </div>
 </footer>
+
 
 
 

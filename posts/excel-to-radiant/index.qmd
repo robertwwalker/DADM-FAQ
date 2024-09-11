@@ -33,7 +33,19 @@ format:
 1.  Ingest an Excel file to R through RStudio.
 2.  Move or copy the injested data from RStudio's Global Environment to radiant's workspace.
 
-Side notes. There are other roughly equivalent workflows. Following Wu and Broman's advice, we could save each sheet in the Excel workbook as a raw text file: .csv \[comma separated values\] or .txt \[tab separated values\]. Those can be directly imported to Radiant. The quickest but least reliable is to cut and paste via the clipboard. It is least reliable because missing data handling only really exists by implementing a bad practice -- blank cells. But if we use blank cells as missing, it generally works.
+There are other roughly equivalent workflows. 
+
+::: {.callout-tip}
+## Wu and Broman's advice: plain text.
+
+We could save each sheet in the Excel workbook as a raw text file: .csv [comma separated values] or .txt [tab separated values]. Those can be directly imported to Radiant. 
+:::
+
+::: {.callout-important}
+## Clipboards and Spaces
+
+The quickest but least reliable is to cut and paste via the clipboard. It is least reliable because missing data handling only really exists by implementing a bad practice -- blank cells. But if we use blank cells as missing, it generally works.
+:::
 
 ## Ingest an Excel file through RStudio
 
